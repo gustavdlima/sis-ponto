@@ -8,5 +8,4 @@ import { RouterLink } from 'vue-router';
 
 <template>
   <RouterView />
-  <router-link to="/Login"></router-link>
 </template>

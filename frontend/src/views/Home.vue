@@ -1,6 +1,7 @@
 <template>
 	<h1>Home</h1>
-	<router-link to="/login"></router-link>
+	<router-link to="/login">Login</router-link><br>
+	<router-link to="/ponto">Ponto</router-link><br>
 	<RealTimeClock></RealTimeClock>
 </template>
 

@@ -22,6 +22,7 @@
 </script>
 
 <template>
+		<router-link to="/">Home</router-link>
   <form name="login-form">
     <div class="mb-3">
       <label for="username">Username</label>

@@ -3,7 +3,6 @@
 		<!-- <p>{{ currentTime.toLocaleString() }}</p> -->
 		<p> {{ currentTime.toLocaleDateString() }}</p>
 		<p>{{ currentTime.toLocaleTimeString() }}</p>
-		<router-link to="/Login">Login</router-link>
 	</div>
 </template>
 
