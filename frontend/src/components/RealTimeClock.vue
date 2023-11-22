@@ -1,21 +1,21 @@
 <template>
 	<div>
-		<p>{{ currentTime.toLocaleString() }}</p>
-		<p>{{ currentTime.toLocaleTimeString() }}</p>
+		<!-- <p>{{ currentTime.toLocaleString() }}</p> -->
 		<p> {{ currentTime.toLocaleDateString() }}</p>
+		<p>{{ currentTime.toLocaleTimeString() }}</p>
+		<router-link to="/Login">Login</router-link>
 	</div>
 </template>
 
 <script>
-	import { useCurrentTime } from "../composable/currentTime.js";
+import { useCurrentTime } from "../composable/currentTime.js";
 
-	export default {
-		name: "CurrentTimeNow",
-		setup() {
-			const { currentTime } = useCurrentTime();
-			console.log(currentTime.value)
-			return { currentTime };
-		}
+export default {
+	name: "CurrentTimeNow",
+	setup() {
+		const { currentTime } = useCurrentTime();
+		return { currentTime };
 	}
+}
 </script>
 
