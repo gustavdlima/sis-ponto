@@ -4,14 +4,14 @@
     data(){
       return {
         input: {
-          username: "",
-          password: ""
+          registration: "",
+          birthDate: ""
         }
       }
     },
     methods: {
       login() {
-        if (this.input.username != "" || this.input.password != "") {
+        if (this.input.registration != "" || this.input.birthDate != "") {
           console.log("Autenticado")
         } else {
           console.log("Complete os campos de obrigatórios")
@@ -22,20 +22,17 @@
 </script>
 
 <template>
-		<router-link to="/">Home</router-link>
   <form name="login-form">
     <div class="mb-3">
-      <label for="username">Username</label>
-      <input type="text" id="username" v-model="input.username"/>
+      <label for="registration" ></label>
+      <input type="text" id="registration" placeholder="Matrícula" v-model="input.registration"/>
     </div>
     <div class="mb-3">
-      <label for="password">Password</label>
-      <input type="password" id="password" v-model="input.password"/>
+      <label for="birthDate"></label>
+      <input type="birthDate" id="birthDate" placeholder="Data de Nascimento" v-model="input.birthDate"/>
     </div>
     <button type="submit" v-on:click.prevent="login()">
-      Login
+      Registrar
     </button>
-    <p>Username is: {{input.username}}</p>
-    <p>Password is: {{input.password}}</p>
   </form>
 </template>
