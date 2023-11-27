@@ -12,9 +12,8 @@ export default {
 	name: "BaterPonto",
 	methods: {
 		handleClick() {
-			const currentTime = new Date();
-			console.log("O horário que você bateu ponto foi:", currentTime.toLocaleTimeString(),"\nNa data de", currentTime.toLocaleDateString())
+			console.log("Clicou")
 		}
-	},
+	}
 }
 </script>
