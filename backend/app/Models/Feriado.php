@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Feriado extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nome',
+        'data',
+    ];
 }

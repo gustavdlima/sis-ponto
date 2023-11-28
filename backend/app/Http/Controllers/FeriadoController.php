@@ -12,7 +12,7 @@ class FeriadoController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**

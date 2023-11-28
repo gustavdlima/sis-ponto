@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Registro extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'primeiro_ponto',
+        'segundo_ponto',
+        'terceiro_ponto',
+        'quarto_ponto',
+    ];
 }
