@@ -35,7 +35,7 @@
     <button type="submit" v-on:click.prevent="login()">
       Login
     </button>
-    <p>matricula is: {{input.matricula}}</p>
+    <p>Matricula is: {{input.matricula}}</p>
     <p>Data de Nascimento is: {{input.dataNascimento}}</p>
   </form>
 </template>
