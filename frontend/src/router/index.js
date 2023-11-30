@@ -11,6 +11,11 @@ const routes = [
 		name: 'Login',
 		component: () => import('../views/BaterPonto.vue')
 	},
+	{
+		path: '/cadastro',
+		name: 'Cadastro',
+		component: () => import('../views/Cadastro.vue')
+	}
 
 ]
 
