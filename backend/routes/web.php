@@ -16,5 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/funcionario', [FuncionarioController::class, 'index']);
+// Route::get('/funcionario/{{id}}', [FuncionarioControler::class, 'show']);
+
+
+// Route::get('/funcionario', [LoginControler::class, 'index']);
 

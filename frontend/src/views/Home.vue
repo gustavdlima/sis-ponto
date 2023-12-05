@@ -20,7 +20,7 @@ export default {
 	},
 	methods: {
 		async getFuncionarios(resource) {
-			const response = await this.$http.get('http://localhost:8000/funcionario');
+			const response = await this.$http.get('http://localhost:8000/api/funcionario');
 			this.funcionarios = response.data;
 			console.log(this.funcionarios);
 		}

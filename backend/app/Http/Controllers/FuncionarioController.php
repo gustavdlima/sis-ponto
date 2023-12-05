@@ -23,7 +23,7 @@ class FuncionarioController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -31,15 +31,17 @@ class FuncionarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Funcionario $funcionario)
+    public function show($id)
     {
-        //
+        $user = DB::select('select * from funcionarios where id = ?', [$id]);
+
+        return $user;
     }
 
     /**
