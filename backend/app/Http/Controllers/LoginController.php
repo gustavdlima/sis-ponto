@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class LoginController extends Controller
 {
@@ -60,5 +62,17 @@ class LoginController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function check(Request $request)
+    {
+        $funcionario = Db::select('select * from funcionarios where matricula = ? and data_nascimento = ?', [$request->matricula, $request->data_nascimento]);
+
+        if ($funcionario != null) {
+            return $funcionario;
+        } else {
+            return response()->json(['message' => 'Funcionário não encontrado']);
+        }
+
     }
 }
