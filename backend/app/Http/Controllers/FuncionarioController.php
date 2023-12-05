@@ -14,16 +14,16 @@ class FuncionarioController extends Controller
     public function index()
     {
         $users = DB::select('select * from funcionarios');
-
         return $users;
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($input)
     {
-
+        $input = json_decode($input, true);
+        Funcionario::create($input);
     }
 
     /**
@@ -40,7 +40,6 @@ class FuncionarioController extends Controller
     public function show($id)
     {
         $user = DB::select('select * from funcionarios where id = ?', [$id]);
-
         return $user;
     }
 

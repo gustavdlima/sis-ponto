@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Funcionario;
+use App\Http\Controllers\FuncionarioController;
 use Illuminate\Support\Facades\Auth;
 use Hash;
 
@@ -32,12 +32,10 @@ class CadastroController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-
-        Funcionario::create([
-            'setor' => $input['setor'],
-            'matricula' => $input['matricula'],
-            'data_nascimento' => $input['data_nascimento'],
-        ]);
+        $dataJson = json_encode($input);
+        $funcionario = new FuncionarioController();
+        
+        $funcionario->create($dataJson);
 
         return response()->json(['message' => 'Funcionário criado com sucesso!']);
     }
