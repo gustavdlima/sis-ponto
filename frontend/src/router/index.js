@@ -9,14 +9,18 @@ const routes = [
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('../views/BaterPonto.vue')
+		component: () => import('../views/Login.vue')
 	},
 	{
 		path: '/cadastro',
 		name: 'Cadastro',
 		component: () => import('../views/Cadastro.vue')
+	},
+	{
+		path: '/baterponto',
+		name: 'BaterPonto',
+		component: () => import('../views/BaterPonto.vue')
 	}
-
 ]
 
 const router = createRouter ({

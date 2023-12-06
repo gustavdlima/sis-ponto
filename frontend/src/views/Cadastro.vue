@@ -22,6 +22,7 @@
 				<option value="CORAD">CORAD</option>
 				<option value="CORDI">CORDI</option>
 				<option value="CORFIN">CORFIN</option>
+				<option value="CORSIM">CORSIM</option>
 				<option value="CREM">CREM</option>
 				<option value="CRH">CRH</option>
 				<option value="DE">DE</option>
