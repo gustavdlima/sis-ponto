@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('registros', function (Blueprint $table) {
             $table->id();
-            $table->date('primeiro_ponto');
-            $table->date('segundo_ponto');
-            $table->date('terceiro_ponto');
-            $table->date('quarto_ponto');
+            $table->bigInteger('id_funcionario');
+            $table->bigInteger('id_horario');
+            $table->dateTime('primeiro_ponto');
+            $table->dateTime('segundo_ponto');
+            $table->dateTime('terceiro_ponto');
+            $table->dateTime('quarto_ponto');
             $table->timestamps();
         });
     }

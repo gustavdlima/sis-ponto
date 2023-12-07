@@ -25,7 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropColumns('feriados', [
-            
+            'nome',
+            'data',
         ]);
     }
 };

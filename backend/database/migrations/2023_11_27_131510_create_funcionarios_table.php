@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('funcionarios', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
             $table->string('setor');
             $table->string('matricula');
-            $table->date('data_nascimento');
+            $table->dateT('data_nascimento');
+            $table->bigInteger('id_horario');
             $table->timestamps();
         });
     }
@@ -26,9 +28,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropColumns('funcionarios', [
+            'nome',
             'setor',
             'matricula',
             'data_nascimento',
+            'id_horario',
         ]);
     }
 };
