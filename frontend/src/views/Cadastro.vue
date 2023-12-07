@@ -22,7 +22,7 @@
 				<option value="CORAD">CORAD</option>
 				<option value="CORDI">CORDI</option>
 				<option value="CORFIN">CORFIN</option>
-				<option value="CORSIM">CORSIM</option>
+				<option value="CORSIN">CORSIN</option>
 				<option value="CREM">CREM</option>
 				<option value="CRH">CRH</option>
 				<option value="DE">DE</option>
@@ -41,6 +41,10 @@
 			</select><br>
 		</div>
 		<div>
+			<label for="nome">Nome</label>
+			<input type="text" v-model="data.nome" name="nome" />
+		</div>
+		<div>
 			<label for="matricula">Matricula</label>
 			<input type="text" v-model="data.matricula" name="matricula" />
 		</div>
@@ -50,8 +54,6 @@
 		</div>
 		<button type="submit">Cadastrar</button>
 	</form>
-	<p>Matricula is: {{data.matricula}}</p>
-	<p>Data de Nascimento is: {{data.data_nascimento}}</p>
 </template>
 
 <script>
@@ -61,6 +63,7 @@ export default {
 	data() {
 		return {
 			data: {
+				nome: "",
 				setor: "",
 				matricula: "",
 				data_nascimento: "",
@@ -71,7 +74,7 @@ export default {
 	},
 	methods: {
 		sendForm() {
-			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "") {
+			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "") {
 				console.log(this.data)
 				console.log("Preencha todos os campos");
 			} else {
