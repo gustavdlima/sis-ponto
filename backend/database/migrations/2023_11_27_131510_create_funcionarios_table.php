@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('setor');
             $table->string('matricula');
             $table->dateTime('data_nascimento');
-            $table->bigInteger('id_horario');
+            $table->bigInteger('id_horario')->nullable();
             $table->timestamps();
         });
     }
