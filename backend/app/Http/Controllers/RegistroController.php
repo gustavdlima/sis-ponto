@@ -18,9 +18,11 @@ class RegistroController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($registroJson)
     {
-        //
+        $registro = json_decode($registroJson, true);
+        $id = Registro::create($registroJson);
+        return $id;
     }
 
     /**

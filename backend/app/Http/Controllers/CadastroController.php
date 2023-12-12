@@ -44,9 +44,9 @@ class CadastroController extends Controller
         $funcionarioId = $funcionario->create($input);
 
         // return $horarioJson;
-        return $funcionarioId;
+        // return $funcionario;
         // print_r($dataJson);
-        // return response()->json(['message' => 'Funcionário criado com sucesso!', ]);
+        return response()->json(['message' => 'Funcionário criado com sucesso!', 'funcionarioId' => $funcionarioId->id]);
     }
 
     /**

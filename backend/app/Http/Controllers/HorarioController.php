@@ -12,7 +12,7 @@ class HorarioController extends Controller
      */
     public function setHorario($horarioInput)
     {
-        $horarioObject;
+        $horarioObject = null;
 
         if ($horarioInput == "horario1") {
             $horarioObject = json_encode(array('horario_entrada' => '08:00:00',
