@@ -7,11 +7,28 @@ use Illuminate\Http\Request;
 
 class RegistroController extends Controller
 {
-
-    public function checkWhichPonto($registro)
+    public function checkWhichPonto($registroFuncionario, $registroArray)
     {
-        $ponto = $registro::latest()->pluck('primeiro_ponto')->first();
-        return $ponto;
+        $date = date('Y-m-d H:i:s');
+
+        foreach ($registroArray as $key => $value) {
+            $ponto = Registro::latest()->pluck($key)->first();
+            if ($ponto == null) {
+                $newRegistro = Registro::where('id', $registroFuncionario->id)->update([$key => $date]);
+                return $newRegistro;
+            } else {
+                if ($key == 'quarto_ponto') {
+                    $registroArray['primeiro_ponto'] = $date;
+                    $registroArray['segundo_ponto'] = null;
+                    $registroArray['terceiro_ponto'] = null;
+                    $registroArray['quarto_ponto'] = null;
+                    $newRegistro = $registroFuncionario->create($registroArray);
+                    return $newRegistro;
+                }
+                continue ;
+            }
+        }
+        return null;
     }
 
     public function getLastFuncionarioRegistro($funcionarioId)
