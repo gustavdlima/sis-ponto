@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
-            $table->time('horario_entrada');
-            $table->time('horario_ida_intervalo');
-            $table->time('horario_volta_intervalo');
-            $table->time('horario_saida');
+            $table->time('horario_entrada')->nullable();
+            $table->time('horario_ida_intervalo')->nullable();
+            $table->time('horario_volta_intervalo')->nullable();
+            $table->time('horario_saida')->nullable();
             $table->timestamps();
         });
     }

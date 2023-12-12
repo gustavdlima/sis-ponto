@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\FuncionarioController;
+use App\Http\Controllers\HorarioController;
 use Illuminate\Support\Facades\Auth;
 use Hash;
 
@@ -32,12 +33,20 @@ class CadastroController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $dataJson = json_encode($input);
-        $funcionario = new FuncionarioController();
-        
-        $funcionario->create($dataJson);
 
-        return response()->json(['message' => 'Funcionário criado com sucesso!']);
+        $horario = new HorarioController();
+        $horarioJson = $horario->setHorario($input['horario']);
+        $horarioId = $horario->create($horarioJson);
+
+        $funcionario = new FuncionarioController();
+        $input['id_horario'] = $horarioId->id;
+        $input = json_encode($input);
+        $funcionarioId = $funcionario->create($input);
+
+        // return $horarioJson;
+        return $funcionarioId;
+        // print_r($dataJson);
+        // return response()->json(['message' => 'Funcionário criado com sucesso!', ]);
     }
 
     /**

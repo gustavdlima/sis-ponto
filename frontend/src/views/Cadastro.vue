@@ -52,6 +52,16 @@
 			<label for="dataNascimento">Data de Nascimento</label>
 			<input type="date" v-model="data.data_nascimento" name="dataNascimento" />
 		</div>
+		<div>
+			Horário
+			<select v-model="data.horario" name="horario">
+				<option disabled value=""></option>"
+				<option value="horario1">07h - 11h - 12h - 16h</option>
+				<option value="horario2">07:30h - 11:30h - 12:30h - 16:30h</option>
+				<option value="horario3">8h - 12h - 13h - 17h</option>
+			</select><br>
+		</div>
+
 		<button type="submit">Cadastrar</button>
 	</form>
 </template>
@@ -67,6 +77,7 @@ export default {
 				setor: "",
 				matricula: "",
 				data_nascimento: "",
+				id_horario: "",
 			}
 		}
 	},
@@ -74,7 +85,7 @@ export default {
 	},
 	methods: {
 		sendForm() {
-			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "") {
+			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "" || this.data.horario == "") {
 				console.log(this.data)
 				console.log("Preencha todos os campos");
 			} else {

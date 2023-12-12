@@ -23,7 +23,8 @@ class FuncionarioController extends Controller
     public function create($input)
     {
         $input = json_decode($input, true);
-        Funcionario::create($input);
+        $id = Funcionario::create($input);
+        return $id;
     }
 
     /**

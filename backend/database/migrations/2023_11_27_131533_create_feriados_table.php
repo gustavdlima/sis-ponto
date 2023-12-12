@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('feriados', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->date('data');
+            $table->date('data')->nullable();
             $table->timestamps();
         });
     }

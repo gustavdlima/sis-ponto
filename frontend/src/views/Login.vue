@@ -25,31 +25,26 @@ export default {
     return {
       input: {
         matricula: "",
-        data_nascimento: ""
+        data_nascimento: "",
+        data_ponto: "",
       },
     }
   },
   methods: {
-
-    baterPonto()  {
-      const currentTime = new Date();
-      console.log("Current Time: ", currentTime.toLocaleTimeString());
-      console.log("Current Date", currentTime.toLocaleDateString());
-    },
     login() {
-      const store = useFuncionarioStore();
-      if (this.input.matricula != "" || this.input.data_nascimento != "") {
-        console.log("Autenticado")
-        console.log(this.input.matricula)
-        console.log(this.input.data_nascimento)
+      const currentTime = new Date();
+
+      this.input.data_ponto = currentTime;
+
+      if (this.input.matricula != "" || this.input.data_nascimento != "" || this.input.data_ponto != "") {
         this.$http.post("http://localhost:8000/api/login", this.input)
-          .then((response) => {
-            if (response.data) {
-              if(response.data.length) {
-                console.log("Conteudo response.data = ", response.data);
-                store.setFuncionario(response.data);
-                console.log("Pinia store: ", store.getFuncionarios);
-                this.baterPonto();
+        .then((response) => {
+          if (response.data) {
+            if(response.data.length) {
+              console.log("User: ", response.data);
+              console.log("Current Time: ", currentTime.toLocaleTimeString());
+              console.log("Current Date", currentTime.toLocaleDateString());
+
               } else {
                 alert("Matrícula ou Data de Nascimento errada");
               }

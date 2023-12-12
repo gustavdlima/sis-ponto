@@ -10,25 +10,46 @@ class HorarioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function setHorario($horarioInput)
     {
-        //
+        $horarioObject;
+
+        if ($horarioInput == "horario1") {
+            $horarioObject = json_encode(array('horario_entrada' => '08:00:00',
+                'horario_ida_intervalo' => '12:00:00',
+                'horario_volta_intervalo' => '13:00:00',
+                'horario_saida' => '18:00:00', JSON_UNESCAPED_SLASHES));
+        } elseif ($horarioInput == "horario2") {
+            $horarioObject = json_encode(array('horario_entrada' => '07:30:00',
+                'horario_ida_intervalo' => '11:30:00',
+                'horario_volta_intervalo' => '12:30:00',
+                'horario_saida' => '16:30:00', JSON_UNESCAPED_SLASHES));
+        } elseif ($horarioInput == "horario3") {
+            $horarioObject = json_encode(array('horario_entrada' => '07:00:00',
+                'horario_ida_intervalo' => '11:00:00',
+                'horario_volta_intervalo' => '12:00:00',
+                'horario_saida' => '16:00:00', JSON_UNESCAPED_SLASHES));
+        }
+
+        return $horarioObject;
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($input)
     {
-        //
+        $input = json_decode($input, true);
+        $id = Horario::create($input);
+        return $id;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($input)
     {
-        //
+        Horario::create($input);
     }
 
     /**
