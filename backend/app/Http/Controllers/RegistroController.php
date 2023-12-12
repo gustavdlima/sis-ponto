@@ -7,12 +7,27 @@ use Illuminate\Http\Request;
 
 class RegistroController extends Controller
 {
+
+    public function searchRegistros($funcionarioId)
+    {
+        $registros = Registro::latest()->where('id_funcionario', $funcionarioId)->get();
+
+        return $registros[0];
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function createRegistroArray($funcionario)
     {
-        //
+        $registroArray = array(
+            'id_funcionario' => $funcionario[0]->id,
+            'primeiro_ponto' => null,
+            'segundo_ponto' => null,
+            'terceiro_ponto' => null,
+            'quarto_ponto' => null,
+        );
+
+        return $registroArray;
     }
 
     /**
@@ -20,7 +35,7 @@ class RegistroController extends Controller
      */
     public function create($registroJson)
     {
-        $registro = json_decode($registroJson, true);
+        // $registro = json_decode($registroJson, true);
         $id = Registro::create($registroJson);
         return $id;
     }

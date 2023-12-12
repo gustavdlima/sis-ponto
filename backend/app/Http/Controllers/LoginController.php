@@ -11,19 +11,16 @@ use App\Models\Registro;
 class LoginController extends Controller
 {
     public function register($funcionario) {
-        $registro = new Registro();
+        $registro = new RegistroController();
         $date = date('Y-m-d H:i:s');
 
-        $registroJson = array('id_funcionario' => $funcionario[0]->id,
-            'primeiro_ponto' => $date,
-            'segundo_ponto' => null,
-            'terceiro_ponto' => null,
-            'quarto_ponto' => null,
-        );
+        // $registroArray = $registro->createRegistroArray($funcionario);
+        // $registroId = $registro->create($registroArray);
+        $registros = $registro->searchRegistros($funcionario[0]->id);
 
-        $registroId = $registro->create($registroJson);
 
-        return $registroJson;
+        return $registros;
+        // return $registroArray;
     }
 
     public function check(Request $request)
