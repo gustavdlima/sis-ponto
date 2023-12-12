@@ -8,10 +8,18 @@ use Illuminate\Http\Request;
 class RegistroController extends Controller
 {
 
-    public function searchRegistros($funcionarioId)
+    public function checkWhichPonto($registro)
+    {
+        $ponto = $registro::latest()->pluck('primeiro_ponto')->first();
+        return $ponto;
+    }
+
+    public function getLastFuncionarioRegistro($funcionarioId)
     {
         $registros = Registro::latest()->where('id_funcionario', $funcionarioId)->get();
-
+        if (sizeof($registros) == 0) {
+            return null;
+        }
         return $registros[0];
     }
     /**

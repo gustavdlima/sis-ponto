@@ -14,12 +14,19 @@ class LoginController extends Controller
         $registro = new RegistroController();
         $date = date('Y-m-d H:i:s');
 
-        // $registroArray = $registro->createRegistroArray($funcionario);
-        // $registroId = $registro->create($registroArray);
-        $registros = $registro->searchRegistros($funcionario[0]->id);
+        $registroFuncionario = $registro->getLastFuncionarioRegistro($funcionario[0]->id);
+        if ($registroFuncionario == null) {
+            $registroArray = $registro->createRegistroArray($funcionario);
+            $registroArray['primeiro_ponto'] = $date;
+            $registroId = $registro->create($registroArray);
+            return $registroId;
+        } else {
+            $ponto = $registro->checkWhichPonto($registroFuncionario);
+            return $ponto;
+
+        }
 
 
-        return $registros;
         // return $registroArray;
     }
 
