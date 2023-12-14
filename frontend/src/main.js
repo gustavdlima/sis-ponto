@@ -5,6 +5,8 @@ import router from './router/index.js'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { createPinia } from 'pinia'
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
 
 
 const pinia = createPinia()

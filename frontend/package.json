@@ -8,7 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.6.2",
+    "bootstrap": "^5.3.2",
     "illuminate": "^1.0.2",
     "pinia": "^2.1.7",
     "vue": "^3.3.4",
