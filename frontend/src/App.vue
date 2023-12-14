@@ -9,3 +9,9 @@ import { RouterLink } from 'vue-router';
 <template>
   <RouterView />
 </template>
+
+<style>
+#app {
+  
+}
+</style>
