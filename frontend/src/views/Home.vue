@@ -1,18 +1,18 @@
 <template>
-	<div class="mb-3 row w-25 p-3 bg-gradient m-1 d-flex align-items-center justify-content-center">
-		<div class="row w-75  d-flex align-items-center justify-content-center">
-			<img src="../assets/logo-funad-removebg-preview.png" class="img-fluid" alt="logo">
+	<div class="container">
+
+		<div class="row d-flex justify-content-center">
+			<img src="../assets/logo-funad-removebg-preview.png" class="img-fluid" style="max-width: 25vh;" alt="logo">
 		</div>
-		<div class = "row d-flex align-items-center justify-content-center w-100 m-1" >
+
+		<div class="row">
 			<RealTimeClock></RealTimeClock>
 		</div>
-		<div class="row w-100 p-3">
-			<router-link to="/login" tag="button" class="col btn btn-warning ">Login</router-link>
-			<router-link to="/cadastro" tag="button" class="btn btn-primary" m>Cadastro</router-link>
+
+		<div class="row d-flex justify-content-center">
+			<router-link to="/login" tag="button" class="col-5 col-sm-2 col-md-1 btn btn-warning m-2 d-flex justify-content-center">Login</router-link>
+			<router-link to="/cadastro" tag="button" class="col-5 col-sm-2 col-md-2 btn btn-primary m-2 d-flex justify-content-center">Cadastro</router-link>
 		</div>
-		<!-- <div v-for="funcionario in this.funcionarios">
-			{{ funcionario }}
-		</div> -->
 	</div>
 </template>
 
@@ -40,6 +40,5 @@ export default {
 		this.getFuncionarios();
 	}
 }
-
 
 </script>
