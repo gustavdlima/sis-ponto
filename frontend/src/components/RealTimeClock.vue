@@ -1,7 +1,9 @@
 <template>
 	<div class="container">
-		<span class="row">{{ currentTime.toLocaleTimeString() }}</span>
-		<span class="row"> {{ currentTime.toLocaleDateString() }}</span>
+		<div class="row d-flex justify-content-center">
+			<span class="col">{{ currentTime.toLocaleTimeString() }}</span>
+			<span class="col"> {{ currentTime.toLocaleDateString() }}</span>
+		</div>
 	</div>
 </template>
 
@@ -16,3 +18,24 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+
+span {
+	color: aliceblue;
+	font-weight: bold;
+}
+
+@media screen and (max-width: 576px) {
+  span {
+	font-size: 7vw;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  span {
+	font-size: 2vw;
+  }
+}
+
+</style>

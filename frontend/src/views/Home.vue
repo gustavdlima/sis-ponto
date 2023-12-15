@@ -1,17 +1,19 @@
 <template>
 	<div class="container">
-
-		<div class="row d-flex justify-content-center">
+		<div class="row-md-4 row-sm-12 d-flex justify-content-center">
 			<img src="../assets/logo-funad-removebg-preview.png" class="img-fluid" style="max-width: 25vh;" alt="logo">
 		</div>
-
-		<div class="row">
-			<RealTimeClock></RealTimeClock>
+		<div class="row-md-4 row-sm-12 d-flex justify-content-center">
+			<h1 style="color:aliceblue">e</h1>
+			<h1 style="color:aliceblue">Ponto</h1>
+		</div>
+		<div class="row-sm-12">
+			<RealTimeClock class="d-flex justify-content-center" ></RealTimeClock>
 		</div>
 
 		<div class="row d-flex justify-content-center">
-			<router-link to="/login" tag="button" class="col-5 col-sm-2 col-md-1 btn btn-warning m-2 d-flex justify-content-center">Login</router-link>
-			<router-link to="/cadastro" tag="button" class="col-5 col-sm-2 col-md-2 btn btn-primary m-2 d-flex justify-content-center">Cadastro</router-link>
+			<router-link to="/login" tag="button" class="col-5 col-sm-2 col-md-2 btn btn-primary m-2 d-flex justify-content-center text-white" >Login</router-link>
+			<router-link to="/cadastro" tag="button" class="col-5 col-sm-2 col-md-2 btn btn-warning m-2 d-flex justify-content-center" >Cadastro</router-link>
 		</div>
 	</div>
 </template>
@@ -42,3 +44,16 @@ export default {
 }
 
 </script>
+
+<style scoped>
+h1 {
+	color: aliceblue;
+	font-weight: bold;
+}
+
+h {
+	color: aliceblue;
+	font-weight: bold;
+}
+
+</style>
