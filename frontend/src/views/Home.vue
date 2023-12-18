@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="row-md-4 row-sm-12 d-flex justify-content-center">
-			<img src="../assets/logo-funad-removebg-preview.png" class="img-fluid" style="max-width: 25vh;" alt="logo">
+			<img src="../assets/logo-funad-sem-nome.png" class="img-fluid col" style="max-width: 15vh;" alt="logo">
 		</div>
 		<div class="row-md-4 row-sm-12 d-flex justify-content-center">
 			<h1 style="color:aliceblue">e</h1>
@@ -10,16 +10,22 @@
 		<div class="row-sm-12">
 			<RealTimeClock class="d-flex justify-content-center" ></RealTimeClock>
 		</div>
-
-		<div class="row d-flex justify-content-center">
-			<router-link to="/login" tag="button" class="col-5 col-sm-2 col-md-2 btn btn-primary m-2 d-flex justify-content-center text-white" >Login</router-link>
-			<router-link to="/cadastro" tag="button" class="col-5 col-sm-2 col-md-2 btn btn-warning m-2 d-flex justify-content-center" >Cadastro</router-link>
+		<div class="row-sm-12 d-flex justify-content-center">
+			<Login></Login>
+		</div>
+		<!-- <div class="row d-flex justify-content-center">
+			<router-link to="/login" tag="button" class="col-4 col-sm-2 col-md-2 btn border-white m-2 d-flex justify-content-center text-white" >Login</router-link>
+			<router-link to="/cadastro" tag="button" class="col-4 col-sm-2 col-md-2 btn border-white m-2 d-flex justify-content-center text-white" >Cadastro</router-link>
+		</div> -->
+		<div class="row d-flex justify-content-center fixed-bottom">
+			<img src="../assets/LogoGoverno.png" class="col img-fluid" style="max-width: 30vh;" alt="logo">
 		</div>
 	</div>
 </template>
 
 <script>
 import RealTimeClock from "../components/RealTimeClock.vue"
+import Login from "../components/Login.vue"
 
 export default {
 	name: "Home",
@@ -36,7 +42,8 @@ export default {
 		}
 	},
 	components: {
-		RealTimeClock: RealTimeClock
+		RealTimeClock: RealTimeClock,
+		Login: Login
 	},
 	created() {
 		this.getFuncionarios();
@@ -47,12 +54,7 @@ export default {
 
 <style scoped>
 h1 {
-	color: aliceblue;
-	font-weight: bold;
-}
-
-h {
-	color: aliceblue;
+	color: aliceblue !important;
 	font-weight: bold;
 }
 

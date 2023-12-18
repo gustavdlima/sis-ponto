@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="row d-flex justify-content-center">
-			<span class="col">{{ currentTime.toLocaleTimeString() }}</span>
+			<span class="col">{{ currentTime.toLocaleTimeString('pt-BR', HH_MM) }}</span>
 			<span class="col"> {{ currentTime.toLocaleDateString() }}</span>
 		</div>
 	</div>
@@ -28,13 +28,19 @@ span {
 
 @media screen and (max-width: 576px) {
   span {
-	font-size: 7vw;
+	font-size: 4vw;
   }
 }
 
 @media screen and (min-width: 992px) {
   span {
-	font-size: 2vw;
+	font-size: 1.8vw;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  span {
+	font-size: 1.4vw;
   }
 }
 

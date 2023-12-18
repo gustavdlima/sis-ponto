@@ -11,7 +11,5 @@ import { RouterLink } from 'vue-router';
 </template>
 
 <style>
-#app {
-  
-}
+
 </style>
