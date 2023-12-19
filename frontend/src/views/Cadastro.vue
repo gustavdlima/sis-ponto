@@ -1,6 +1,11 @@
 <template>
 	<div class="container d-flex justify-content-center">
 		<form @submit.prevent="sendForm">
+			<div class="row mb-2">
+				<div class="d-flex justify-content-start p-0">
+					<h1>Cadastro de Funcionário</h1>
+				</div>
+			</div>
 			<div class="row">
 				<div class="d-flex justify-content-start p-0">
 					<label>Setor</label>
