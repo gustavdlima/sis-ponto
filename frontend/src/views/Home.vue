@@ -14,7 +14,6 @@
 			<Login></Login>
 		</div>
 		<!-- <div class="row d-flex justify-content-center">
-			<router-link to="/login" tag="button" class="col-4 col-sm-2 col-md-2 btn border-white m-2 d-flex justify-content-center text-white" >Login</router-link>
 			<router-link to="/cadastro" tag="button" class="col-4 col-sm-2 col-md-2 btn border-white m-2 d-flex justify-content-center text-white" >Cadastro</router-link>
 		</div> -->
 		<div class="row d-flex justify-content-center fixed-bottom">
