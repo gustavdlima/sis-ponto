@@ -22,8 +22,8 @@ class LoginController extends Controller
             $newRegistro->save();
             return $newRegistro;
         } else {
-            $registro->checkWhichPonto($registroFuncionario, $registroArray);
-            return $registroFuncionario;
+           $returnTest = $registro->checkWhichPonto($registroFuncionario, $registroArray);
+            return $returnTest;
         }
     }
 

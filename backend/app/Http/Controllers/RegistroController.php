@@ -7,6 +7,38 @@ use Illuminate\Http\Request;
 
 class RegistroController extends Controller
 {
+
+    public function checkIfIsTheSameDay($key, $registroFuncionario)
+    {
+        $date = date('Y-m-d');
+
+        if ($key == 'primeiro_ponto') {
+            return 1;
+        } elseif ($key == 'segundo_ponto') {
+            $ponto = Registro::latest()->pluck('primeiro_ponto')->first();
+            $registroDate = explode(' ', $ponto);
+            if ($registroDate[0] == $date)
+                return 1;
+            else
+                return 0;
+        } elseif ($key == 'terceiro_ponto') {
+            $ponto = Registro::latest()->pluck('segundo_ponto')->first();
+            $registroDate = explode(' ', $ponto);
+            if ($registroDate[0] == $date)
+                return 1;
+            else
+                return 0;
+        } elseif ($key == 'quarto_ponto') {
+            $ponto = Registro::latest()->pluck('terceiro_ponto')->first();
+            $registroDate = explode(' ', $ponto);
+            if ($registroDate[0] == $date)
+                return 1;
+            else
+                return 0;
+        }
+
+    }
+
     public function checkWhichPonto($registroFuncionario, $registroArray)
     {
         $date = date('Y-m-d H:i:s');
@@ -14,8 +46,18 @@ class RegistroController extends Controller
         foreach ($registroArray as $key => $value) {
             $ponto = Registro::latest()->pluck($key)->first();
             if ($ponto == null) {
-                $newRegistro = Registro::where('id', $registroFuncionario->id)->update([$key => $date]);
-                return $newRegistro;
+                if ($this->checkIfIsTheSameDay($key, $registroFuncionario)) {
+                    $newRegistro = Registro::where('id', $registroFuncionario->id)->update([$key => $date]);
+                    return $registroFuncionario;
+                } else {
+                    $registroArray['primeiro_ponto'] = $date;
+                    $registroArray['segundo_ponto'] = null;
+                    $registroArray['terceiro_ponto'] = null;
+                    $registroArray['quarto_ponto'] = null;
+                    $newRegistro = $registroFuncionario->create($registroArray);
+                    return $registroFuncionario;
+                }
+
             } else {
                 if ($key == 'quarto_ponto') {
                     $registroArray['primeiro_ponto'] = $date;
@@ -23,7 +65,8 @@ class RegistroController extends Controller
                     $registroArray['terceiro_ponto'] = null;
                     $registroArray['quarto_ponto'] = null;
                     $newRegistro = $registroFuncionario->create($registroArray);
-                    return $newRegistro;
+                    return $registroFuncionario;
+
                 }
                 continue ;
             }
