@@ -2,7 +2,7 @@
 	<div class="container d-flex justify-content-center">
 		<form @submit.prevent="sendForm">
 			<div class="row mb-2">
-				<div class="d-flex justify-content-start p-0">
+				<div class="d-flex justify-content-start p-0 ">
 					<h1>Cadastro de Funcionário</h1>
 				</div>
 			</div>
@@ -51,9 +51,18 @@
 				<label for="nome" class="d-flex justify-content-start p-0">Nome</label>
 				<input type="text" v-model="data.nome" name="nome" class=" text-white border-white form-control mb-1"/>
 			</div>
-			<div class="row ">
+			<div class="row">
 				<label for="matricula" class="d-flex justify-content-start p-0 ">Matricula</label>
 				<input type="text" v-model="data.matricula" name="matricula" class=" text-white border-white form-control mb-1 w-50"/>
+			</div>
+			<div class="row">
+				<label for="nivel" class="d-flex justify-content-start p-0 ">Nível</label>
+				<select v-model="data.nivel" name="nivel" class=" border-white form-control mb-1 w-50">
+					<option disabled value=""></option>"
+					<option value="1">Nível 1 [Administrador]</option>
+					<option value="2">Nível 2 [Servidor]</option>
+					<option value="3">Nível 3 [Funcionário]</option>
+				</select><br>
 			</div>
 			<div class="row">
 				<label for="dataNascimento" class="d-flex justify-content-start p-0">Data de Nascimento</label>
@@ -86,6 +95,8 @@ export default {
 			data: {
 				nome: "",
 				setor: "",
+				nivel: "",
+				horario: "",
 				matricula: "",
 				data_nascimento: "",
 				id_horario: "",
@@ -96,10 +107,11 @@ export default {
 	},
 	methods: {
 		sendForm() {
-			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "" || this.data.horario == "") {
+			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "" || this.data.horario == "" || this.data.nivel == "") {
 				console.log(this.data)
 				console.log("Preencha todos os campos");
 			} else {
+				console.log(this.data);
 				this.$http.post("http://localhost:8000/api/cadastro", this.data)
 				.then(function (response) {
 					console.log(response);

@@ -13,6 +13,7 @@ class Funcionario extends Model
         'nome',
         'setor',
         'matricula',
+        'nivel',
         'data_nascimento',
         'id_horario',
     ];
