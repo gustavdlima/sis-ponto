@@ -22,8 +22,7 @@ class LoginController extends Controller
             $newRegistro->save();
             return $newRegistro;
         } else {
-           $returnTest = $registro->checkWhichPonto($registroFuncionario, $registroArray);
-            return $returnTest;
+           return $registro->checkWhichPonto($registroFuncionario, $registroArray);
         }
     }
 
@@ -33,8 +32,7 @@ class LoginController extends Controller
         $funcionario = Db::select('select * from funcionarios where matricula = ? and data_nascimento = ?', [$request->matricula, $request->data_nascimento]);
 
         if ($funcionario != null) {
-            $teste = $this->register($funcionario);
-            return $teste;
+            return $this->register($funcionario);
         } else {
             return response()->json([
                 'message' => 'Funcionário não encontrado',
