@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="row d-flex justify-content-center">
-			<span class="col">{{ currentTime.toLocaleTimeString('pt-BR', HH_MM) }}</span>
+			<span class="col">{{ currentTime.toLocaleTimeString('pt-BR') }}</span>
 			<span class="col"> {{ currentTime.toLocaleDateString() }}</span>
 		</div>
 	</div>
