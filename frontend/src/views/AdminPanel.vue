@@ -14,7 +14,7 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				<DataTable :columns="columns" class="display">
+				<DataTable :data="funcionarios" :columns="columns" class="display">
 					<thead>
 						<tr>
 						</tr>
@@ -25,20 +25,40 @@
 	</div>
 </template>
 
-<script setup>
+<script>
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
 
 DataTable.use(DataTablesCore, { responsive: true });
 
-const columns = [
-	{ data: 'name' },
-	{ data: 'position' },
-	{ data: 'office' },
-	{ data: 'extn' },
-	{ data: 'start_date' },
-	{ data: 'salary' },
-];
+export default {
+	name: "AdminPanel",
+	components: {
+		DataTable: DataTable,
+	},
+	data() {
+		return {
+			funcionarios: null,
+			columns:[
+				{data:null, render: function(data, type, row, meta)
+				{return `${meta.row}`}},
+				{data:'nome'},
+				{data:'matricula'},
+				{data:'data_nascimento'},
+			]
+		}
+	},
+	methods: {
+		async getFuncionarios() {
+			const response = await this.$http.get('http://localhost:8000/api/funcionario');
+			this.funcionarios = response.data;
+			console.log(this.funcionarios);
+		}
+	},
+	mounted() {
+		this.getFuncionarios();
+	}
+}
 
 </script>
 

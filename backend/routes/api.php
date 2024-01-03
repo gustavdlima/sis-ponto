@@ -22,7 +22,7 @@ use App\Models\Funcionario;
 //     return $request->user();
 // });
 
-Route::resource('/funcionario', FuncionarioController::class);
+Route::resource('/funcionario', FuncionarioController::class)->only(['index', 'store', 'update', 'destroy']);
 
 Route::post('/login', [LoginController::class, 'check']);
 
