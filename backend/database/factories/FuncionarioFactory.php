@@ -17,9 +17,13 @@ class FuncionarioFactory extends Factory
     public function definition(): array
     {
         return [
+            'nome' => $this->faker->word,
             'setor' => $this->faker->word,
             'matricula' => $this->faker->word,
-            'data_nascimento' => $this->faker->date
+            'nivel' => $this->faker->numberBetween(1 , 3),
+            'data_nascimento' => $this->faker->date,
+            'id_horario' => $this->faker->numberBetween(1 , 10),
+
         ];
     }
 }
