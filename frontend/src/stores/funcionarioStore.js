@@ -4,22 +4,24 @@ export const useFuncionarioStore = defineStore('funcionarios', {
 	// state
 	state: () => {
 		return {
-			funcionarios: [],
+			funcionario: [{
+				nivel: Number,
+			}]
 		}
 	},
 
 	// actions
 	actions: {
-		setFuncionario(funcionario) {
-			console.log("funcionario dentro do pinia: ", funcionario);
-			this.funcionarios.push(funcionario)
+		addFuncionarioNivel(nivel) {
+			this.funcionario[0].nivel = nivel;
+			console.log(this.funcionario);
 		}
 	},
 
 	// getters
 	getters: {
 		getFuncionarios() {
-			return this.funcionarios
+			return this.funcionario
 		},
 	},
 })

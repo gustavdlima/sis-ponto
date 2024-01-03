@@ -34,18 +34,18 @@ export default {
 		}
 	},
 	methods: {
-		async getFuncionarios(resource) {
-			const response = await this.$http.get('http://localhost:8000/api/funcionario');
-			this.funcionarios = response.data;
-			console.log(this.funcionarios);
-		}
+		// async getFuncionarios(resource) {
+		// 	const response = await this.$http.get('http://localhost:8000/api/funcionario');
+		// 	this.funcionarios = response.data;
+		// 	console.log(this.funcionarios);
+		// }
 	},
 	components: {
 		RealTimeClock: RealTimeClock,
 		Login: Login
 	},
 	created() {
-		this.getFuncionarios();
+		// this.getFuncionarios();
 	}
 }
 

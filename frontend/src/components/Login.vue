@@ -11,7 +11,7 @@
           </div>
         </div>
       <div class="row-md-1 row-sm-12 d-flex justify-content-center">
-        <button type="submit" @click="onClick()"
+        <button type="submit"
           class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white"
           v-on:click.prevent="login()">Bater Ponto</button>
       </div>
@@ -20,6 +20,9 @@
 </template>
 
 <script>
+import { useFuncionarioStore } from '../stores/funcionarioStore';
+
+const funcionarioStore = useFuncionarioStore();
 
 export default {
   name: 'Login',
@@ -40,17 +43,14 @@ export default {
 
       if (this.input.matricula != "" || this.input.data_nascimento != "" || this.input.data_ponto != "") {
         this.$http.post("http://localhost:8000/api/login", this.input)
-          .then((response) => {
-            if (response.data) {
-              if (response.data.length) {
-                console.log("User: ", response.data);
-                console.log("Current Time: ", currentTime.toLocaleTimeString());
-                console.log("Current Date", currentTime.toLocaleDateString());
-
-              } else {
+        .then((response) => {
+          const responseString = response.data.toString();
+          if (responseString.length == 1) {
+            funcionarioStore.addFuncionarioNivel(parseInt(responseString));
+            alert("Ponto batido!");
+            } else {
                 alert("Matrícula ou Data de Nascimento errada");
               }
-            }
           })
           .catch(function (err) {
             console.log(err);
@@ -58,6 +58,10 @@ export default {
       } else {
         console.log("Complete os campos de obrigatórios")
       }
+    },
+
+    addFuncionarioToStore() {
+      console.log(funcionarioStore);
     },
 
     onClick() {

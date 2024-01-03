@@ -16,13 +16,14 @@ class LoginController extends Controller
         $registroArray = $registro->createRegistroArray($funcionario);
 
         $registroFuncionario = $registro->getLastFuncionarioRegistro($funcionario[0]->id);
+
         if ($registroFuncionario == null) {
             $registroArray['primeiro_ponto'] = $date;
             $newRegistro = $registro->create($registroArray);
             $newRegistro->save();
-            return $newRegistro;
+            // return $newRegistro;
         } else {
-           return $registro->checkWhichPonto($registroFuncionario, $registroArray);
+          $registro->checkWhichPonto($registroFuncionario, $registroArray);
         }
     }
 
@@ -32,7 +33,9 @@ class LoginController extends Controller
         $funcionario = Db::select('select * from funcionarios where matricula = ? and data_nascimento = ?', [$request->matricula, $request->data_nascimento]);
 
         if ($funcionario != null) {
-            return $this->register($funcionario);
+            $this->register($funcionario);
+            return $funcionario[0]->nivel;
+            // return $funcionario;
         } else {
             return response()->json([
                 'message' => 'Funcionário não encontrado',
