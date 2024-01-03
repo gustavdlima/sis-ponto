@@ -14,12 +14,34 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-
+				<DataTable :columns="columns" class="display">
+					<thead>
+						<tr>
+						</tr>
+					</thead>
+				</DataTable>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net';
+
+DataTable.use(DataTablesCore, { responsive: true });
+
+const columns = [
+	{ data: 'name' },
+	{ data: 'position' },
+	{ data: 'office' },
+	{ data: 'extn' },
+	{ data: 'start_date' },
+	{ data: 'salary' },
+];
 
 </script>
+
+<style>
+@import 'datatables.net-dt';
+</style>
