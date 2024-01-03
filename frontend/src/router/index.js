@@ -15,6 +15,11 @@ const routes = [
 		path: '/baterponto',
 		name: 'BaterPonto',
 		component: () => import('../views/BaterPonto.vue')
+	},
+	{
+		path: '/admin',
+		name: 'Admin',
+		component: () => import('../views/AdminDashboard.vue')
 	}
 ]
 
