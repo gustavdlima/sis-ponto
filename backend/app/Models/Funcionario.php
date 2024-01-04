@@ -32,7 +32,7 @@ class Funcionario extends Model
         'cep',
         'estado_civil',
         'email',
-        'id_cargo'
+        'id_cargo',
         'id_horario',
     ];
 }
