@@ -4,8 +4,8 @@
 			<img src="../assets/logo-funad-sem-nome.png" class="img-fluid col" style="max-width: 15vh;" alt="logo">
 		</div>
 		<div class="row-md-4 row-sm-12 d-flex justify-content-center">
-			<h1 style="color:aliceblue">e</h1>
-			<h1 style="color:aliceblue">Ponto</h1>
+			<h1>e</h1>
+			<h1>Ponto</h1>
 		</div>
 		<div class="row-sm-12">
 			<RealTimeClock class="d-flex justify-content-center" ></RealTimeClock>
