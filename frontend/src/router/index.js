@@ -9,7 +9,7 @@ const routes = [
 	{
 		path: '/cadastro',
 		name: 'Cadastro',
-		component: () => import('../views/Cadastro.vue')
+		component: () => import('../views/CadastroFuncionario.vue')
 	},
 	{
 		path: '/baterponto',
@@ -20,6 +20,11 @@ const routes = [
 		path: '/admin',
 		name: 'Admin',
 		component: () => import('../views/AdminPanel.vue')
+	},
+	{
+		path: '/listarfuncionarios',
+		name: 'Funcionarios',
+		component: () => import('../views/ListarFuncionarios.vue')
 	}
 ]
 
