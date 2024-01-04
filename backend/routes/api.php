@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\FuncionarioController;
-use App\Models\Funcionario;
+use App\Http\Controllers\CargoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,12 @@ use App\Models\Funcionario;
 // });
 
 Route::resource('/funcionario', FuncionarioController::class)->only(['index', 'store', 'update', 'destroy']);
+
+Route::resource('/cargo', CargoController::class)->only(['index', 'create', 'show', 'store']);
+
+// Route::get('/cargo', CargoController::class, 'index');
+// Route::post('/cargo', CargoController::class, 'create');
+// Route::get('/cargo/{$id}', CargoController::class, 'show');
 
 Route::post('/login', [LoginController::class, 'check']);
 
