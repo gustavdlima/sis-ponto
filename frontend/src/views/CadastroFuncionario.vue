@@ -7,7 +7,7 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-
+				<FormCadastro></FormCadastro>
 			</div>
 		</div>
 	</div>
@@ -15,27 +15,12 @@
 
 <script>
 import SideBar from '../components/SideBar.vue';
+import FormCadastro from '../components/FormCadastro.vue';
 
 export default {
-	name: "AdminPanel",
 	components: {
-		SideBar: SideBar,
-	},
-	data() {
-		return {
-
-		}
-	},
-	methods: {
-
-	},
-	mounted() {
-
+		SideBar,
+		FormCadastro
 	}
 }
-
 </script>
-
-<style>
-
-</style>
