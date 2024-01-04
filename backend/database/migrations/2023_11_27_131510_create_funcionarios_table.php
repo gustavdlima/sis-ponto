@@ -18,6 +18,23 @@ return new class extends Migration
             $table->string('matricula');
             $table->integer('nivel');
             $table->date('data_nascimento')->nullable();
+            $table->string('rg');
+            $table->string('cpf');
+            $table->string('pis_pasep');
+            $table->string('titulo_eleitor');
+            $table->string('cartao_sus')->nullable();
+            $table->string('mae');
+            $table->string('pai');
+            $table->string('celular');
+            $table->string('bairro');
+            $table->string('rua');
+            $table->string('numero');
+            $table->string('cidade');
+            $table->string('uf');
+            $table->string('cep');
+            $table->string('estado_civil');
+            $table->string('email');
+            $table->string('id_cargo')->nullable();
             $table->bigInteger('id_horario')->nullable();
             $table->timestamps();
         });
@@ -32,7 +49,24 @@ return new class extends Migration
             'nome',
             'setor',
             'matricula',
+            'nivel',
             'data_nascimento',
+            'rg',
+            'cpf',
+            'pis_pasep',
+            'titulo_eleitor',
+            'cartao_sus',
+            'mae',
+            'pai',
+            'celular',
+            'bairro',
+            'rua',
+            'numero',
+            'cidade',
+            'uf',
+            'cep',
+            'estado_civil',
+            'id_cargo',
             'id_horario',
         ]);
     }
