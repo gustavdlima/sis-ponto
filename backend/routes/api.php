@@ -24,7 +24,7 @@ use App\Http\Controllers\CargoController;
 
 Route::resource('/funcionario', FuncionarioController::class)->only(['index', 'store', 'update', 'destroy']);
 
-Route::resource('/cargo', CargoController::class)->only(['index', 'create', 'show', 'store']);
+Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store']);
 
 // Route::get('/cargo', CargoController::class, 'index');
 // Route::post('/cargo', CargoController::class, 'create');
