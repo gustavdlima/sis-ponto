@@ -75,16 +75,20 @@
 					<label>Horário</label>
 				</div>
 				<select v-model="data.horario" name="horario" class=" border-white form-control mb-1">
-					<option disabled value=""></option>"
+					<option disabled value=""></option>
 					<option value="horario1">07h - 11h - 12h - 16h</option>
 					<option value="horario2">07:30h - 11:30h - 12:30h - 16:30h</option>
 					<option value="horario3">8h - 12h - 13h - 17h</option>
 				</select><br>
 			</div>
 			<div class="row">
-				<select class="form-control" :required="true">
-					<option v-for="cargo in cargos" v-bind:value="cargo.id"
-						:selected="cargo == '<the default value you want>'">{{ cargo }}</option>
+				<div class=" d-flex justify-content-start p-0">
+					<label>Cargo</label>
+				</div>
+				<select class="border-white form-control mb-1" :required="true">
+					<option disabled value=""></option>
+					<option v-for="cargo in cargos" v-bind:value="cargo.id">
+						{{ cargo }}</option>
 				</select>
 			</div>
 			<div class="row d-flex justify-content-center">
@@ -134,8 +138,6 @@ export default {
 		},
 
 	},
-	onMounted() {
-	}
 }
 </script>
 
