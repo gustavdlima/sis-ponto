@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('titulo_eleitor');
             $table->string('cartao_sus')->nullable();
             $table->string('mae');
-            $table->string('pai');
-            $table->string('celular');
+            $table->string('pai')->nullable();
+            $table->string('celular')->nullable();
             $table->string('bairro');
             $table->string('rua');
             $table->string('numero');
