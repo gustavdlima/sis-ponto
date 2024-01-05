@@ -7,7 +7,7 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				<FormCadastro></FormCadastro>
+				<FormCadastro :cargos="cargos"></FormCadastro>
 			</div>
 		</div>
 	</div>
@@ -21,6 +21,29 @@ export default {
 	components: {
 		SideBar,
 		FormCadastro
+	},
+	props: {
+		cargos: Array,
+	},
+	data() {
+		return {
+			cargos: []
+		}
+	},
+	methods: {
+		getCargos() {
+			this.$http.get("http://localhost:8000/api/cargos")
+				.then(response => {
+					this.cargos = response.data;
+					console.log(this.cargos);
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		}
+	},
+	mounted() {
+		this.getCargos();
 	}
 }
 </script>

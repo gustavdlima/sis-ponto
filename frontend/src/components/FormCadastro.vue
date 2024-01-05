@@ -49,11 +49,12 @@
 			</div>
 			<div class="row">
 				<label for="nome" class="d-flex justify-content-start p-0">Nome</label>
-				<input type="text" v-model="data.nome" name="nome" class=" text-white border-white form-control mb-1"/>
+				<input type="text" v-model="data.nome" name="nome" class=" text-white border-white form-control mb-1" />
 			</div>
 			<div class="row">
 				<label for="matricula" class="d-flex justify-content-start p-0 ">Matricula</label>
-				<input type="text" v-model="data.matricula" name="matricula" class=" text-white border-white form-control mb-1 w-50"/>
+				<input type="text" v-model="data.matricula" name="matricula"
+					class=" text-white border-white form-control mb-1 w-50" />
 			</div>
 			<div class="row">
 				<label for="nivel" class="d-flex justify-content-start p-0 ">Nível</label>
@@ -66,7 +67,8 @@
 			</div>
 			<div class="row">
 				<label for="dataNascimento" class="d-flex justify-content-start p-0">Data de Nascimento</label>
-				<input type="date" v-model="data.data_nascimento" name="dataNascimento" class="border-white form-control mb-1 w-50"/>
+				<input type="date" v-model="data.data_nascimento" name="dataNascimento"
+					class="border-white form-control mb-1 w-50" />
 			</div>
 			<div class="row">
 				<div class="d-flex justify-content-start p-0">
@@ -79,17 +81,25 @@
 					<option value="horario3">8h - 12h - 13h - 17h</option>
 				</select><br>
 			</div>
+			<div class="row">
+				<select class="form-control" :required="true">
+					<option v-for="cargo in cargos" v-bind:value="cargo.id"
+						:selected="cargo == '<the default value you want>'">{{ cargo }}</option>
+				</select>
+			</div>
 			<div class="row d-flex justify-content-center">
-				<button type="submit" class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white w-50" >Cadastrar</button>
+				<button type="submit"
+					class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white w-50">Cadastrar</button>
 			</div>
 		</form>
 	</div>
 </template>
 
 <script>
+import { ref } from "vue";
 
 export default {
-	name: "Cadastrar",
+	name: "FormCadastro",
 	data() {
 		return {
 			data: {
@@ -103,7 +113,8 @@ export default {
 			}
 		}
 	},
-	created() {
+	props: {
+		cargos: Array,
 	},
 	methods: {
 		sendForm() {
@@ -113,22 +124,24 @@ export default {
 			} else {
 				console.log(this.data);
 				this.$http.post("http://localhost:8000/api/cadastro", this.data)
-				.then(function (response) {
-					console.log(response);
-				})
-				.catch(function (error) {
-					console.log(error.response.data);
-				});
+					.then(function (response) {
+						console.log(response);
+					})
+					.catch(function (error) {
+						console.log(error.response.data);
+					});
 			}
-		}
+		},
+
 	},
+	onMounted() {
+	}
 }
 </script>
 
 <style scoped>
-
 button:hover {
-  background-color: rgb(0, 140, 255);
+	background-color: rgb(0, 140, 255);
 }
 
 label {
@@ -137,7 +150,8 @@ label {
 	font-weight: bold !important;
 }
 
-input, select {
+input,
+select {
 	font-size: 2.5vh;
 	color: aliceblue !important;
 	font-weight: bold !important;
