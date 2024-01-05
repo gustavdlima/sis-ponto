@@ -7,15 +7,15 @@ use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
-    public function getJustCargoColumn() {
-        $cargos = DB::select('select cargo from cargos');
-        return json_decode($cargos, true);
+    public function getArrayOfCargoValues() {
+        $cargos = DB::table('cargos')->pluck('cargo');
+        return $cargos;
     }
 
     public function index()
     {
         // $cargos = DB::select('select * from cargos');
-        return $this->getJustCargoColumn();
+        return $this->getArrayOfCargoValues();
     }
 
     public function store(Request $request)
