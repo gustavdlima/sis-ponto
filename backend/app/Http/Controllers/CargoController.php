@@ -7,14 +7,11 @@ use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
-    public function getArrayOfCargoValues() {
-        $cargos = DB::table('cargos')->pluck('cargo');
-        return $cargos;
-    }
 
     public function index()
     {
-        return $this->getArrayOfCargoValues();
+        $cargos = DB::select('select * from cargos');
+        return $cargos;
     }
 
     public function store(Request $request)

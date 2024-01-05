@@ -35,7 +35,7 @@ class CadastroController extends Controller
         $input = $request->all();
 
         $horario = new HorarioController();
-        $horarioJson = $horario->setHorario($input['horario']);
+        $horarioJson = $horario->setHorario($input['id_horario']);
         $horarioId = $horario->create($horarioJson);
 
         $funcionario = new FuncionarioController();

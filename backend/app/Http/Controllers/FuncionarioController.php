@@ -22,7 +22,9 @@ class FuncionarioController extends Controller
      */
     public function create($input)
     {
-
+        $data = json_decode($input, true);
+        $id = Funcionario::create($data);
+        return $id;
     }
 
     /**
@@ -30,9 +32,9 @@ class FuncionarioController extends Controller
      */
     public function store(Request $request)
     {
-        $data = json_decode($request, true);
-        $id = Funcionario::create($data);
-        return $id;
+        // $data = json_decode($request, true);
+        // $id = Funcionario::create($data);
+        // return $id;
     }
 
     /**

@@ -74,21 +74,20 @@
 				<div class="d-flex justify-content-start p-0">
 					<label>Horário</label>
 				</div>
-				<select v-model="data.horario" name="horario" class=" border-white form-control mb-1">
+				<select v-model="data.id_horario" name="horario" class=" border-white form-control mb-1">
 					<option disabled value=""></option>
-					<option value="horario1">07h - 11h - 12h - 16h</option>
-					<option value="horario2">07:30h - 11:30h - 12:30h - 16:30h</option>
-					<option value="horario3">8h - 12h - 13h - 17h</option>
+					<option v-for="horario in horarios" v-bind:value="horario.id">
+						{{ horario.horario_entrada }} - {{ horario.horario_ida_intervalo }} - {{ horario.horario_volta_intervalo }} -{{ horario.horario_saida }}</option>
 				</select><br>
 			</div>
 			<div class="row">
 				<div class=" d-flex justify-content-start p-0">
 					<label>Cargo</label>
 				</div>
-				<select class="border-white form-control mb-1" :required="true">
+				<select v-model="data.id_cargo" class="border-white form-control mb-1">
 					<option disabled value=""></option>
 					<option v-for="cargo in cargos" v-bind:value="cargo.id">
-						{{ cargo }}</option>
+						{{ cargo.cargo }}</option>
 				</select>
 			</div>
 			<div class="row d-flex justify-content-center">
@@ -100,7 +99,6 @@
 </template>
 
 <script>
-import { ref } from "vue";
 
 export default {
 	name: "FormCadastro",
@@ -113,12 +111,14 @@ export default {
 				horario: "",
 				matricula: "",
 				data_nascimento: "",
+				id_cargo: "",
 				id_horario: "",
 			}
 		}
 	},
 	props: {
 		cargos: Array,
+		horarios: Array
 	},
 	methods: {
 		sendForm() {
@@ -126,10 +126,9 @@ export default {
 				console.log(this.data)
 				console.log("Preencha todos os campos");
 			} else {
-				console.log(this.data);
 				this.$http.post("http://localhost:8000/api/cadastro", this.data)
 					.then(function (response) {
-						console.log(response);
+						console.log(response.data);
 					})
 					.catch(function (error) {
 						console.log(error.response.data);

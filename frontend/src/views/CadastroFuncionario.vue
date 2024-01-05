@@ -7,7 +7,7 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				<FormCadastro :cargos="cargos"></FormCadastro>
+				<FormCadastro :cargos="cargos" :horarios="horarios"></FormCadastro>
 			</div>
 		</div>
 	</div>
@@ -24,10 +24,12 @@ export default {
 	},
 	props: {
 		cargos: Array,
+		horarios: Array
 	},
 	data() {
 		return {
-			cargos: []
+			cargos: [],
+			horarios: []
 		}
 	},
 	methods: {
@@ -40,10 +42,22 @@ export default {
 				.catch(error => {
 					console.log(error);
 				});
+		},
+
+		getHorarios() {
+			this.$http.get("http://localhost:8000/api/horarios")
+				.then(response => {
+					this.horarios = response.data;
+					console.log(this.horarios);
+				})
+				.catch(error => {
+					console.log(error);
+				});
 		}
 	},
 	mounted() {
 		this.getCargos();
+		this.getHorarios();
 	}
 }
 </script>

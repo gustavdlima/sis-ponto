@@ -98,6 +98,8 @@ class RegistroController extends Controller
         return $registroArray;
     }
 
+    
+
     /**
      * Show the form for creating a new resource.
      */
