@@ -14,7 +14,6 @@ class CargoController extends Controller
 
     public function index()
     {
-        // $cargos = DB::select('select * from cargos');
         return $this->getArrayOfCargoValues();
     }
 
