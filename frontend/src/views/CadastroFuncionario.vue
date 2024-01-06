@@ -37,7 +37,6 @@ export default {
 			this.$http.get("http://localhost:8000/api/cargos")
 				.then(response => {
 					this.cargos = response.data;
-					console.log(this.cargos);
 				})
 				.catch(error => {
 					console.log(error);
@@ -48,7 +47,6 @@ export default {
 			this.$http.get("http://localhost:8000/api/horarios")
 				.then(response => {
 					this.horarios = response.data;
-					console.log(this.horarios);
 				})
 				.catch(error => {
 					console.log(error);
