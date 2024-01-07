@@ -20,11 +20,10 @@ class FuncionarioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($input)
+    public function create($data)
     {
-        $data = json_decode($input, true);
-        $id = Funcionario::create($data);
-        return $id;
+        $funcionario = Funcionario::create($data);
+        return $funcionario;
     }
 
     /**
@@ -32,9 +31,32 @@ class FuncionarioController extends Controller
      */
     public function store(Request $request)
     {
-        // $data = json_decode($request, true);
-        // $id = Funcionario::create($data);
-        // return $id;
+        $validated = $request->validate([
+            'nome' => 'required|string|max:255',
+            'setor' => 'required|string',
+            'nivel' => 'required|string',
+            'matricula' => 'required|string',
+            'data_nascimento' => 'required|date',
+            'rg' => 'required|string',
+            'cpf' => 'required|string',
+            'pis_pasep' => 'required|string',
+            'titulo_eleitor' => 'required|string',
+            'mae' => 'required|string|max:255',
+            'bairro' => 'required|string|max:255',
+            'rua' => 'required|string|max:255',
+            'numero' => 'required|string|max:255',
+            'cidade' => 'required|string|max:255',
+            'uf' => 'required|string|max:255',
+            'cep' => 'required|string|max:255',
+            'estado_civil' => 'required|string|max:255',
+            'celular' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+        ]);
+
+
+        $funcionario = Funcionario::create($request->all());
+        return $funcionario;
+
     }
 
     /**
@@ -49,24 +71,57 @@ class FuncionarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Funcionario $funcionario)
+    public function edit($id)
     {
-        //
+        $funcionario = Funcionario::findOrFail($id);
+        return redirect()->route('funcionarios.index');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Funcionario $funcionario)
+    public function update($request, $id)
     {
-        //
-    }
+        $funcionario = Funcionario::findOrFail($id);
 
+        $validated = $request->validate([
+            'nome' => 'required|string|max:255',
+            'setor' => 'required|string',
+            'nivel' => 'required|string',
+            'matricula' => 'required|string',
+            'data_nascimento' => 'required|date',
+            'rg' => 'required|string',
+            'cpf' => 'required|string',
+            'pis_pasep' => 'required|string',
+            'titulo_eleitor' => 'required|string',
+            'cartao_sus' => 'string',
+            'mae' => 'required|string|max:255',
+            'pai' => 'string|max:255',
+            'bairro' => 'required|string|max:255',
+            'rua' => 'required|string|max:255',
+            'numero' => 'required|string|max:255',
+            'cidade' => 'required|string|max:255',
+            'uf' => 'required|string|max:255',
+            'cep' => 'required|string|max:255',
+            'estado_civil' => 'required|string|max:255',
+            'celular' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'id_cargo' => 'string|max:255',
+            'id_horario' => 'string|max:255',
+        ]);
+
+        $funcionario->update($validated);
+
+        return redirect()->route('funcionarios.index');
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Funcionario $funcionario)
     {
-        //
+        $funcionario = Funcionario::findOrFail($id);
+        $funcionario->delete();
+
+        return redirect()->route('funcionarios.index');
     }
 }
