@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('setor');
             $table->string('matricula');
-            $table->integer('nivel');
+            $table->string('nivel');
             $table->date('data_nascimento')->nullable();
             $table->string('rg');
             $table->string('cpf');
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('estado_civil');
             $table->string('email');
             $table->string('id_cargo')->nullable();
-            $table->bigInteger('id_horario')->nullable();
+            $table->string('id_horario')->nullable();
             $table->timestamps();
         });
     }
