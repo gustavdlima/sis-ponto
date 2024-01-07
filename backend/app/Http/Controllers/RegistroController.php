@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class RegistroController extends Controller
 {
 
-    public function checkIfIsTheSameDay($key, $registroFuncionario)
+    public function checkIfTheRegistroWasCreatedOnTheSameDay($key, $registroFuncionario)
     {
         $date = date('Y-m-d');
 
@@ -46,7 +46,7 @@ class RegistroController extends Controller
         foreach ($registroArray as $key => $value) {
             $ponto = Registro::latest()->pluck($key)->first();
             if ($ponto == null) {
-                if ($this->checkIfIsTheSameDay($key, $registroFuncionario)) {
+                if ($this->check($key, $registroFuncionario)) {
                     $newRegistro = Registro::where('id', $registroFuncionario->id)->update([$key => $date]);
                     return $registroFuncionario;
                 } else {
@@ -98,14 +98,13 @@ class RegistroController extends Controller
         return $registroArray;
     }
 
-    
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create($registroJson)
     {
-        // $registro = json_decode($registroJson, true);
         $id = Registro::create($registroJson);
         return $id;
     }
@@ -115,7 +114,12 @@ class RegistroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validação
+        
+
+        // criar o registro
+        $registro = Registro::create($request->all());
+        return $registro;
     }
 
     /**
