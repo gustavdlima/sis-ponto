@@ -27,7 +27,7 @@ Route::resource('/funcionarios', FuncionarioController::class)->only(['index', '
 
 Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store']);
 
-Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store']);
+Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy']);
 
 // Route::get('/cargo', CargoController::class, 'index');
 // Route::post('/cargo', CargoController::class, 'create');
