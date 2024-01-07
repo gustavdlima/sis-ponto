@@ -20,9 +20,9 @@ class HorarioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($input)
+    public function create($data)
     {
-        $horario = Horario::create($input);
+        $horario = Horario::create($data);
         return $horario;
     }
 
@@ -61,7 +61,7 @@ class HorarioController extends Controller
     public function edit($id)
     {
         $horario = Horario::findOrFail($id);
-        return $horario;
+        return redirect()->route('horarios.index');
     }
 
     /**
