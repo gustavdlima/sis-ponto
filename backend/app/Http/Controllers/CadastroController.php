@@ -11,73 +11,11 @@ use Hash;
 
 class CadastroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $input = $request->all();
-
-        $horario = new HorarioController();
-        $horarioJson = $horario->setHorario($input['id_horario']);
-        $horarioId = $horario->create($horarioJson);
-
         $funcionario = new FuncionarioController();
-        $input['id_horario'] = $horarioId->id;
-        $input['nivel'] = intval($input['nivel']);
-        $input = json_encode($input);
-        $funcionarioId = $funcionario->create($input);
+        $funcionario = $funcionario->store($request);
 
-        // return $horarioJson;
-        // return $funcionario;
-        return response()->json(['message' => 'Funcionário criado com sucesso!', 'funcionarioId' => $funcionarioId->id]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json(['message' => 'Funcionário criado com sucesso!', 'funcionarioId' => $funcionario]);
     }
 }
