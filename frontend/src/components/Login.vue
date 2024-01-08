@@ -49,8 +49,9 @@ export default {
             funcionarioStore.addFuncionarioNivel(parseInt(responseString));
             if (parseInt(responseString) < 3) {
               this.$router.push({ path: '/admin' });
+            } else {
+              alert("Ponto batido!");
             }
-            alert("Ponto batido!");
             } else {
                 alert("Matrícula ou Data de Nascimento errada");
               }
