@@ -53,8 +53,14 @@ class FuncionarioController extends Controller
             'email' => 'required|string|email|max:255',
         ]);
 
+        $funcionario = Funcionario::firstOrNew(['matricula' => $request->matricula]);
+        if ($funcionario['id'] == null) {
+            $funcionario = Funcionario::create($request->all());
+            return $funcionario;
+        } else {
+            return "Funcionario existente";
+        }
 
-        $funcionario = Funcionario::create($request->all());
         return $funcionario;
 
     }
