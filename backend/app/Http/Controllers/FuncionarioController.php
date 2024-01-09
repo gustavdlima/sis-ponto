@@ -56,13 +56,12 @@ class FuncionarioController extends Controller
         $funcionario = Funcionario::firstOrNew(['matricula' => $request->matricula]);
         if ($funcionario['id'] == null) {
             $funcionario = Funcionario::create($request->all());
-            return $funcionario;
+            return "Funcionário criado com sucesso.";
         } else {
-            return "Funcionario existente";
+            return "Funcionário existente.";
         }
 
         return $funcionario;
-
     }
 
     /**

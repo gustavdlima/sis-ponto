@@ -16,6 +16,6 @@ class CadastroController extends Controller
         $funcionario = new FuncionarioController();
         $funcionario = $funcionario->store($request);
 
-        return response()->json(['message' => 'Funcionário criado com sucesso!', 'funcionario' => $funcionario]);
+        return response()->json([$funcionario]);
     }
 }
