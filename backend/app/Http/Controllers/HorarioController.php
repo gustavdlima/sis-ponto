@@ -38,11 +38,17 @@ class HorarioController extends Controller
             'horario_volta_intervalo' => 'required|date_format:H:i:s',
             'horario_saida' => 'required|date_format:H:i:s',
         ]);
-        if ($validated) {
+
+        $horario = Horario::firstOrNew(['horario_entrada' => $request->horario_entrada,
+            'horario_ida_intervalo' => $request->horario_ida_intervalo,
+            'horario_volta_intervalo' => $request->horario_volta_intervalo,
+            'horario_saida' => $request->horario_saida]);
+        if ($horario['id'] == null) {
             $horario = Horario::create($request->all());
-            return $horario;
+            return "Horário criado com sucesso.";
         } else {
-            return $validated;
+            $horario->update($request->all());
+            return "Horário existente.";
         }
     }
 
