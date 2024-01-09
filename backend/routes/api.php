@@ -23,7 +23,7 @@ use App\Http\Controllers\HorarioController;
 //     return $request->user();
 // });
 
-Route::resource('/funcionarios', FuncionarioController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::resource('/funcionarios', FuncionarioController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy']);
 
 Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store']);
 
