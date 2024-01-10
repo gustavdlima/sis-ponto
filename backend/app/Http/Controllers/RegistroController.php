@@ -46,18 +46,10 @@ class RegistroController extends Controller
         foreach ($registroArray as $key => $value) {
             $ponto = Registro::latest()->pluck($key)->first();
             if ($ponto == null) {
-                if ($this->check($key, $registroFuncionario)) {
+                if ($this->checkIfTheRegistroWasCreatedOnTheSameDay($key, $registroFuncionario)) {
                     $newRegistro = Registro::where('id', $registroFuncionario->id)->update([$key => $date]);
                     return $registroFuncionario;
-                } else {
-                    $registroArray['primeiro_ponto'] = $date;
-                    $registroArray['segundo_ponto'] = null;
-                    $registroArray['terceiro_ponto'] = null;
-                    $registroArray['quarto_ponto'] = null;
-                    $newRegistro = $registroFuncionario->create($registroArray);
-                    return $registroFuncionario;
                 }
-
             } else {
                 if ($key == 'quarto_ponto') {
                     $registroArray['primeiro_ponto'] = $date;
@@ -98,8 +90,6 @@ class RegistroController extends Controller
         return $registroArray;
     }
 
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -112,14 +102,21 @@ class RegistroController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($funcionario)
     {
-        // validação
-        
+        // validações
 
-        // criar o registro
-        $registro = Registro::create($request->all());
-        return $registro;
+        // lógica de criar o registro
+        $date = date('Y-m-d H:i:s');
+        $registroFuncionario = $this->getLastFuncionarioRegistro($funcionario[0]->id);
+        $registroArray = $this->createRegistroArray($funcionario);
+        if ($registroFuncionario == null) {
+            $registroArray['primeiro_ponto'] = $date;
+            $newRegistro = $this->create($registroArray);
+            return $newRegistro;
+        } else {
+            return $this->checkWhichPonto($registroFuncionario, $registroArray);
+        }
     }
 
     /**
