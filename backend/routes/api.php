@@ -33,6 +33,6 @@ Route::resource('/horarios', HorarioController::class)->only(['index', 'create',
 // Route::post('/cargo', CargoController::class, 'create');
 // Route::get('/cargo/{$id}', CargoController::class, 'show');
 
-Route::post('/login', [LoginController::class, 'check']);
+Route::post('/login', [LoginController::class, 'criarTabelaRegistro']);
 
 Route::post('/cadastro', [CadastroController::class, 'store']);
