@@ -16,5 +16,9 @@ class Registro extends Model
         'segundo_ponto',
         'terceiro_ponto',
         'quarto_ponto',
+        'atrasou_primeiro_ponto',
+        'atrasou_segundo_ponto',
+        'atrasou_terceiro_ponto',
+        'atrasou_quarto_ponto',
     ];
 }

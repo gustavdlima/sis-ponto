@@ -19,6 +19,10 @@ return new class extends Migration
             $table->dateTime('segundo_ponto')->nullable();
             $table->dateTime('terceiro_ponto')->nullable();
             $table->dateTime('quarto_ponto')->nullable();
+            $table->boolean('atrasou_primeiro_ponto')->nullable();
+            $table->boolean('atrasou_segundo_ponto')->nullable();
+            $table->boolean('atrasou_terceiro_ponto')->nullable();
+            $table->boolean('atrasou_quarto_ponto')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +37,10 @@ return new class extends Migration
             'segundo_ponto',
             'terceiro_ponto',
             'quarto_ponto',
+            'atrasou_primeiro_ponto',
+            'atrasou_segundo_ponto',
+            'atrasou_terceiro_ponto',
+            'atrasou_quarto_ponto',
         ]);
     }
 };
