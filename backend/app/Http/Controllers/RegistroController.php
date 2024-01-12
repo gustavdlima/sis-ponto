@@ -5,15 +5,109 @@ namespace App\Http\Controllers;
 use App\Models\Registro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Horario;
+use DateTime;
 
 class RegistroController extends Controller
 {
+    public function getJustTimeFromDate($date) {
+        $split = explode(' ', $date);
+        $time = $split[1];
+        return $time;
+    }
+
+    public function getFuncionarioHorario($horarioId) {
+        $horario = Horario::where('id', $horarioId)->first();
+        return $horario;
+    }
+
+    public function checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date)
+    {
+        $horario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $ponto = $this->checkWhichPonto($registroArray);
+
+        $registrationTime = $this->getJustTimeFromDate($date);
+        $split = explode(':', $registrationTime);
+        $registrationHour = intval($split[0]);
+        $registrationMinute = intval($split[1]);
+
+        switch ($ponto) {
+            case 'primeiro_ponto':
+                $split = explode(':', $horario->horario_entrada);
+                $horarioHour = intval($split[0]);
+                $horarioMinute = intval($split[1]) + 15;
+
+                if ($registrationHour > $horarioHour)
+                    $registroArray['atrasou_primeiro_ponto'] = true;
+                else if ($registrationHour == $horarioHour && $registrationMinute > $horarioMinute)
+                    $registroArray['atrasou_primeiro_ponto'] = true;
+
+                return $registroArray;
+                break;
+            case 'segundo_ponto':
+                $split = explode(':', $horario->horario_ida_intervalo);
+                $horarioHour = intval($split[0]);
+                $horarioMinute = intval($split[1]) + 15;
+                if ($registrationHour > $horarioHour)
+                    $registroArray['atrasou_segundo_ponto'] = true;
+                else if ($registrationHour == $horarioHour
+                    && $registrationMinute > $horarioMinute)
+                    $registroArray['atrasou_segundo_ponto'] = true;
+
+                return $registroArray;
+                break;
+            case 'terceiro_ponto':
+                $split = explode(':', $horario->horario_volta_intervalo);
+                $horarioHour = intval($split[0]);
+                $horarioMinute = intval($split[1]) + 15;
+
+                if ($registrationHour > $horarioHour)
+                    $registroArray['atrasou_terceiro_ponto'] = true;
+                else if ($registrationHour == $horarioHour
+                    && $registrationMinute > $horarioMinute)
+                    $registroArray['atrasou_terceiro_ponto'] = true;
+
+                return $registroArray;
+                break;
+            case 'quarto_ponto':
+                $split = explode(':', $horario->horario_saida);
+                $horarioHour = intval($split[0]);
+                $horarioMinute = intval($split[1]) + 15;
+
+                if ($registrationHour > $horarioHour)
+                    $registroArray['atrasou_quarto_ponto'] = true;
+                else if ($registrationHour == $horarioHour
+                    && $registrationMinute > $horarioMinute)
+                    $registroArray['atrasou_quarto_ponto'] = true;
+
+                return $registroArray;
+                break;
+        }
+        return $registroArray;
+    }
 
     public function fillRegistroWithPonto($registroFuncionario, $ponto, $date)
     {
-        Db::table('registros')
+
+        if ($ponto == 'segundo_ponto') {
+            Db::table('registros')
                 ->where('id', $registroFuncionario->id)
-                ->update([$ponto => $date]);
+                ->update([$ponto => $date,
+                    'atrasou_segundo_ponto' => $registroFuncionario->atrasou_segundo_ponto,
+                        ]);
+        } else if ($ponto == 'terceiro_ponto') {
+            Db::table('registros')
+                ->where('id', $registroFuncionario->id)
+                ->update([$ponto => $date,
+                    'atrasou_terceiro_ponto' => $registroFuncionario->atrasou_terceiro_ponto,
+                        ]);
+        } else if ($ponto == 'quarto_ponto') {
+            Db::table('registros')
+                ->where('id', $registroFuncionario->id)
+                ->update([$ponto => $date,
+                    'atrasou_quarto_ponto' => $registroFuncionario->atrasou_quarto_ponto,
+                        ]);
+        }
         $registro = Registro::latest()->first();
 
         return $registro;
@@ -21,7 +115,11 @@ class RegistroController extends Controller
 
     public function checkWhichPonto($registroFuncionario)
     {
-        $registroArray = $registroFuncionario->toArray();
+        // tirei o toArray() daqui
+        if (strcmp(gettype($registroFuncionario), 'object') == 0)
+            $registroArray = $registroFuncionario->toArray();
+        else
+            $registroArray = $registroFuncionario;
 
         foreach ($registroArray as $key => $value) {
             if ($key == 'primeiro_ponto' && $value == null) {
@@ -77,10 +175,15 @@ class RegistroController extends Controller
     {
         $registroArray = array(
             'id_funcionario' => $funcionario[0]->id,
+            'id_horario' => $funcionario[0]->id_horario,
             'primeiro_ponto' => null,
             'segundo_ponto' => null,
             'terceiro_ponto' => null,
             'quarto_ponto' => null,
+            'atrasou_primeiro_ponto' => false,
+            'atrasou_segundo_ponto' => false,
+            'atrasou_terceiro_ponto' => false,
+            'atrasou_quarto_ponto' => false
         );
 
         return $registroArray;
@@ -114,15 +217,30 @@ class RegistroController extends Controller
         $registroArray = $this->createRegistroArray($funcionario);
 
         if ($registroFuncionario == null) {
-            return $this->createFirstPonto($registroArray, $date);
+
+            $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
+            $newRegistro = $this->createFirstPonto($registroArray, $date);
+
+            return $newRegistro;
         } else {
             if ($this->checkIfTheRegistroWasCreatedOnTheSameDay($registroFuncionario->created_at) !== false) {
+
+                $registroFuncionario = $this->checkIfTheFuncionarioIsLate($registroFuncionario, $funcionario, $date);
+
                 $ponto = $this->checkWhichPonto($registroFuncionario);
-                if (!$ponto)
+
+                if (!$ponto) {
+                    $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
                     return $this->createFirstPonto($registroArray, $date);
+                }
+
                 $newRegistro = $this->fillRegistroWithPonto($registroFuncionario, $ponto, $date);
                 return $newRegistro;
+
             } else {
+
+                $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
+
                 return $this->createFirstPonto($registroArray, $date);
             }
         }
