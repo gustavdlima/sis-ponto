@@ -4,75 +4,71 @@ namespace App\Http\Controllers;
 
 use App\Models\Registro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegistroController extends Controller
 {
 
-    public function checkIfTheRegistroWasCreatedOnTheSameDay($key, $registroFuncionario)
+    public function fillRegistroWithPonto($registroFuncionario, $ponto, $date)
     {
-        $date = date('Y-m-d');
+        Db::table('registros')
+                ->where('id', $registroFuncionario->id)
+                ->update([$ponto => $date]);
+        $registro = Registro::latest()->first();
 
-        if ($key == 'primeiro_ponto') {
-            return 1;
-        } elseif ($key == 'segundo_ponto') {
-            $ponto = Registro::latest()->pluck('primeiro_ponto')->first();
-            $registroDate = explode(' ', $ponto);
-            if ($registroDate[0] == $date)
-                return 1;
-            else
-                return 0;
-        } elseif ($key == 'terceiro_ponto') {
-            $ponto = Registro::latest()->pluck('segundo_ponto')->first();
-            $registroDate = explode(' ', $ponto);
-            if ($registroDate[0] == $date)
-                return 1;
-            else
-                return 0;
-        } elseif ($key == 'quarto_ponto') {
-            $ponto = Registro::latest()->pluck('terceiro_ponto')->first();
-            $registroDate = explode(' ', $ponto);
-            if ($registroDate[0] == $date)
-                return 1;
-            else
-                return 0;
-        }
-
+        return $registro;
     }
 
-    public function checkWhichPonto($registroFuncionario, $registroArray)
+    public function checkWhichPonto($registroFuncionario)
     {
-        $date = date('Y-m-d H:i:s');
+        $registroArray = $registroFuncionario->toArray();
 
         foreach ($registroArray as $key => $value) {
-            $ponto = Registro::latest()->pluck($key)->first();
-            if ($ponto == null) {
-                if ($this->checkIfTheRegistroWasCreatedOnTheSameDay($key, $registroFuncionario)) {
-                    $newRegistro = Registro::where('id', $registroFuncionario->id)->update([$key => $date]);
-                    return $registroFuncionario;
-                }
-            } else {
-                if ($key == 'quarto_ponto') {
-                    $registroArray['primeiro_ponto'] = $date;
-                    $registroArray['segundo_ponto'] = null;
-                    $registroArray['terceiro_ponto'] = null;
-                    $registroArray['quarto_ponto'] = null;
-                    $newRegistro = $registroFuncionario->create($registroArray);
-                    return $registroFuncionario;
-
-                }
-                continue ;
+            if ($key == 'primeiro_ponto' && $value == null) {
+                return $key;
+            }
+            if ($key == 'segundo_ponto' && $value == null) {
+                return $key;
+            }
+            if ($key == 'terceiro_ponto' && $value == null) {
+                return $key;
+            }
+            if ($key == 'quarto_ponto' && $value == null) {
+                return $key;
             }
         }
         return null;
     }
 
+    public function checkIfTheRegistroWasCreatedOnTheSameDay($registroDate)
+    {
+        $date = date('Y-m-d');
+        $rest = strpos($registroDate, $date);
+        if ($rest !== false) {
+            $split = explode('T', $registroDate);
+            $split = explode(' ', $registroDate);
+            $registroDate = $split[0];
+            if ($registroDate == $date) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function checkIfFuncionarioHasRegistro($funcionarioId) {
+        $registro = Registro::latest()->pluck('id_funcionario')->first();
+
+        return $registro;
+    }
+
     public function getLastFuncionarioRegistro($funcionarioId)
     {
-        $registros = Registro::latest()->where('id_funcionario', $funcionarioId)->get();
-        if (sizeof($registros) == 0) {
-            return null;
-        }
-        return $registros[0];
+        $registro = Registro::where('id_funcionario', $funcionarioId)->latest()->get()->first();
+
+        return $registro;
     }
     /**
      * Display a listing of the resource.
@@ -99,23 +95,36 @@ class RegistroController extends Controller
         return $id;
     }
 
+    public function createFirstPonto($registroArray, $date) {
+        $registroArray['primeiro_ponto'] = $date;
+        $newRegistro = $this->create($registroArray);
+        return $newRegistro;
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store($funcionario)
     {
-        // validações
-
-        // lógica de criar o registro
         $date = date('Y-m-d H:i:s');
+
+        // checar se está atrasado
+
         $registroFuncionario = $this->getLastFuncionarioRegistro($funcionario[0]->id);
+
         $registroArray = $this->createRegistroArray($funcionario);
+
         if ($registroFuncionario == null) {
-            $registroArray['primeiro_ponto'] = $date;
-            $newRegistro = $this->create($registroArray);
-            return $newRegistro;
+            return $this->createFirstPonto($registroArray, $date);
         } else {
-            return $this->checkWhichPonto($registroFuncionario, $registroArray);
+            if ($this->checkIfTheRegistroWasCreatedOnTheSameDay($registroFuncionario->created_at) !== false) {
+                $ponto = $this->checkWhichPonto($registroFuncionario);
+                if (!$ponto)
+                    return $this->createFirstPonto($registroArray, $date);
+                $newRegistro = $this->fillRegistroWithPonto($registroFuncionario, $ponto, $date);
+                return $newRegistro;
+            } else {
+                return $this->createFirstPonto($registroArray, $date);
+            }
         }
     }
 
