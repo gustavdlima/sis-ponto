@@ -157,17 +157,17 @@
 				<div class="d-flex justify-content-start p-0">
 					<label>Horário</label>
 				</div>
-				<select v-model="data.id_horario" name="horario" class=" border-white form-control mb-1">
+				<select name="id_horario" v-model="data.id_horario" class="border-white form-control mb-1">
 					<option disabled value=""></option>
 					<option v-for="horario in horarios" v-bind:value="horario.id">
-						{{ horario.horario_entrada }} - {{ horario.horario_ida_intervalo }} - {{ horario.horario_volta_intervalo }} -{{ horario.horario_saida }}</option>
+						{{ horario.horario_entrada }} - {{ horario.horario_ida_intervalo }} - {{ horario.horario_volta_intervalo }} - {{ horario.horario_saida }}</option>
 				</select><br>
 			</div>
 			<div class="row">
 				<div class=" d-flex justify-content-start p-0">
 					<label>Cargo</label>
 				</div>
-				<select v-model="data.id_cargo" class="border-white form-control mb-1">
+				<select name="id_cargo" v-model="data.id_cargo" class="border-white form-control mb-1">
 					<option disabled value=""></option>
 					<option v-for="cargo in cargos" v-bind:value="cargo.id">
 						{{ cargo.cargo }}</option>

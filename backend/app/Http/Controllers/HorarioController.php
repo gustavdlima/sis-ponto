@@ -14,7 +14,7 @@ class HorarioController extends Controller
 
     public function index()
     {
-        $horarios = DB::table('horarios')->select(array('horario_entrada', 'horario_ida_intervalo', 'horario_volta_intervalo', 'horario_saida'))->get();
+        $horarios = DB::select('select * from horarios');
         return $horarios;
     }
     /**
