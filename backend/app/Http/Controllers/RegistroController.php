@@ -208,6 +208,7 @@ class RegistroController extends Controller
      */
     public function store($funcionario)
     {
+        date_default_timezone_set('America/Sao_Paulo');
         $date = date('Y-m-d H:i:s');
 
         // checar se está atrasado
