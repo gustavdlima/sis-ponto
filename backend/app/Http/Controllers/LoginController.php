@@ -20,20 +20,25 @@ class LoginController extends Controller
         return $funcionario;
     return 0;
     }
+
     public function criarTabelaRegistro(Request $request)
     {
 
         // checar se o funcionário existe
         $funcionario = $this->check($request);
+
         if ($funcionario == 0)
-            return "Funcionário não existe";
+            return response()->json(["message" => "Funcionário não encontrado"]);
 
         // LEMBRE DE DESCOMENTAR
-        // if ($funcionario[0]->nivel < 3)
-        //     return "Funcionário não precisa de registros";
+        if ($funcionario[0]->nivel == 3) {
+            $registro = new RegistroController();
+            $registro = $registro->store($funcionario);
+            return response()->json([
+                'registro' => $registro
+            ]);
+        }
 
-        // criar registro de ponto e registrar o primeiro ponto
-        $registro = new RegistroController();
-        return $registro->store($funcionario);
+        return ;
     }
 }
