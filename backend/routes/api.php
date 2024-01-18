@@ -2,11 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\HorarioController;
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +33,6 @@ Route::resource('/horarios', HorarioController::class)->only(['index', 'create',
 // Route::post('/cargo', CargoController::class, 'create');
 // Route::get('/cargo/{$id}', CargoController::class, 'show');
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [LoginController::class, 'criarTabelaRegistro']);
 
 Route::post('/cadastro', [CadastroController::class, 'store']);

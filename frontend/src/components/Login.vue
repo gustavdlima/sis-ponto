@@ -31,7 +31,7 @@ export default {
       input: {
         matricula: "",
         data_nascimento: "",
-        device_name: "browser",
+        data_ponto: "",
       },
     }
   },
@@ -44,17 +44,17 @@ export default {
       if (this.input.matricula != "" || this.input.data_nascimento != "" || this.input.data_ponto != "") {
         this.$http.post("http://localhost:8000/api/login", this.input)
         .then((response) => {
-          // const responseString = response.data.toString();
-          // if (responseString.length == 1) {
-          //   funcionarioStore.addFuncionarioNivel(parseInt(responseString));
-          //   if (parseInt(responseString) < 3) {
-          //     this.$router.push({ path: '/admin' });
-          //   } else {
-          //     alert("Ponto batido!");
-          //   }
-          //   } else {
-          //       alert("Matrícula ou Data de Nascimento errada");
-          //     }
+          const responseString = response.data.toString();
+          if (responseString.length == 1) {
+            funcionarioStore.addFuncionarioNivel(parseInt(responseString));
+            if (parseInt(responseString) < 3) {
+              this.$router.push({ path: '/admin' });
+            } else {
+              alert("Ponto batido!");
+            }
+            } else {
+                alert("Matrícula ou Data de Nascimento errada");
+              }
           })
           .catch(function (err) {
             console.log(err);
