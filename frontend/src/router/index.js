@@ -19,6 +19,9 @@ const routes = [
 	{
 		path: '/admin',
 		name: 'Admin',
+		beforeEnter: (to, from, next) => {
+			
+		},
 		component: () => import('../views/AdminPanel.vue')
 	},
 	{

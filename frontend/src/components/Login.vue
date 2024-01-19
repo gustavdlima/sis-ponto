@@ -38,7 +38,9 @@ export default {
   methods: {
     login() {
       if (this.input.email != "" || this.input.password != "") {
-        
+        this.$http.post('http://localhost:8000/api/login', this.input).then((response)=> {
+          this.$router.push({ path: '/admin' });
+        })
       } else {
         console.log("Complete os campos de obrigatórios")
       }
