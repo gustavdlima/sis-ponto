@@ -39,6 +39,9 @@ Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 
+Route::post('/logout', [LoginController::class, 'logout']);
+
 Route::get('/users', [UserController::class, 'index']);
+
 Route::post('/users', [UserController::class, 'store']);
 
