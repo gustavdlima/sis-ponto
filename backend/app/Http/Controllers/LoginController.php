@@ -7,14 +7,13 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Funcionario;
 use App\Models\Registro;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
  /**
      * Handle an authentication attempt.
      */
-    public function authenticate(Request $request): RedirectResponse
+    public function authenticate(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -24,11 +23,20 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return back()->with('success', 'Login efetuado com sucesso!');
+            $credentials = Auth::user();
+            return $credentials;
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return "Logout";
     }
 }
