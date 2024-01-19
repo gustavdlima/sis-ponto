@@ -6,34 +6,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Funcionario;
 use App\Models\Registro;
-
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-
-    public function check(Request $request)
+ /**
+     * Handle an authentication attempt.
+     */
+    public function authenticate(Request $request)
     {
-        // checa se o funcionário existe
-        $funcionario = Db::select('select * from funcionarios where matricula = ? ', [$request->matricula]);
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-        if ($funcionario != null)
-        return $funcionario;
-    return 0;
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            $credentials = Auth::user();
+            return $credentials;
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
-    public function criarTabelaRegistro(Request $request)
+
+    public function logout(Request $request)
     {
-
-        // checar se o funcionário existe
-        $funcionario = $this->check($request);
-        if ($funcionario == 0)
-            return "Funcionário não existe";
-
-        // LEMBRE DE DESCOMENTAR
-        // if ($funcionario[0]->nivel < 3)
-        //     return "Funcionário não precisa de registros";
-
-        // criar registro de ponto e registrar o primeiro ponto
-        $registro = new RegistroController();
-        return $registro->store($funcionario);
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return "Logout";
     }
 }

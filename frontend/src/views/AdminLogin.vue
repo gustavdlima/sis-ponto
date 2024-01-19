@@ -7,11 +7,8 @@
 			<h1>e</h1>
 			<h1>Ponto</h1>
 		</div>
-		<div class="row-sm-12">
-			<RealTimeClock class="d-flex justify-content-center" ></RealTimeClock>
-		</div>
 		<div class="row-sm-12 d-flex justify-content-center">
-			<RegistroPonto></RegistroPonto>
+			<Login></Login>
 		</div>
 		<!-- <div class="row d-flex justify-content-center">
 			<router-link to="/cadastro" tag="button" class="col-4 col-sm-2 col-md-2 btn border-white m-2 d-flex justify-content-center text-white" >Cadastro</router-link>
@@ -24,10 +21,10 @@
 
 <script>
 import RealTimeClock from "../components/RealTimeClock.vue"
-import RegistroPonto from "../components/RegistroPonto.vue"
+import Login from "../components/Login.vue"
 
 export default {
-	name: "Home",
+	name: "AdminLogin",
 	data() {
 		return {
 			funcionarios: ''
@@ -42,7 +39,7 @@ export default {
 	},
 	components: {
 		RealTimeClock: RealTimeClock,
-		RegistroPonto: RegistroPonto
+		Login: Login
 	},
 	created() {
 		// this.getFuncionarios();

@@ -19,12 +19,20 @@ const routes = [
 	{
 		path: '/admin',
 		name: 'Admin',
+		beforeEnter: (to, from, next) => {
+			
+		},
 		component: () => import('../views/AdminPanel.vue')
 	},
 	{
 		path: '/listarfuncionarios',
 		name: 'Funcionarios',
 		component: () => import('../views/ListarFuncionarios.vue')
+	},
+	{
+		path: '/login',
+		name: 'Login',
+		component: () => import('../views/AdminLogin.vue')
 	}
 ]
 
