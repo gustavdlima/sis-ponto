@@ -25,6 +25,11 @@ const routes = [
 		path: '/listarfuncionarios',
 		name: 'Funcionarios',
 		component: () => import('../views/ListarFuncionarios.vue')
+	},
+	{
+		path: '/login',
+		name: 'Login',
+		component: () => import('../views/AdminLogin.vue')
 	}
 ]
 
