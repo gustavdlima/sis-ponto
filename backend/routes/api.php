@@ -8,6 +8,7 @@ use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +35,9 @@ Route::resource('/horarios', HorarioController::class)->only(['index', 'create',
 // Route::post('/cargo', CargoController::class, 'create');
 // Route::get('/cargo/{$id}', CargoController::class, 'show');
 
-Route::post('/login', [PontoController::class, 'criarTabelaRegistro']);
+Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
+
+Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
