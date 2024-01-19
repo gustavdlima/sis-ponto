@@ -25,7 +25,9 @@ use App\Http\Controllers\LoginController;
 //     return $request->user();
 // });
 
-Route::resource('/funcionarios', FuncionarioController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy']);
+Route::resource('/funcionarios', FuncionarioController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy'])->middleware('auth:sanctum');
+
+// Route::get('/funcionarios', [FuncionarioController::class, 'index'])->middleware('auth:sanctum');
 
 Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store']);
 

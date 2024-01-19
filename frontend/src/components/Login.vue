@@ -21,9 +21,8 @@
 </template>
 
 <script>
-import { useFuncionarioStore } from '../stores/funcionarioStore';
-
-const funcionarioStore = useFuncionarioStore();
+import { useUserStore } from '../stores/userStore';
+import { mapActions } from 'pinia';
 
 export default {
   name: 'Login',
@@ -36,10 +35,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions(useUserStore, ['setUser']),
+    ...mapActions(useUserStore, ['getUser']),
+
     login() {
       if (this.input.email != "" || this.input.password != "") {
         this.$http.post('http://localhost:8000/api/login', this.input).then((response)=> {
-          this.$router.push({ path: '/admin' });
+            userStore.setUser(response.data.user);
+            console.log(getUser());
+          // this.$router.push({ path: '/admin' });
         })
       } else {
         console.log("Complete os campos de obrigatórios")
