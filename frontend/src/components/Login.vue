@@ -4,11 +4,11 @@
       <div class="row">
         <div class="row-md-1 row-sm-12 d-flex justify-content-center">
           <input type="text" id="email" placeholder="email" class="w-50 mt-2 text-white border-white form-control"
-            style="background-color: rgba(255, 255, 255, 0);" v-model="input.email" />
+            style="background-color: rgba(255, 255, 255, 0);" v-model="user.email" />
         </div>
         <div class="row-md-1 row-sm-12 d-flex justify-content-center">
           <input type="text" id="password" class="w-50 mt-3 text-white border-white form-control" placeholder="senha"
-            style="background-color: rgba(255, 255, 255, 0);" v-model="input.password" />
+            style="background-color: rgba(255, 255, 255, 0);" v-model="user.password" />
         </div>
       </div>
       <div class="row-md-1 row-sm-12 d-flex justify-content-center">
@@ -20,6 +20,42 @@
   </div>
 </template>
 
+<script setup>
+import { useUserStore } from '../stores/userStore';
+import { ref } from 'vue';
+
+import axios from 'axios';
+
+const user = ref(
+  {
+    email: "",
+    password: "",
+  }
+);
+
+// const email = ref('');
+// const password = ref('');
+const userStore = useUserStore();
+
+async function login() {
+  if (user.value.email != "" || user.value.password != "") {
+      await axios.post('http://localhost:8000/api/login', user.value).then((response) => {
+           console.log (response.data);
+            userStore.setUserEmail(response.data.user.email);
+            userStore.setUserLevel(response.data.user.level);
+            userStore.setUserToken(response.data.token);
+            userStore.setUserName(response.data.user.name);
+            console.log(userStore.getUser);
+          // this.$router.push({ path: '/admin' });
+      })
+  } else {
+    console.log("Complete os campos de obrigatórios")
+  }
+}
+
+</script>
+
+<!--
 <script>
 import { useUserStore } from '../stores/userStore';
 import { mapActions } from 'pinia';
@@ -56,7 +92,7 @@ export default {
 
   },
 }
-</script>
+</script> -->
 
 <style scoped>
 input[type="text"]::-webkit-input-placeholder {

@@ -1,61 +1,61 @@
 import { defineStore } from 'pinia'
 
-export const useUserStore = defineStore('users', {
+export const useUserStore = defineStore('user', {
 	// state
 	state: () => ({
-		level: Number,
-		name: String,
-		email: String,
-		remember_token: String,
+		level: "",
+		name: "",
+		email: "",
+		token: "",
 	}),
 
 	// actions
 	actions: {
-		setUser(user) {
-			this.user = user
-		},
 
 		setUserLevel(Level) {
-			this.user[0].Level = Level;
-			console.log(this.user);
+			this.level = Level;
 		},
 
 		setUserName(name) {
-			this.user[0].name = name;
-			console.log(this.user);
+			this.name = name;
 		},
 
 		setUserEmail(email) {
-			this.user[0].email = email;
-			console.log(this.user);
+			this.email = email;
 		},
 
-		setUserRememberToken(remember_token) {
-			this.user[0].remember_token = remember_token;
-			console.log(this.user);
+		setUserToken(userToken) {
+			this.token = userToken;
 		}
 	},
 
 	// getters
 	getters: {
 		getUser() {
-			return this.user
+			const user = [
+				this.level,
+				this.name,
+				this.email,
+				this.token
+			];
+
+			return user
 		},
 
 		getUserLevel() {
-			return this.user[0].level
+			return this.level
 		},
 
 		getUserName() {
-			return this.user[0].name
+			return this.name
 		},
 
 		getUserEmail() {
-			return this.user[0].email
+			return this.email
 		},
 
 		getUserRememberToken() {
-			return this.user[0].remember_token
+			return this.token
 		},
 	},
 

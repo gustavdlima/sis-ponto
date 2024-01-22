@@ -25,24 +25,12 @@ import Login from "../components/Login.vue"
 
 export default {
 	name: "AdminLogin",
-	data() {
-		return {
-			funcionarios: ''
-		}
-	},
-	methods: {
-		// async getFuncionarios(resource) {
-		// 	const response = await this.$http.get('http://localhost:8000/api/funcionario');
-		// 	this.funcionarios = response.data;
-		// 	console.log(this.funcionarios);
-		// }
-	},
 	components: {
 		RealTimeClock: RealTimeClock,
 		Login: Login
 	},
-	created() {
-		// this.getFuncionarios();
+	setup() {
+		
 	}
 }
 
