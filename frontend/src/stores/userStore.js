@@ -54,9 +54,9 @@ export const useUserStore = defineStore('user', {
 			return this.email
 		},
 
-		getUserRememberToken() {
+		getUserToken() {
 			return this.token
-		},
+		}
 	},
 
 })

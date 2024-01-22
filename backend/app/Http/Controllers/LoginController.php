@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Funcionario;
 use App\Models\Registro;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -23,8 +24,8 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            $credentials = Auth::user();
-            $token = $request->user()->createToken('token');
+            $user = User::where('email', $request->email)->first();
+            $token = $user->createToken('token');
 
             return [
                 'token' => $token->plainTextToken,

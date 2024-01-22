@@ -23,7 +23,6 @@
 <script setup>
 import { useUserStore } from '../stores/userStore';
 import { ref } from 'vue';
-
 import axios from 'axios';
 
 const user = ref(
@@ -33,19 +32,21 @@ const user = ref(
   }
 );
 
-// const email = ref('');
+const teste = ref('');
 // const password = ref('');
 const userStore = useUserStore();
 
 async function login() {
   if (user.value.email != "" || user.value.password != "") {
       await axios.post('http://localhost:8000/api/login', user.value).then((response) => {
-           console.log (response.data);
             userStore.setUserEmail(response.data.user.email);
             userStore.setUserLevel(response.data.user.level);
             userStore.setUserToken(response.data.token);
             userStore.setUserName(response.data.user.name);
-            console.log(userStore.getUser);
+            // axios.get('http://localhost:8000/api/users', {headers: { Authorization: `Bearer ${userStore.getUserToken}`, Accept: 'application/json'} }).then((response) => {
+            //   console.log(response.data);
+            // });
+
           // this.$router.push({ path: '/admin' });
       })
   } else {
