@@ -18,11 +18,42 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
 import SideBar from '../components/SideBar.vue';
 import language from 'datatables.net-plugins/i18n/pt-BR.mjs';
+import { useAuthStore } from '../stores/authStore';
+
+
+DataTable.use(DataTablesCore, { responsive: true });
+const authStore = useAuthStore();
+
+var funcionarios = authStore.getFuncionarios;
+
+var columns = [
+	{
+		data: null, render: function (data, type, row, meta) { return `${meta.row}` }
+	},
+	{ data: 'nome' },
+	{ data: 'matricula' },
+	{ data: 'data_nascimento' },
+]
+
+var options = {
+	language: language
+}
+
+
+
+</script>
+
+<!-- <script>
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net';
+import SideBar from '../components/SideBar.vue';
+import language from 'datatables.net-plugins/i18n/pt-BR.mjs';
+
 
 DataTable.use(DataTablesCore, { responsive: true });
 
@@ -50,7 +81,10 @@ export default {
 	},
 	methods: {
 		async getFuncionarios() {
-			const response = await this.$http.get('http://localhost:8000/api/funcionario');
+			const response = await this.$http.get('http://localhost:8000/sanctum/csrf-cookie');
+			console.log(response);
+			await this.$http.get('http://localhost:8000/sanctum/csrf-cookie');
+			await this.$http.get('http://localhost:8000/api/funcionarios');
 			this.funcionarios = response.data;
 		}
 
@@ -60,7 +94,7 @@ export default {
 	}
 }
 
-</script>
+</script> -->
 
 <style>
 @import 'datatables.net-dt';

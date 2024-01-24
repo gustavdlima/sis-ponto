@@ -26,12 +26,8 @@ class LoginController extends Controller
 
             $user = User::where('email', $request->email)->first();
             $token = $user->createToken('token');
-
-            return [
-                'token' => $token->plainTextToken,
-                'user' => $credentials
-            ];
-            return $credentials;
+            $authUser = Auth::user();
+            return $authUser;
         }
 
         return back()->withErrors([
@@ -44,6 +40,6 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return "Logout";
+        return response()->noContent();
     }
 }

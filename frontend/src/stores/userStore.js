@@ -11,20 +11,19 @@ export const useUserStore = defineStore('user', {
 
 	// actions
 	actions: {
-
-		setUserLevel(Level) {
+		async setUserLevel(Level) {
 			this.level = Level;
 		},
 
-		setUserName(name) {
+		async setUserName(name) {
 			this.name = name;
 		},
 
-		setUserEmail(email) {
+		async setUserEmail(email) {
 			this.email = email;
 		},
 
-		setUserToken(userToken) {
+		async setUserToken(userToken) {
 			this.token = userToken;
 		}
 	},

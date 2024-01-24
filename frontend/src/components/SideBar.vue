@@ -8,12 +8,34 @@
 				<li class="list-group-item m-1" role="button" @click="redirectToCadastro">Cadastrar Funcionário</li>
 				<li class="list-group-item m-1" role="button" @click="redirectToListarFuncionariosOnClick">Listar
 					Funcionários</li>
+				<li class="list-group-item m-1" role="button" @click="logout()">Logout</li>
 			</ul>
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup>
+import { useAuthStore } from '../stores/authStore';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const authStore = useAuthStore();
+
+const logout = () => {
+	authStore.logout();
+};
+
+const redirectToCadastro = () => {
+	router.push({ path: '/cadastro' });
+};
+
+const redirectToListarFuncionariosOnClick = () => {
+	router.push({ path: '/listarfuncionarios' });
+};
+
+</script>
+
+<!-- <script>
 
 export default {
 	name: "SideBar",
@@ -25,10 +47,11 @@ export default {
 		redirectToCadastro() {
 			this.$router.push({ path: '/cadastro' });
 		}
+
 	}
 }
 
-</script>
+</script> -->
 
 <style scoped>
 h1 {
