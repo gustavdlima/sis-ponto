@@ -8,7 +8,6 @@ import { createPinia } from 'pinia'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 
-
 const pinia = createPinia()
 
 pinia.use(({ store }) => {

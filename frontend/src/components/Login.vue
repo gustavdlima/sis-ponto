@@ -14,7 +14,8 @@
       <div class="row-md-1 row-sm-12 d-flex justify-content-center">
         <button type="submit"
           class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white"
-          v-on:click.prevent="authStore.login(user)">Entrar como Administrador</button>
+          v-on:click.prevent="authStore.login(user)">Entrar como Administrador
+        </button>
       </div>
     </form>
   </div>
@@ -25,13 +26,10 @@ import { useAuthStore } from '../stores/authStore';
 import { onMounted, ref } from 'vue';
 
 const authStore = useAuthStore();
+
 const user = ref({
   email: "",
   password: "",
-});
-
-onMounted(async () => {
-
 });
 
 </script>
