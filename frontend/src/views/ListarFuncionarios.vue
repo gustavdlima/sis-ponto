@@ -7,12 +7,13 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				<DataTable :data="funcionarios" :columns="columns" class="" :options="options">
+				{{ authStore.getFuncionarios() }}
+				<!-- <DataTable :data="authStore.getFuncionarios" :columns="columns" class="" :options="options">
 					<thead>
 						<tr>
 						</tr>
 					</thead>
-				</DataTable>
+				</DataTable> -->
 			</div>
 		</div>
 	</div>
@@ -25,11 +26,8 @@ import SideBar from '../components/SideBar.vue';
 import language from 'datatables.net-plugins/i18n/pt-BR.mjs';
 import { useAuthStore } from '../stores/authStore';
 
-
 DataTable.use(DataTablesCore, { responsive: true });
 const authStore = useAuthStore();
-
-var funcionarios = authStore.getFuncionarios;
 
 var columns = [
 	{
@@ -43,8 +41,6 @@ var columns = [
 var options = {
 	language: language
 }
-
-
 
 </script>
 
