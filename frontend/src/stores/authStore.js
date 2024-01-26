@@ -8,7 +8,8 @@ export const useAuthStore = defineStore('auth', {
 	}),
 
 	getters: {
-		user: (state) => state.authUser
+		user: (state) => state.authUser,
+		userToken: (state) => state.token
 	},
 
 	actions: {
@@ -19,16 +20,22 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		async getUser() {
-			axios.defaults.Authorization = 'Bearer ' + this.token;
+			const bearerToken = 'Bearer ' + this.userToken;
+			axios.defaults.headers.common = {
+				'Authorization': bearerToken
+			}
 			await axios.get('http://localhost:8000/api/user');
 		},
 
 		async getFuncionarios() {
-			axios.defaults.Authorization = 'Bearer ' + this.token;
-			axios.defaults.Accept = 'application/json';
+			const bearerToken = 'Bearer ' + this.userToken;
+			axios.defaults.headers.common = {
+				'Authorization': bearerToken
+			}
 			await axios.get('http://localhost:8000/api/funcionarios').then((response) => {
-				console.log(response.data);
 				return response.data;
+			}).catch((error) => {
+				console.log(error)
 			})
 		},
 
@@ -46,7 +53,10 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		async logout() {
-			axios.defaults.Authorization = 'Bearer ' + this.token;
+			const bearerToken = 'Bearer ' + this.userToken;
+			axios.defaults.headers.common = {
+				'Authorization': bearerToken
+			}
 			await axios
 				.post('http://localhost:8000/api/logout')
 				.then((response) => {

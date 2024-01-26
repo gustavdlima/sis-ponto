@@ -25,9 +25,12 @@ import DataTablesCore from 'datatables.net';
 import SideBar from '../components/SideBar.vue';
 import language from 'datatables.net-plugins/i18n/pt-BR.mjs';
 import { useAuthStore } from '../stores/authStore';
+import { ref } from 'vue';
 
 DataTable.use(DataTablesCore, { responsive: true });
 const authStore = useAuthStore();
+
+const funcionarios = ref(authStore.authUser);
 
 var columns = [
 	{
@@ -40,6 +43,10 @@ var columns = [
 
 var options = {
 	language: language
+}
+
+function getFuncionarios() {
+	return authStore.getFuncionarios();
 }
 
 </script>
