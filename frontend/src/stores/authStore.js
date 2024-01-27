@@ -4,12 +4,14 @@ import axios from 'axios'
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
 			authUser: null,
-			token: null
+			token: null,
+			isLogged: null,
 	}),
 
 	getters: {
 		user: (state) => state.authUser,
-		userToken: (state) => state.token
+		userToken: (state) => state.token,
+		userLogged: (state) => state.isLogged
 	},
 
 	actions: {
@@ -32,11 +34,10 @@ export const useAuthStore = defineStore('auth', {
 			axios.defaults.headers.common = {
 				'Authorization': bearerToken
 			}
-			await axios.get('http://localhost:8000/api/funcionarios').then((response) => {
-				return response.data;
-			}).catch((error) => {
-				console.log(error)
-			})
+			const response = await axios.get('http://localhost:8000/api/funcionarios');
+			const data = await response.data;
+			console.log(data);
+			return data;
 		},
 
 		async login(data) {
@@ -45,6 +46,8 @@ export const useAuthStore = defineStore('auth', {
 				.then((response) => {
 					this.authUser = response.data.authUser;
 					this.token = response.data.token;
+					this.isLogged = true;
+					console.log(response.data);
 					localStorage.setItem('Auth', true);
 				}).catch((error) => {
 					console.log(error)
@@ -60,11 +63,10 @@ export const useAuthStore = defineStore('auth', {
 			await axios
 				.post('http://localhost:8000/api/logout')
 				.then((response) => {
-					localStorage.removeItem('Auth')
+					this.isLogged = false;
 					this.$router.push({ name: 'Login' })
 				})
 		}
-
 
 	},
 

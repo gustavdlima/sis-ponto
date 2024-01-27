@@ -56,8 +56,8 @@ const router = createRouter ({
 	routes
 })
 
-router.beforeEach((to) => {
-	if (to.meta.requiresAuth && localStorage.getItem('Auth')) {
+router.beforeResolve((to) => {
+	if (to.meta.requiresAuth && !localStorage.getItem('Auth')) {
 		return { path: '/login' }
 	} else {
 		return true
