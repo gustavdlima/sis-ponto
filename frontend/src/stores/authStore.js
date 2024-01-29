@@ -29,17 +29,6 @@ export const useAuthStore = defineStore('auth', {
 			await axios.get('http://localhost:8000/api/user');
 		},
 
-		async getFuncionarios() {
-			const bearerToken = 'Bearer ' + this.userToken;
-			axios.defaults.headers.common = {
-				'Authorization': bearerToken
-			}
-			const response = await axios.get('http://localhost:8000/api/funcionarios');
-			const data = await response.data;
-			console.log(data);
-			return data;
-		},
-
 		async login(data) {
 			await axios
 				.post('http://localhost:8000/api/login', data)

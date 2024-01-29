@@ -1,3 +1,4 @@
+
 <template>
 	<div class="container bg-warning d-flex justify-content-center align-items-center" style="height: 100vh;">
 		<div class="row bg-dark h-75 w-100">
@@ -7,13 +8,7 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				{{ authStore.getFuncionarios() }}
-				<!-- <DataTable :data="authStore.getFuncionarios" :columns="columns" class="" :options="options">
-					<thead>
-						<tr>
-						</tr>
-					</thead>
-				</DataTable> -->
+				{{ funcionarios }}
 			</div>
 		</div>
 	</div>
@@ -25,29 +20,29 @@ import DataTablesCore from 'datatables.net';
 import SideBar from '../components/SideBar.vue';
 import language from 'datatables.net-plugins/i18n/pt-BR.mjs';
 import { useAuthStore } from '../stores/authStore';
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
+import axios from 'axios';
 
-DataTable.use(DataTablesCore, { responsive: true });
 const authStore = useAuthStore();
-
-const funcionarios = ref(authStore.authUser);
-
-var columns = [
-	{
-		data: null, render: function (data, type, row, meta) { return `${meta.row}` }
-	},
-	{ data: 'nome' },
-	{ data: 'matricula' },
-	{ data: 'data_nascimento' },
-]
-
-var options = {
-	language: language
-}
+const funcionarios = ref('');
 
 function getFuncionarios() {
-	return authStore.getFuncionarios();
+			const bearerToken = 'Bearer ' + authStore.userToken;
+			axios.defaults.headers.common = {
+				'Authorization': bearerToken
+			}
+			const response =  axios.get('http://localhost:8000/api/funcionarios').then(response => {
+				funcionarios.value = response.data;
+				console.log(response);
+				console.log(funcionarios.value);
+				return funcionarios.value;
+			})
+			.catch(error => {
+				console.log(error);
+			});
 }
+
+getFuncionarios();
 
 </script>
 
