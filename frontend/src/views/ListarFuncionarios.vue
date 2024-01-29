@@ -8,7 +8,11 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				{{ funcionarios }}
+				<DataTable :data="funcionarios" :language="language" :columns="columns">
+				<tr>
+
+				</tr>
+				</DataTable>
 			</div>
 		</div>
 	</div>
@@ -20,11 +24,18 @@ import DataTablesCore from 'datatables.net';
 import SideBar from '../components/SideBar.vue';
 import language from 'datatables.net-plugins/i18n/pt-BR.mjs';
 import { useAuthStore } from '../stores/authStore';
-import { ref, onBeforeMount } from 'vue';
+import { ref } from 'vue';
 import axios from 'axios';
 
 const authStore = useAuthStore();
 const funcionarios = ref('');
+DataTable.use(DataTablesCore);
+
+const columns = [
+	{ title: 'Nome', data: 'nome' },
+	{ title: 'Setor', data: 'setor' },
+	{ title: 'Matricula', data: 'matricula' },
+]
 
 function getFuncionarios() {
 			const bearerToken = 'Bearer ' + authStore.userToken;
