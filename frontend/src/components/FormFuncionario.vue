@@ -72,12 +72,14 @@
 					class=" text-white border-white form-control mb-1 w-50" />
 
 				<label for="titulo_eleitor" class="d-flex justify-content-start p-0">Titulo Eleitor</label>
-				<input type="text" v-model="data.titulo_eleitor" name="titulo_eleitor" class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.titulo_eleitor" name="titulo_eleitor"
+					class=" text-white border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class="row">
 				<label for="cartao_sus" class="d-flex justify-content-start p-0">Cartão SUS</label>
-				<input type="text" v-model="data.cartao_sus" name="cartao_sus" class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.cartao_sus" name="cartao_sus"
+					class=" text-white border-white form-control mb-1 w-50" />
 
 				<label for="estado_civil" class="d-flex justify-content-start p-0">Estado Civil</label>
 				<select v-model="data.estado_civil" name="estado_civil" class=" border-white form-control mb-1 w-50">
@@ -89,14 +91,12 @@
 
 			<div class="row">
 				<label for="mae" class="d-flex justify-content-start p-0 ">Mãe</label>
-				<input type="text" v-model="data.mae" name="mae"
-					class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.mae" name="mae" class=" text-white border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class="row">
 				<label for="pai" class="d-flex justify-content-start p-0 ">Pai</label>
-				<input type="text" v-model="data.pai" name="pai"
-					class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.pai" name="pai" class=" text-white border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class="row">
@@ -111,16 +111,14 @@
 
 			<div class="row">
 				<label for="rua" class="d-flex justify-content-start p-0 ">Rua</label>
-				<input type="text" v-model="data.rua" name="rua"
-					class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.rua" name="rua" class=" text-white border-white form-control mb-1 w-50" />
 
 				<label for="numero" class="d-flex justify-content-start p-0 ">Numero</label>
 				<input type="text" v-model="data.numero" name="numero"
 					class=" text-white border-white form-control mb-1 w-50" />
 
 				<label for="cep" class="d-flex justify-content-start p-0 ">CEP</label>
-				<input type="text" v-model="data.cep" name="cep"
-					class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.cep" name="cep" class=" text-white border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class=row>
@@ -133,8 +131,7 @@
 					class=" text-white border-white form-control mb-1 w-50" />
 
 				<label for="uf" class="d-flex justify-content-start p-0 ">UF</label>
-				<input type="text" v-model="data.uf" name="uf"
-					class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.uf" name="uf" class=" text-white border-white form-control mb-1 w-50" />
 			</div>
 
 
@@ -160,7 +157,8 @@
 				<select name="id_horario" v-model="data.id_horario" class="border-white form-control mb-1">
 					<option disabled value=""></option>
 					<option v-for="horario in horarios" v-bind:value="horario.id">
-						{{ horario.horario_entrada }} - {{ horario.horario_ida_intervalo }} - {{ horario.horario_volta_intervalo }} - {{ horario.horario_saida }}</option>
+						{{ horario.horario_entrada }} - {{ horario.horario_ida_intervalo }} - {{
+							horario.horario_volta_intervalo }} - {{ horario.horario_saida }}</option>
 				</select><br>
 			</div>
 			<div class="row">
@@ -184,7 +182,7 @@
 <script>
 
 export default {
-	name: "FormCadastro",
+	name: "FormFuncionario",
 	data() {
 		return {
 			data: {
@@ -220,7 +218,7 @@ export default {
 	},
 	methods: {
 		sendForm() {
-			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "" || this.data.id_horario == "" || this.data.id_cargo == "" || this.data.nivel == "" || this.data.cep == "" || this.data.rua == "" || this.data.bairro == "" || this.data.cidade == "" || this.data.uf == "" || this.data.cpf == "" || this.data.rg == "" || this.data.email == "" || this.data.celular == "" || this.data.mae == ""|| this.data.pis_pasep == "" || this.data.titulo_eleitor == "" || this.data.cartao_sus == "" || this.data.estado_civil == "") {
+			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "" || this.data.id_horario == "" || this.data.id_cargo == "" || this.data.nivel == "" || this.data.cep == "" || this.data.rua == "" || this.data.bairro == "" || this.data.cidade == "" || this.data.uf == "" || this.data.cpf == "" || this.data.rg == "" || this.data.email == "" || this.data.celular == "" || this.data.mae == "" || this.data.pis_pasep == "" || this.data.titulo_eleitor == "" || this.data.cartao_sus == "" || this.data.estado_civil == "") {
 				alert("Preencha todos os campos");
 			} else {
 				this.$http.post("http://localhost:8000/api/cadastro", this.data)

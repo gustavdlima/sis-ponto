@@ -7,7 +7,7 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				<FormCadastro :cargos="cargos" :horarios="horarios"></FormCadastro>
+				<FormFuncionario :cargos="cargos" :horarios="horarios"></FormFuncionario>
 			</div>
 		</div>
 	</div>
@@ -15,12 +15,12 @@
 
 <script>
 import SideBar from '../components/SideBar.vue';
-import FormCadastro from '../components/FormCadastro.vue';
+import FormFuncionario from '../components/FormFuncionario.vue';
 
 export default {
 	components: {
 		SideBar,
-		FormCadastro
+		FormFuncionario
 	},
 	props: {
 		cargos: Array,
