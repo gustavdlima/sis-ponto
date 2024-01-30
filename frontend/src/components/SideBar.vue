@@ -5,7 +5,8 @@
 		</div>
 		<div class="">
 			<ul class="list-group mt-1">
-				<li class="list-group-item m-1" role="button" @click="redirectToCadastro">Cadastrar Funcionário</li>
+				<li class="list-group-item m-1" role="button" @click="redirectToCadastroFuncionario">Cadastrar Funcionário</li>
+				<li class="list-group-item m-1" role="button" @click="redirectToCadastroOperador">Cadastrar Operador</li>
 					<li class="list-group-item m-1" role="button"
 					@click="redirectToListarFuncionarios">Listar
 						Funcionários</li>
@@ -26,8 +27,12 @@ const logout = () => {
 	authStore.logout();
 };
 
-const redirectToCadastro = () => {
-	router.push({ path: '/cadastro' });
+const redirectToCadastroFuncionario = () => {
+	router.push({ path: '/cadastroFuncionario' });
+};
+
+const redirectToCadastroOperador = () => {
+	router.push({ path: '/cadastroOperador' });
 };
 
 const redirectToListarFuncionarios = () => {

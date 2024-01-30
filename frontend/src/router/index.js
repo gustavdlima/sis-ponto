@@ -10,9 +10,17 @@ const routes = [
 		}
 	},
 	{
-		path: '/cadastro',
+		path: '/cadastroFuncionario',
 		name: 'Cadastro',
 		component: () => import('../views/CadastroFuncionario.vue'),
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/cadastroOperador',
+		name: 'CadastroOperador',
+		component: () => import('../views/CadastroOperador.vue'),
 		meta: {
 			requiresAuth: true
 		}
