@@ -27,6 +27,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const authStore = useAuthStore();
 
+console.log(authStore.user.level);
+
 const logout = () => {
 	authStore.logout();
 };

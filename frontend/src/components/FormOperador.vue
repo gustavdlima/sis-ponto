@@ -23,8 +23,17 @@
 			</div>
 
 			<div class="" >
-				<label for="password" class="">Confirme sua senha: </label>
+				<label for="password" class="">Confirmar senha: </label>
 				<input type="password" v-model="formData.confirmPassword" name="password" class="" />
+			</div>
+
+			<div class="">
+				<label for="level" class="">Nível</label>
+				<select v-model="formData.level" name="level" class=" border-white form-control mb-1 w-50">
+					<option disabled value=""></option>"
+					<option value="1">Nível 1 [Administrador]</option>
+					<option value="2">Nível 2 [Operador]</option>
+				</select><br>
 			</div>
 
 			<div class="row">
@@ -36,6 +45,9 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '../stores/authStore';
+
+const authStore = useAuthStore();
 
 const formData = {
 	name: "",
@@ -45,11 +57,19 @@ const formData = {
 	level: "",
 }
 
-const sendForm = () => {
-	if (formData.password !== formData.confirmPassword) {
-		alert("As senhas precisam ser iguais");
+const sendForm = async () => {
+	if (formData.name != "" || formData.email != "" || formData.password != "") {
+		if (formData.password != formData.confirmPassword) {
+			alert("As senhas precisam ser iguais");
+			return ;
+		}
+		if (formData.password.length < 8) {
+			alert("Senha muito curta, precisa ter pelo menos 8 caracteres");
+			return ;
+		}
+		const res = authStore.cadastroOperador(formData);
+		console.log (res);
 	}
-	// enviar form para o backend
 	console.log(formData);
 }
 
