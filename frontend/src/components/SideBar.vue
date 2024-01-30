@@ -5,11 +5,15 @@
 		</div>
 		<div class="">
 			<ul class="list-group mt-1">
-				<li class="list-group-item m-1" role="button" @click="redirectToCadastroFuncionario">Cadastrar Funcionário</li>
+				<li class="list-group-item m-1" role="button" @click="redirectToCadastroFuncionario">Cadastrar Funcionário
+				</li>
+
 				<li class="list-group-item m-1" role="button" @click="redirectToCadastroOperador">Cadastrar Operador</li>
-					<li class="list-group-item m-1" role="button"
-					@click="redirectToListarFuncionarios">Listar
-						Funcionários</li>
+
+				<li class="list-group-item m-1" role="button" @click="redirectToCadastroHorario">Cadastrar Horário</li>
+
+				<li class="list-group-item m-1" role="button" @click="redirectToListarFuncionarios">Listar Funcionários</li>
+
 				<li class="list-group-item m-1" role="button" @click="logout()">Logout</li>
 			</ul>
 		</div>
@@ -33,6 +37,10 @@ const redirectToCadastroFuncionario = () => {
 
 const redirectToCadastroOperador = () => {
 	router.push({ path: '/cadastroOperador' });
+};
+
+const redirectToCadastroHorario = () => {
+	router.push({ path: '/cadastroHorario' });
 };
 
 const redirectToListarFuncionarios = () => {

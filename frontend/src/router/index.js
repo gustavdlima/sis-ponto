@@ -26,6 +26,15 @@ const routes = [
 		}
 	},
 	{
+		path: '/cadastroHorario',
+		name: 'CadastroHorario',
+		component: () => import('../views/CadastroHorario.vue'),
+		meta: {
+			requiresAuth: true
+		}
+	},
+
+	{
 		path: '/baterponto',
 		name: 'BaterPonto',
 		component: () => import('../views/BaterPonto.vue'),
