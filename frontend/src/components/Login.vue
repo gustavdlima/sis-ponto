@@ -7,7 +7,7 @@
             style="background-color: rgba(255, 255, 255, 0);" v-model="user.email" />
         </div>
         <div class="row-md-1 row-sm-12 d-flex justify-content-center">
-          <input type="text" id="password" class="w-50 mt-3 text-white border-white form-control" placeholder="senha"
+          <input type="password" id="password" class="w-50 mt-3 text-white border-white form-control" placeholder="senha"
             style="background-color: rgba(255, 255, 255, 0);" v-model="user.password" />
         </div>
       </div>
