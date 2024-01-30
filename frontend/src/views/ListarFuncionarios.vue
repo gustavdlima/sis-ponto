@@ -8,10 +8,21 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				<DataTable :data="funcionarios" :language="language" :columns="columns">
-				<tr>
-
-				</tr>
+				<DataTable id="table" :data="funcionarios" :language="language" :columns="columns" :options="options">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Setor</th>
+						<th>Matricula</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th>Nome</th>
+						<th>Setor</th>
+						<th>Matricula</th>
+					</tr>
+				</tfoot>
 				</DataTable>
 			</div>
 		</div>
@@ -29,13 +40,18 @@ import axios from 'axios';
 
 const authStore = useAuthStore();
 const funcionarios = ref('');
-DataTable.use(DataTablesCore);
+DataTable.use(DataTablesCore, { responsive: true });
 
 const columns = [
 	{ title: 'Nome', data: 'nome' },
 	{ title: 'Setor', data: 'setor' },
 	{ title: 'Matricula', data: 'matricula' },
 ]
+
+const options = {
+	language: language
+}
+
 
 function getFuncionarios() {
 			const bearerToken = 'Bearer ' + authStore.userToken;
