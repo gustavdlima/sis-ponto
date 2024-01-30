@@ -55,6 +55,18 @@ export const useAuthStore = defineStore('auth', {
 					this.isLogged = false;
 					this.$router.push({ name: 'Login' })
 				})
+		},
+
+		cadastroFuncionario(formData) {
+			const bearerToken = 'Bearer ' + this.userToken;
+			axios.defaults.headers.common = {
+				'Authorization': bearerToken
+			}
+			axios
+				.post('http://localhost:8000/api/funcionarios', formData)
+				.then((response) => {
+					return response.data;
+				})
 		}
 
 	},

@@ -133,9 +133,6 @@
 				<label for="uf" class="d-flex justify-content-start p-0 ">UF</label>
 				<input type="text" v-model="data.uf" name="uf" class=" text-white border-white form-control mb-1 w-50" />
 			</div>
-
-
-
 			<div class="row">
 				<label for="nivel" class="d-flex justify-content-start p-0 ">Nível</label>
 				<select v-model="data.nivel" name="nivel" class=" border-white form-control mb-1 w-50">
@@ -172,14 +169,62 @@
 				</select>
 			</div>
 			<div class="row d-flex justify-content-center">
-				<button type="submit"
+				<button type="submit" @onClick="sendForm"
 					class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white w-50">Cadastrar</button>
 			</div>
 		</form>
 	</div>
 </template>
 
-<script>
+<script setup>
+import { useAuthStore } from '../stores/authStore.js';
+
+const authStore = useAuthStore();
+
+const props = defineProps({
+	cargos: Array,
+	horarios: Array
+});
+
+const data = {
+	nome: "",
+	setor: "",
+	matricula: "",
+	nivel: "",
+	data_nascimento: "",
+	rg: "",
+	cpf: "",
+	pis_pasep: "",
+	titulo_eleitor: "",
+	cartao_sus: "",
+	mae: "",
+	pai: "",
+	celular: "",
+	email: "",
+	estado_civil: "",
+	rua: "",
+	bairro: "",
+	cep: "",
+	numero: "",
+	cidade: "",
+	uf: "",
+	id_cargo: "",
+	id_horario: "",
+}
+
+const sendForm = () => {
+			if (data.setor == "" || data.matricula == "" || data.dataNascimento == "" || data.nome == "" || data.id_horario == "" || data.id_cargo == "" || data.nivel == "" || data.cep == "" || data.rua == "" || data.bairro == "" || data.cidade == "" || data.uf == "" || data.cpf == "" || data.rg == "" || data.email == "" || data.celular == "" || data.mae == "" || data.pis_pasep == "" || data.titulo_eleitor == "" || data.estado_civil == "") {
+				alert("Preencha todos os campos");
+			} else {
+				const res = authStore.cadastroFuncionario(data);
+			}
+}
+
+</script>
+
+
+
+<!-- <script>
 
 export default {
 	name: "FormFuncionario",
@@ -218,44 +263,13 @@ export default {
 	},
 	methods: {
 		sendForm() {
-			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "" || this.data.id_horario == "" || this.data.id_cargo == "" || this.data.nivel == "" || this.data.cep == "" || this.data.rua == "" || this.data.bairro == "" || this.data.cidade == "" || this.data.uf == "" || this.data.cpf == "" || this.data.rg == "" || this.data.email == "" || this.data.celular == "" || this.data.mae == "" || this.data.pis_pasep == "" || this.data.titulo_eleitor == "" || this.data.cartao_sus == "" || this.data.estado_civil == "") {
+			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "" || this.data.id_horario == "" || this.data.id_cargo == "" || this.data.nivel == "" || this.data.cep == "" || this.data.rua == "" || this.data.bairro == "" || this.data.cidade == "" || this.data.uf == "" || this.data.cpf == "" || this.data.rg == "" || this.data.email == "" || this.data.celular == "" || this.data.mae == "" || this.data.pis_pasep == "" || this.data.titulo_eleitor == "" || this.data.estado_civil == "") {
 				alert("Preencha todos os campos");
 			} else {
-				this.$http.post("http://localhost:8000/api/cadastro", this.data)
-					.then(function (response) {
-						console.log(response.data);
-					})
-					.catch(function (error) {
-						console.log(error.response.data);
-					});
+				useAuthStore
 			}
 		},
 
 	},
 }
-</script>
-
-<style scoped>
-button:hover {
-	background-color: rgb(0, 140, 255);
-}
-
-label {
-	font-size: 2.5vh;
-	color: black;
-	font-weight: bold !important;
-}
-
-input,
-select {
-	font-size: 2.5vh;
-	color: aliceblue !important;
-	font-weight: bold !important;
-	background-color: rgba(255, 255, 255, 0) !important;
-}
-
-option {
-	color: black !important;
-	font-weight: bold !important;
-}
-</style>
+</script> -->

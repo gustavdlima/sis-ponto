@@ -60,8 +60,6 @@ class FuncionarioController extends Controller
         } else {
             return "Funcionário existente.";
         }
-
-        return $funcionario;
     }
 
     /**
