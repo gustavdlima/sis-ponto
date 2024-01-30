@@ -12,6 +12,8 @@
 
 				<li class="list-group-item m-1" role="button" @click="redirectToCadastroHorario">Cadastrar Horário</li>
 
+				<li class="list-group-item m-1" role="button" @click="redirectToCadastroCargo">Cadastrar Cargo</li>
+
 				<li class="list-group-item m-1" role="button" @click="redirectToListarFuncionarios">Listar Funcionários</li>
 
 				<li class="list-group-item m-1" role="button" @click="logout()">Logout</li>
@@ -43,6 +45,10 @@ const redirectToCadastroOperador = () => {
 
 const redirectToCadastroHorario = () => {
 	router.push({ path: '/cadastroHorario' });
+};
+
+const redirectToCadastroCargo = () => {
+	router.push({ path: '/cadastroCargo' });
 };
 
 const redirectToListarFuncionarios = () => {

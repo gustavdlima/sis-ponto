@@ -33,13 +33,12 @@ const routes = [
 			requiresAuth: true
 		}
 	},
-
 	{
-		path: '/baterponto',
-		name: 'BaterPonto',
-		component: () => import('../views/BaterPonto.vue'),
+		path: '/cadastroCargo',
+		name: 'CadastroCargo',
+		component: () => import('../views/CadastroCargo.vue'),
 		meta: {
-			requiresAuth: false
+			requiresAuth: true
 		}
 	},
 	{
