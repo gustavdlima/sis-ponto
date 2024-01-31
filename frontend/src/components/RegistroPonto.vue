@@ -13,7 +13,7 @@
 		<div class="row-md-1 row-sm-12 d-flex justify-content-center">
 		  <button type="submit"
 			class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white"
-			v-on:click.prevent="login()">Bater Ponto</button>
+			v-on:click.prevent="registrar()">Bater Ponto</button>
 		</div>
 	  </form>
 	</div>
@@ -21,11 +21,10 @@
 
   <script>
   import { useFuncionarioStore } from '../stores/funcionarioStore';
-
-  const funcionarioStore = useFuncionarioStore();
+  import axios from 'axios';
 
   export default {
-	name: 'Login',
+	name: 'RegistroPonto',
 	data() {
 	  return {
 		input: {
@@ -35,24 +34,19 @@
 	  }
 	},
 	methods: {
-	  login() {
-
+	  registrar() {
 		if (this.input.matricula != "" || this.input.data_nascimento != "") {
-
+			axios.post("http://localhost:8000/api/ponto", this.input)
+				.then(response => {
+					console.log(response);
+				})
+				.catch(error => {
+					console.log(error);
+				});
 		} else {
 		  console.log("Complete os campos de obrigatórios")
 		}
 	  },
-
-	  addFuncionarioToStore() {
-		console.log(funcionarioStore);
-	  },
-
-	  onClick() {
-		alert("Ponto batido!");
-	  }
-
-
 	},
   }
   </script>
