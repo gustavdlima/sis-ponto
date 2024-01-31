@@ -23,7 +23,7 @@ class RegistroController extends Controller
                 $horarioEntrada = strtotime($horario->horario_entrada);
                 $horarioEntrada = strtotime("-15 minutes", $horarioEntrada);
 
-                if (($horarioEntrada < $registrationTime))
+                if ($registrationTime < $horarioEntrada)
                     return "Volte 15 minutos antes do horário de entrada";
                 break;
             case 'segundo_ponto':
@@ -240,7 +240,10 @@ class RegistroController extends Controller
         return $id;
     }
 
-    public function createFirstPonto($registroArray, $date) {
+    public function createFirstPonto($registroArray, $funcionario, $date) {
+        $isEarly = $this->checkIfTheFuncionarioIsAheadOfSchedule($registroArray, $funcionario, $date);
+        if ($isEarly != null)
+            return $isEarly;
         $registroArray['primeiro_ponto'] = $date;
         $newRegistro = $this->create($registroArray);
         return $newRegistro;
@@ -258,11 +261,10 @@ class RegistroController extends Controller
         $registroFuncionario = $this->getLastFuncionarioRegistro($funcionario[0]->id);
 
         $registroArray = $this->createRegistroArray($funcionario);
-
         if ($registroFuncionario == null) {
 
             $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
-            $newRegistro = $this->createFirstPonto($registroArray, $date);
+            $newRegistro = $this->createFirstPonto($registroArray, $funcionario, $date);
 
             return $newRegistro;
         } else {
@@ -274,13 +276,13 @@ class RegistroController extends Controller
 
                 if (!$ponto) {
                     $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
-                    return $this->createFirstPonto($registroArray, $date);
+                    return $this->createFirstPonto($registroArray, $funcionario, $date);
                 } else {
                     // se o ponto existir, verifico o horario e se for antes do horario do funcionario bater o ponto, proibio de bater o ponto
                     $isEarly = $this->checkIfTheFuncionarioIsAheadOfSchedule($registroFuncionario, $funcionario, $date);
                     // return $isEarly;
                     if ($isEarly != null) {
-                        return" $isEarly";
+                        return $isEarly;
                     }
 
                     $newRegistro = $this->fillRegistroWithPonto($registroFuncionario, $ponto, $date);
@@ -289,7 +291,7 @@ class RegistroController extends Controller
             } else {
                 $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
 
-                return $this->createFirstPonto($registroArray, $date);
+                return $this->createFirstPonto($registroArray, $funcionario, $date);
             }
         }
     }

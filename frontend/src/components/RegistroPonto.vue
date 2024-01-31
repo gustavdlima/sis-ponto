@@ -39,8 +39,8 @@
 		if (this.input.matricula != "" || this.input.data_nascimento != "") {
 			axios.post("http://localhost:8000/api/ponto", this.input)
 				.then(response => {
-					this.mensagem = response.data;
-					if (response.data.indexOf("15 minutos") !== -1) {
+					this.mensagem = JSON.stringify(response.data);
+					if (this.mensagem.indexOf("15 minutos") !== -1) {
 						alert(this.mensagem);
 					}
 					console.log(this.mensagem);
