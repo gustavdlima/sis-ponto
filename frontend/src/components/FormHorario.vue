@@ -36,6 +36,9 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '../stores/authStore';
+
+const authStore = useAuthStore();
 
 const formData = {
 	horario_entrada: "",
@@ -45,8 +48,10 @@ const formData = {
 }
 
 const sendForm = () => {
-	// enviar form para o backend
-	console.log(formData);
+	if (formData.horario_entrada != "" || formData.horario_ida_intervalo != "" || formData.horario_volta_intervalo != "" || formData.horario_saida != "") {
+		const res = authStore.cadastroHorario(formData);
+		console.log (res);
+	}
 }
 
 </script>
