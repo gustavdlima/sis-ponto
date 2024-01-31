@@ -93,6 +93,18 @@ export const useAuthStore = defineStore('auth', {
 				})
 		},
 
+		async cadastroHorario(formData) {
+			const bearerToken = 'Bearer ' + this.userToken;
+			axios.defaults.headers.common = {
+				'Authorization': bearerToken
+			}
+			await axios
+				.post('http://localhost:8000/api/horarios', formData)
+				.then((response) => {
+					return response.data;
+				})
+		}
+
 	},
 
 })

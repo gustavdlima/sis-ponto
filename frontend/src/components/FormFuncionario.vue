@@ -217,6 +217,7 @@ const sendForm = () => {
 				alert("Preencha todos os campos");
 			} else {
 				const res = authStore.cadastroFuncionario(data);
+				console.log(res);
 			}
 }
 
