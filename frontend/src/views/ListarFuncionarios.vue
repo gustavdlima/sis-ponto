@@ -19,8 +19,7 @@
 							Registro de {{ funcionarioSelecionado.nome }}
 						</v-card-title>
 						<v-card-text>
-							<p>Matrícula: {{ funcionarioSelecionado.matricula }}</p>
-							<p>Setor: {{ funcionarioSelecionado.setor }}</p>
+							<p> {{ registroFuncionarioSelecionado }} </p>
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer></v-spacer>
@@ -44,6 +43,7 @@ const funcionarios = ref([]);
 
 const dialogRegistro = ref(false);
 const funcionarioSelecionado = ref(null);
+const registroFuncionarioSelecionado = ref(null);
 
 const headers = ref([
 	{ title: 'Nome', align: 'start', key: 'nome' },
@@ -72,6 +72,17 @@ function getFuncionarios() {
 		});
 }
 
+function getRegistros() {
+	axios.post('http://localhost:8000/api/registroFuncionario', funcionarioSelecionado.id).then(response => {
+		registroFuncionarioSelecionado.value = response.data;
+		console.log(registroFuncionarioSelecionado);
+	})
+		.catch(error => {
+			console.log(error);
+		});
+}
+
 getFuncionarios();
+getRegistros();
 
 </script>
