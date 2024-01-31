@@ -7,55 +7,14 @@
 				</div>
 			</div>
 			<div class="col bg-info">
-				<FormFuncionario :cargos="cargos" :horarios="horarios"></FormFuncionario>
+				<FormFuncionario></FormFuncionario>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup>
 import SideBar from '../components/SideBar.vue';
 import FormFuncionario from '../components/FormFuncionario.vue';
 
-export default {
-	components: {
-		SideBar,
-		FormFuncionario
-	},
-	props: {
-		cargos: Array,
-		horarios: Array
-	},
-	data() {
-		return {
-			cargos: [],
-			horarios: []
-		}
-	},
-	methods: {
-		getCargos() {
-			this.$http.get("http://localhost:8000/api/cargos")
-				.then(response => {
-					this.cargos = response.data;
-				})
-				.catch(error => {
-					console.log(error);
-				});
-		},
-
-		getHorarios() {
-			this.$http.get("http://localhost:8000/api/horarios")
-				.then(response => {
-					this.horarios = response.data;
-				})
-				.catch(error => {
-					console.log(error);
-				});
-		}
-	},
-	mounted() {
-		this.getCargos();
-		this.getHorarios();
-	}
-}
 </script>

@@ -49,37 +49,37 @@
 			</div>
 			<div class="row">
 				<label for="nome" class="d-flex justify-content-start p-0">Nome</label>
-				<input type="text" v-model="data.nome" name="nome" class=" text-white border-white form-control mb-1" />
+				<input type="text" v-model="data.nome" name="nome" class=" text-black border-white form-control mb-1" />
 			</div>
 
 			<div class="row">
 				<label for="matricula" class="d-flex justify-content-start p-0 ">Matricula</label>
 				<input type="text" v-model="data.matricula" name="matricula"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class="row">
 				<label for="rg" class="d-flex justify-content-start p-0">Rg</label>
-				<input type="text" v-model="data.rg" name="rg" class=" text-white border-white form-control mb-1" />
+				<input type="text" v-model="data.rg" name="rg" class=" text-black border-white form-control mb-1" />
 
 				<label for="cpf" class="d-flex justify-content-start p-0">Cpf</label>
-				<input type="text" v-model="data.cpf" name="cpf" class=" text-white border-white form-control mb-1" />
+				<input type="text" v-model="data.cpf" name="cpf" class=" text-black border-white form-control mb-1" />
 			</div>
 
 			<div class="row">
 				<label for="pis_pasep" class="d-flex justify-content-start p-0">Pis/Pasep</label>
 				<input type="pis_pasep" v-model="data.pis_pasep" name="pis_pasep"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 
 				<label for="titulo_eleitor" class="d-flex justify-content-start p-0">Titulo Eleitor</label>
 				<input type="text" v-model="data.titulo_eleitor" name="titulo_eleitor"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class="row">
 				<label for="cartao_sus" class="d-flex justify-content-start p-0">Cartão SUS</label>
 				<input type="text" v-model="data.cartao_sus" name="cartao_sus"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 
 				<label for="estado_civil" class="d-flex justify-content-start p-0">Estado Civil</label>
 				<select v-model="data.estado_civil" name="estado_civil" class=" border-white form-control mb-1 w-50">
@@ -91,47 +91,47 @@
 
 			<div class="row">
 				<label for="mae" class="d-flex justify-content-start p-0 ">Mãe</label>
-				<input type="text" v-model="data.mae" name="mae" class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.mae" name="mae" class=" text-black border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class="row">
 				<label for="pai" class="d-flex justify-content-start p-0 ">Pai</label>
-				<input type="text" v-model="data.pai" name="pai" class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.pai" name="pai" class=" text-black border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class="row">
 				<label for="email" class="d-flex justify-content-start p-0 ">Email</label>
 				<input type="email" v-model="data.email" name="email"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 
 				<label for="celular" class="d-flex justify-content-start p-0 ">Celular</label>
 				<input type="text" v-model="data.celular" name="celular"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class="row">
 				<label for="rua" class="d-flex justify-content-start p-0 ">Rua</label>
-				<input type="text" v-model="data.rua" name="rua" class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.rua" name="rua" class=" text-black border-white form-control mb-1 w-50" />
 
 				<label for="numero" class="d-flex justify-content-start p-0 ">Numero</label>
 				<input type="text" v-model="data.numero" name="numero"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 
 				<label for="cep" class="d-flex justify-content-start p-0 ">CEP</label>
-				<input type="text" v-model="data.cep" name="cep" class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.cep" name="cep" class=" text-black border-white form-control mb-1 w-50" />
 			</div>
 
 			<div class=row>
 				<label for="bairro" class="d-flex justify-content-start p-0 ">Bairro</label>
 				<input type="text" v-model="data.bairro" name="bairro"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 
 				<label for="cidade" class="d-flex justify-content-start p-0 ">Cidade</label>
 				<input type="text" v-model="data.cidade" name="cidade"
-					class=" text-white border-white form-control mb-1 w-50" />
+					class=" text-black border-white form-control mb-1 w-50" />
 
 				<label for="uf" class="d-flex justify-content-start p-0 ">UF</label>
-				<input type="text" v-model="data.uf" name="uf" class=" text-white border-white form-control mb-1 w-50" />
+				<input type="text" v-model="data.uf" name="uf" class=" text-black border-white form-control mb-1 w-50" />
 			</div>
 			<div class="row">
 				<label for="nivel" class="d-flex justify-content-start p-0 ">Nível</label>
@@ -170,7 +170,7 @@
 			</div>
 			<div class="row d-flex justify-content-center">
 				<button type="submit" @onClick="sendForm"
-					class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white w-50">Cadastrar</button>
+					class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-black border-white w-50">Cadastrar</button>
 			</div>
 		</form>
 	</div>
@@ -178,13 +178,13 @@
 
 <script setup>
 import { useAuthStore } from '../stores/authStore.js';
+import { ref } from 'vue';
+import axios from 'axios';
 
 const authStore = useAuthStore();
 
-const props = defineProps({
-	cargos: Array,
-	horarios: Array
-});
+var cargos = ref([]);
+var horarios = ref([]);
 
 const data = {
 	nome: "",
@@ -220,56 +220,29 @@ const sendForm = () => {
 			}
 }
 
-</script>
-
-
-
-<!-- <script>
-
-export default {
-	name: "FormFuncionario",
-	data() {
-		return {
-			data: {
-				nome: "",
-				setor: "",
-				matricula: "",
-				nivel: "",
-				data_nascimento: "",
-				rg: "",
-				cpf: "",
-				pis_pasep: "",
-				titulo_eleitor: "",
-				cartao_sus: "",
-				mae: "",
-				pai: "",
-				celular: "",
-				email: "",
-				estado_civil: "",
-				rua: "",
-				bairro: "",
-				cep: "",
-				numero: "",
-				cidade: "",
-				uf: "",
-				id_cargo: "",
-				id_horario: "",
-			}
-		}
-	},
-	props: {
-		cargos: Array,
-		horarios: Array
-	},
-	methods: {
-		sendForm() {
-			if (this.data.setor == "" || this.data.matricula == "" || this.data.dataNascimento == "" || this.data.nome == "" || this.data.id_horario == "" || this.data.id_cargo == "" || this.data.nivel == "" || this.data.cep == "" || this.data.rua == "" || this.data.bairro == "" || this.data.cidade == "" || this.data.uf == "" || this.data.cpf == "" || this.data.rg == "" || this.data.email == "" || this.data.celular == "" || this.data.mae == "" || this.data.pis_pasep == "" || this.data.titulo_eleitor == "" || this.data.estado_civil == "") {
-				alert("Preencha todos os campos");
-			} else {
-				useAuthStore
-			}
-		},
-
-	},
+function getCargos() {
+			axios.get("http://localhost:8000/api/cargos")
+				.then(response => {
+					cargos.value = response.data;
+					console.log(cargos);
+				})
+				.catch(error => {
+					console.log(error);
+				});
 }
-</script> -->
+
+function getHorarios() {
+			axios.get("http://localhost:8000/api/horarios")
+				.then(response => {
+					horarios.value = response.data;
+					console.log(horarios);
+				})
+				.catch(error => {
+					console.log(error);
+				});
+}
+
+getCargos();
+getHorarios();
+
+</script>
