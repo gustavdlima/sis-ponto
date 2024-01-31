@@ -7,9 +7,51 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Horario;
 use DateTime;
+date_default_timezone_set('America/Sao_Paulo');
 
 class RegistroController extends Controller
 {
+    public function checkIfTheFuncionarioIsAheadOfSchedule($registroArray, $funcionario, $date) {
+        $horario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+
+        $registrationTime = $this->getJustTimeFromDate($date);
+        $registrationTime = strtotime($registrationTime);
+
+        $ponto = $this->checkWhichPonto($registroArray);
+        switch ($ponto) {
+            case 'primeiro_ponto':
+                $horarioEntrada = strtotime($horario->horario_entrada);
+                $horarioEntrada = strtotime("-15 minutes", $horarioEntrada);
+
+                if (($horarioEntrada < $registrationTime))
+                    return "Volte 15 minutos antes do horário de entrada";
+                break;
+            case 'segundo_ponto':
+               $horarioIdaIntervalo = strtotime($horario->horario_ida_intervalo);
+                $horarioIdaIntervalo = strtotime("-15 minutes", $horarioIdaIntervalo);
+
+                if ($registrationTime < $horarioIdaIntervalo)
+                    return "Volte 15 minutos antes do horário de ida para intervalo";
+                break;
+            case 'terceiro_ponto':
+                $horarioVoltaIntervalo = strtotime($horario->horario_volta_intervalo);
+                $horarioVoltaIntervalo = strtotime("-15 minutes", $horarioVoltaIntervalo);
+
+                if ($registrationTime < $horarioVoltaIntervalo)
+                    return "Volte 15 minutos antes do horário de volta para intervalo";
+                break;
+            case 'quarto_ponto':
+                $horarioSaida = strtotime($horario->horario_saida);
+                $horarioSaida = strtotime("-15 minutes", $horarioSaida);
+
+                if ($registrationTime < $horarioSaida)
+                    return "Volte 15 minutos antes do horário de saida";
+                break;
+        }
+
+        return null;
+    }
+
     public function getJustTimeFromDate($date) {
         $split = explode(' ', $date);
         $time = $split[1];
@@ -233,13 +275,18 @@ class RegistroController extends Controller
                 if (!$ponto) {
                     $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
                     return $this->createFirstPonto($registroArray, $date);
+                } else {
+                    // se o ponto existir, verifico o horario e se for antes do horario do funcionario bater o ponto, proibio de bater o ponto
+                    $isEarly = $this->checkIfTheFuncionarioIsAheadOfSchedule($registroFuncionario, $funcionario, $date);
+                    // return $isEarly;
+                    if ($isEarly != null) {
+                        return" $isEarly";
+                    }
+
+                    $newRegistro = $this->fillRegistroWithPonto($registroFuncionario, $ponto, $date);
+                    return $newRegistro;
                 }
-
-                $newRegistro = $this->fillRegistroWithPonto($registroFuncionario, $ponto, $date);
-                return $newRegistro;
-
             } else {
-
                 $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
 
                 return $this->createFirstPonto($registroArray, $date);
