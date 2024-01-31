@@ -1,37 +1,37 @@
 <template>
 	<div class="container bg-warning d-flex justify-content-center align-items-center" style="height: 100vh;">
-	  <div class="row bg-dark h-75 w-100">
-		<div class="col-md-3 bg-danger">
-		  <div class="row">
-			<SideBar></SideBar>
-		  </div>
-		</div>
-		<div class="col bg-info">
-		  <v-data-table :items="funcionarios" :items-per-page="5" :headers="headers">
-			<template v-slot:item.action="{ item }">
-			  <v-btn @click="abrirRegistro(item)" color="teal">Registro</v-btn>
-			</template>
-		  </v-data-table>
+		<div class="row bg-dark h-75 w-100">
+			<div class="col-md-3 bg-danger">
+				<div class="row">
+					<SideBar></SideBar>
+				</div>
+			</div>
+			<div class="col bg-info">
+				<v-data-table :items="funcionarios" :items-per-page="5" :headers="headers">
+					<template v-slot:item.action="{ item }">
+						<v-btn @click="abrirRegistro(item)" color="teal">Registro</v-btn>
+					</template>
+				</v-data-table>
 
-		  <v-dialog v-model="dialogRegistro" max-width="500px">
-			<v-card>
-			  <v-card-title>
-				Registro de {{ funcionarioSelecionado.nome }}
-			  </v-card-title>
-			  <v-card-text>
-				<p>Matrícula: {{ funcionarioSelecionado.matricula }}</p>
-				<p>Setor: {{ funcionarioSelecionado.setor }}</p>
-				</v-card-text>
-			  <v-card-actions>
-				<v-spacer></v-spacer>
-				<v-btn color="blue darken-1" text @click="dialogRegistro = false">Fechar</v-btn>
-			  </v-card-actions>
-			</v-card>
-		  </v-dialog>
+				<v-dialog v-model="dialogRegistro" max-width="500px">
+					<v-card>
+						<v-card-title>
+							Registro de {{ funcionarioSelecionado.nome }}
+						</v-card-title>
+						<v-card-text>
+							<p>Matrícula: {{ funcionarioSelecionado.matricula }}</p>
+							<p>Setor: {{ funcionarioSelecionado.setor }}</p>
+						</v-card-text>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="blue darken-1" text @click="dialogRegistro = false">Fechar</v-btn>
+						</v-card-actions>
+					</v-card>
+				</v-dialog>
+			</div>
 		</div>
-	  </div>
 	</div>
-  </template>
+</template>
 
 <script setup>
 import SideBar from '../components/SideBar.vue';
@@ -49,27 +49,27 @@ const headers = ref([
 	{ title: 'Nome', align: 'start', key: 'nome' },
 	{ title: 'Matrícula', key: 'matricula', align: 'start' },
 	{ title: 'Setor', key: 'setor', align: 'start' },
-	{ value:'', sortable: false },
-	{ value:'action', sortable: false },
+	{ value: '', sortable: false },
+	{ value: 'action', sortable: false },
 ]);
 
 function abrirRegistro(funcionario) {
-  funcionarioSelecionado.value = funcionario;
-  dialogRegistro.value = true;
+	funcionarioSelecionado.value = funcionario;
+	dialogRegistro.value = true;
 }
 
 function getFuncionarios() {
-			const bearerToken = 'Bearer ' + authStore.userToken;
-			axios.defaults.headers.common = {
-				'Authorization': bearerToken
-			}
-			const response =  axios.get('http://localhost:8000/api/funcionarios').then(response => {
-				funcionarios.value = response.data;
-				return funcionarios.value;
-			})
-			.catch(error => {
-				console.log(error);
-			});
+	const bearerToken = 'Bearer ' + authStore.userToken;
+	axios.defaults.headers.common = {
+		'Authorization': bearerToken
+	}
+	const response = axios.get('http://localhost:8000/api/funcionarios').then(response => {
+		funcionarios.value = response.data;
+		return funcionarios.value;
+	})
+		.catch(error => {
+			console.log(error);
+		});
 }
 
 getFuncionarios();
