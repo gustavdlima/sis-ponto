@@ -9,6 +9,7 @@ use App\Http\Controllers\CargoController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegistroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,13 +32,15 @@ Route::resource('/funcionarios', FuncionarioController::class)->only(['index', '
 
 Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store']);
 
-Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy'])->middleware('auth:sanctum');
+Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy']);
 
 // Route::get('/cargo', CargoController::class, 'index');
 // Route::post('/cargo', CargoController::class, 'create');
 // Route::get('/cargo/{$id}', CargoController::class, 'show');
 
 Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
+
+Route::post('/registroFuncionario', [RegistroController::class, 'showAllFuncionarioRegistro']);
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 

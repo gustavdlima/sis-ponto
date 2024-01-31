@@ -203,6 +203,7 @@ class RegistroController extends Controller
         $newRegistro = $this->create($registroArray);
         return $newRegistro;
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -249,9 +250,10 @@ class RegistroController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Registro $registro)
+    public function showAllFuncionarioRegistro(Request $request)
     {
-        //
+        $funcionarios = Registro::where('id_funcionario', $request->id_funcionario)->get();
+        return $funcionarios;
     }
 
     /**
