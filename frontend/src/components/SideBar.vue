@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-secondary p-0  h-100 w-100">
+	<div class="p-0 h-100 w-100">
 		<div class="flex-shrink-0 p-3 bg-white h-100 w-100">
 			<a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
 				<span class="fs-2 fw-semibold">ePonto</span>
@@ -14,17 +14,15 @@
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small list-group pl-6">
 							<li @click="redirectToCadastroOperador"><a href="#"
 									class="link-dark rounded fs-6 list-group-item-action"
-									v-if="authStore.user.level == 1">Cadastrar Operador</a></li>
+									v-if="authStore.user.level == 1">Operador</a></li>
 							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action"
-									@click="redirectToCadastroFuncionario">Cadastrar
-									Funcionário</a></li>
+									@click="redirectToCadastroFuncionario">									Funcionário</a></li>
 
 							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action"
-									@click="redirectToCadastroHorario">Cadastrar
-									Horário</a></li>
+									@click="redirectToCadastroHorario">									Horário</a></li>
 
 							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action"
-									@click="redirectToCadastroCargo">Cadastrar Cargo</a>
+									@click="redirectToCadastroCargo">Cargo</a>
 							</li>
 						</ul>
 					</div>
@@ -36,7 +34,7 @@
 					</button>
 					<div class="collapse" id="dashboard-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small pl-6 ">
-							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action" @click="redirectToListarFuncionarios">Listar
+							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action" @click="redirectToListarFuncionarios">
 									Funcionários</a></li>
 						</ul>
 					</div>
