@@ -1,22 +1,20 @@
 <template>
-	<div class="container d-flex justify-content-center">
-		<form @submit.prevent="sendForm">
-			<div class="row mb-2">
-				<div class="d-flex justify-content-start p-0 ">
-					<h1>Cadastro de Cargo</h1>
+	<div class="container w-75 p-5">
+		<div class="row">
+			<form @submit.prevent="sendForm" class="row g-3">
+				<div class="row">
+					<div class="col-md-6 mt-8">
+						<label for="cargo" class="form-label text- font-weight-bold">Cargo / Função: </label>
+						<input type="text" v-model="formData.cargo" name="cargo" class="text-black border-white form-control mb-2" />
+					</div>
 				</div>
-			</div>
+				<div class="row-md-3 d-flex justify-content-center">
+					<button type="submit" @onClick="sendForm"
+						class="btn d-flex justify-content-center text-white border-white m-3">Cadastrar</button>
+				</div>
 
-			<div class="">
-				<label for="cargo" class="">Cargo / Função: </label>
-				<input type="text" v-model="formData.cargo" name="cargo" class="" />
-			</div>
-
-			<div class="row">
-				<button type="submit" @onClick="sendForm" class="btn btn-primary w-100">Cadastrar</button>
-			</div>
-
-		</form>
+			</form>
+		</div>
 	</div>
 </template>
 
