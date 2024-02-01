@@ -35,7 +35,8 @@ const user = ref({
 </script>
 
 <style scoped>
-input[type="text"],::-webkit-input-placeholder {
+input[type="text"],
+::-webkit-input-placeholder {
   color: rgba(231, 228, 228, 0.836);
 }
 

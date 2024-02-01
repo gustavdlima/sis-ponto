@@ -1,5 +1,5 @@
 <template>
-	<div class="container d-flex justify-content-center">
+	<div class="container d-flex justify-content-center ">
 	  <form name="login-form">
 		  <div class="row">
 			<div class="row-md-1 row-sm-12 d-flex justify-content-center">
@@ -12,7 +12,7 @@
 		  </div>
 		<div class="row-md-1 row-sm-12 d-flex justify-content-center">
 		  <button type="submit"
-			class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white"
+			class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white font-weight-bold"
 			v-on:click.prevent="registrar()">Bater Ponto</button>
 		</div>
 	  </form>

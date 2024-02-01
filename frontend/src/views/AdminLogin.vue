@@ -4,7 +4,7 @@
 			<div class="row ">
 				<div class="row">
 					<div class="col d-flex justify-content-center">
-							<img src="../assets/logo-funad-sem-nome.png" class="img-fluid" style="max-width: 15vh;" alt="logo">
+						<img src="../assets/logo-funad-sem-nome.png" class="img-fluid" style="max-width: 15vh;" alt="logo">
 					</div>
 				</div>
 				<div class="row">
@@ -20,7 +20,6 @@
 				<img src="../assets/LogoGoverno.png" class="col img-fluid" style="max-width: 30vh;" alt="logo">
 			</div>
 		</div>
-
 	</div>
 </template>
 
@@ -46,5 +45,4 @@ h1 {
 	color: aliceblue !important;
 	font-weight: bold;
 }
-
 </style>

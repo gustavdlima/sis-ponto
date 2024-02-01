@@ -1,7 +1,7 @@
 <template>
 	<div class="p-0 h-100 w-100">
 		<div class="flex-shrink-0 p-3 bg-white h-100 w-100">
-			<a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+			<a href="/admin" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
 				<span class="fs-2 fw-semibold">ePonto</span>
 			</a>
 			<ul class="list-unstyled ps-0">

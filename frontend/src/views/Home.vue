@@ -1,23 +1,27 @@
 <template>
-	<div class="container">
-		<div class="row-md-4 row-sm-12 d-flex justify-content-center">
-			<img src="../assets/logo-funad-sem-nome.png" class="img-fluid col" style="max-width: 15vh;" alt="logo">
-		</div>
-		<div class="row-md-4 row-sm-12 d-flex justify-content-center">
-			<h1>e</h1>
-			<h1>Ponto</h1>
-		</div>
-		<div class="row-sm-12">
-			<RealTimeClock class="d-flex justify-content-center" ></RealTimeClock>
-		</div>
-		<div class="row-sm-12 d-flex justify-content-center">
-			<RegistroPonto></RegistroPonto>
-		</div>
-		<!-- <div class="row d-flex justify-content-center">
-			<router-link to="/cadastro" tag="button" class="col-4 col-sm-2 col-md-2 btn border-white m-2 d-flex justify-content-center text-white" >Cadastro</router-link>
-		</div> -->
-		<div class="row d-flex justify-content-center fixed-bottom">
-			<img src="../assets/LogoGoverno.png" class="col img-fluid" style="max-width: 30vh;" alt="logo">
+	<div class="container h-100 d-flex justify-content-center align-items-center">
+		<div class="col">
+			<div class="row">
+				<div class="row">
+					<div class="col d-flex justify-content-center">
+						<img src="../assets/logo-funad-sem-nome.png" class="img-fluid col" style="max-width: 15vh;" alt="logo">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col d-flex justify-content-center h-50">
+						<h1>ePonto</h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<RealTimeClock class="d-flex justify-content-center" ></RealTimeClock>
+			</div>
+			<div class="row">
+				<RegistroPonto></RegistroPonto>
+			</div>
+			<div class="row d-flex justify-content-center fixed-bottom">
+				<img src="../assets/LogoGoverno.png" class="col img-fluid" style="max-width: 30vh;" alt="logo">
+			</div>
 		</div>
 	</div>
 </template>
