@@ -13,7 +13,7 @@
       </div>
       <div class="row-md-1 row-sm-12 d-flex justify-content-center">
         <button type="submit"
-          class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white"
+          class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white font-weight-bold"
           v-on:click.prevent="authStore.login(user)">Entrar como Administrador
         </button>
       </div>
@@ -35,8 +35,8 @@ const user = ref({
 </script>
 
 <style scoped>
-input[type="text"]::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.648);
+input[type="text"],::-webkit-input-placeholder {
+  color: rgba(231, 228, 228, 0.836);
 }
 
 button:hover {
