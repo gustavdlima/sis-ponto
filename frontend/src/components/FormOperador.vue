@@ -1,46 +1,46 @@
 <template>
-	<div class="container d-flex justify-content-center">
-		<form @submit.prevent="sendForm">
-			<div class="row mb-2">
-				<div class="d-flex justify-content-start p-0 ">
-					<h1>Cadastro de Operador</h1>
+	<div class="container w-75 p-5">
+		<div class="row">
+			<form @submit.prevent="sendForm" class="row g-3">
+				<div class="row">
+					<div class="col-md-6">
+						<label for="name" class="form-label text-black font-weight-bold">Nome</label>
+						<input type="text" v-model="formData.name" name="name" class="text-black border-white form-control mb-2" />
+					</div>
+					<div class="col-md-6">
+						<label for="email" class="form-label text-black font-weight-bold">Email</label>
+						<input type="email" v-model="formData.email" name="email" class="text-black border-white form-control mb-2" />
+					</div>
 				</div>
-			</div>
+				<div class="row">
+					<div class="col-md-6" >
+						<label for="password" class="form-label text-black font-weight-bold">Senha</label>
+						<input type="password" v-model="formData.password" name="password" class="text-black border-white form-control mb-2" />
+					</div>
+					<div class="col-md-6" >
+						<label for="password" class="form-label text-black font-weight-bold">Confirmar senha</label>
+						<input type="password" v-model="formData.confirmPassword" name="password" class="text-black border-white form-control mb-2" />
+					</div>
+				</div>
 
-			<div class="">
-				<label for="name" class="">Nome: </label>
-				<input type="text" v-model="formData.name" name="name" class="" />
-			</div>
 
-			<div class="">
-				<label for="email" class="">Email: </label>
-				<input type="email" v-model="formData.email" name="email" class="" />
-			</div>
+				<div class="row">
+					<div class="col-md-3">
+						<label for="level" class="form-label text-black font-weight-bold">Nível</label>
+						<select v-model="formData.level" name="level" class=" border-white form-control mb-1">
+							<option disabled value=""></option>"
+							<option value="1">Nível 1 [Administrador]</option>
+							<option value="2">Nível 2 [Operador]</option>
+						</select><br>
+					</div>
+				</div>
 
-			<div class="" >
-				<label for="password" class="">Senha: </label>
-				<input type="password" v-model="formData.password" name="password" class="" />
-			</div>
+				<div class="row-md-3 d-flex justify-content-center">
+					<button type="submit" @onClick="sendForm" class="btn d-flex justify-content-center text-white border-white">Cadastrar</button>
+				</div>
 
-			<div class="" >
-				<label for="password" class="">Confirmar senha: </label>
-				<input type="password" v-model="formData.confirmPassword" name="password" class="" />
-			</div>
-
-			<div class="">
-				<label for="level" class="">Nível</label>
-				<select v-model="formData.level" name="level" class=" border-white form-control mb-1 w-50">
-					<option disabled value=""></option>"
-					<option value="1">Nível 1 [Administrador]</option>
-					<option value="2">Nível 2 [Operador]</option>
-				</select><br>
-			</div>
-
-			<div class="row">
-				<button type="submit" @onClick="sendForm" class="btn btn-primary w-100">Cadastrar</button>
-			</div>
-
-		</form>
+			</form>
+		</div>
 	</div>
 </template>
 

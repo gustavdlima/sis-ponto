@@ -1,15 +1,11 @@
 <template>
-	<div class="container bg-warning d-flex justify-content-center align-items-center" style="height: 100vh;">
-		<div class="row bg-dark h-75 w-100">
-			<div class="col-md-3 bg-danger">
-				<div class="row">
+	<div class="row h-100 w-100 d-flex">
+			<div class="col-md-2 h-100">
 					<SideBar></SideBar>
-				</div>
 			</div>
-			<div class="col bg-info">
+			<div class="col-md-8 w-75 h-100 ml-15 d-flex">
 				<FormOperador></FormOperador>
 			</div>
-		</div>
 	</div>
 </template>
 
