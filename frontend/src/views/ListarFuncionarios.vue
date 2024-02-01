@@ -1,33 +1,29 @@
 <template>
-	<div class="container bg-warning d-flex justify-content-center align-items-center" style="height: 100vh;">
-		<div class="row bg-dark h-75 w-100">
-			<div class="col-md-3 bg-danger">
-				<div class="row">
-					<SideBar></SideBar>
-				</div>
-			</div>
-			<div class="col bg-info">
-				<v-data-table :items="funcionarios" :items-per-page="5" :headers="headers">
-					<template v-slot:item.action="{ item }">
-						<v-btn @click="abrirRegistro(item)" color="teal">Registro</v-btn>
-					</template>
-				</v-data-table>
+	<div class="row h-100 w-100 d-flex" style="height: 100vh;">
+		<div class="col-md-2 h-100">
+			<SideBar></SideBar>
+		</div>
+		<div class="col-md-8 w-75 h-100 ml-15 d-flex">
+			<v-data-table :items="funcionarios" :items-per-page="5" :headers="headers">
+				<template v-slot:item.action="{ item }">
+					<v-btn @click="abrirRegistro(item)" color="teal">Registro</v-btn>
+				</template>
+			</v-data-table>
 
-				<v-dialog v-model="dialogRegistro" max-width="500px">
-					<v-card>
-						<v-card-title>
-							Registro de {{ funcionarioSelecionado.nome }}
-						</v-card-title>
-						<v-card-text>
-							<p> {{ registroFuncionarioSelecionado }} </p>
-						</v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text @click="dialogRegistro = false">Fechar</v-btn>
-						</v-card-actions>
-					</v-card>
-				</v-dialog>
-			</div>
+			<v-dialog v-model="dialogRegistro" max-width="500px">
+				<v-card>
+					<v-card-title>
+						Registro de {{ funcionarioSelecionado.nome }}
+					</v-card-title>
+					<v-card-text>
+						<p> {{ registroFuncionarioSelecionado }} </p>
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="blue darken-1" text @click="dialogRegistro = false">Fechar</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 		</div>
 	</div>
 </template>
