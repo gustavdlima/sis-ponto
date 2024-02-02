@@ -1,8 +1,8 @@
 <template>
 	<div class="p-0 h-100 w-100">
 		<div class="flex-shrink-0 p-3 bg-white h-100 w-100">
-			<a href="/admin" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-				<span class="fs-2 fw-semibold">ePonto</span>
+			<a class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+				<span @click="redirectToAdmin" role="button" class="fs-2 fw-semibold">ePonto</span>
 			</a>
 			<ul class="list-unstyled ps-0">
 				<li class="mb-1">
@@ -12,16 +12,15 @@
 					</button>
 					<div class="collapse show t" id="home-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small list-group pl-6">
-							<li @click="redirectToCadastroOperador"><a href="#"
-									class="link-dark rounded fs-6 list-group-item-action"
+							<li @click="redirectToCadastroOperador"><a role="button" class="link-dark  rounded fs-6 list-group-item-action"
 									v-if="authStore.user.level == 1">Operador</a></li>
-							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action"
-									@click="redirectToCadastroFuncionario">									Funcionário</a></li>
+							<li><a role="button" class="link-dark  rounded fs-6 list-group-item-action"
+									@click="redirectToCadastroFuncionario"> Funcionário</a></li>
 
-							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action"
-									@click="redirectToCadastroHorario">									Horário</a></li>
+							<li><a role="button" class="link-dark  rounded fs-6 list-group-item-action" @click="redirectToCadastroHorario">
+									Horário</a></li>
 
-							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action"
+							<li><a role="button" class="link-dark  rounded fs-6 list-group-item-action"
 									@click="redirectToCadastroCargo">Cargo</a>
 							</li>
 						</ul>
@@ -34,7 +33,8 @@
 					</button>
 					<div class="collapse" id="dashboard-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small pl-6 ">
-							<li><a href="#" class="link-dark rounded fs-6 list-group-item-action" @click="redirectToListarFuncionarios">
+							<li><a role="button" class="link-dark  rounded fs-6 list-group-item-action"
+									@click="redirectToListarFuncionarios">
 									Funcionários</a></li>
 						</ul>
 					</div>
@@ -75,6 +75,10 @@ console.log(authStore.user.level);
 
 const logout = () => {
 	authStore.logout();
+};
+
+const redirectToAdmin = () => {
+	router.push({ path: '/admin' });
 };
 
 const redirectToCadastroFuncionario = () => {
