@@ -15,8 +15,8 @@ class PontoController extends Controller
         $funcionario = Db::select('select * from funcionarios where matricula = ? ', [$request->matricula]);
 
         if ($funcionario != null)
-        return $funcionario;
-    return 0;
+            return $funcionario;
+        return 0;
     }
 
     public function criarTabelaRegistro(Request $request)

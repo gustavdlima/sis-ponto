@@ -62,7 +62,7 @@
 
 		<v-dialog v-model="pontoBatido" max-width="500">
 			<v-card>
-				<v-card-title class="headline font-weight-bold">Erro</v-card-title>
+				<v-card-title class="headline font-weight-bold">Sucesso!</v-card-title>
 				<v-card-text class="text-center">
 					{{ errorMessage }}
 				</v-card-text>
@@ -79,6 +79,7 @@
 <script>
 import { useFuncionarioStore } from '../stores/funcionarioStore';
 import axios from 'axios';
+
 export default {
 	name: 'RegistroPonto',
 	data() {
@@ -104,7 +105,7 @@ export default {
 						this.mensagem = JSON.stringify(response.data);
 						if (this.mensagem.indexOf("15 minutos") !== -1) {
 							this.pontoAdiantado = true
-							this.errorMessage = this.mensagem
+							this.errorMessage = response.data
 							return;
 						} else if (this.mensagem.indexOf("Funcionário") !== -1) {
 							this.matriculaErrada = true
