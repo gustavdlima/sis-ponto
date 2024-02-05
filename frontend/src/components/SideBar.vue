@@ -41,8 +41,8 @@
 				</li>
 				<li class="border-top my-3"></li>
 				<li class="mb-1">
-					<button class="btn btn-toggle align-items-center rounded collapsed" @click="logout()">
-						Logout
+					<button class="btn btn-toggle align-items-center rounded collapsed text-weight-bold text-primary" @click="logout()">
+						Sair
 					</button>
 				</li>
 			</ul>

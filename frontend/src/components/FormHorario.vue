@@ -5,13 +5,13 @@
 				<div class="row">
 					<div class="col-md-6">
 						<label for="horario_entrada" class="form-label text- font-weight-bold">Horário Entrada</label>
-						<input type="text" v-model="formData.horario_entrada" name="horario_entrada"
+						<input type="time" step="1" v-model="formData.horario_entrada" name="horario_entrada"
 							class="text-black border-white form-control mb-2" />
 					</div>
 					<div class="col-md-6">
 						<label for="horario_ida_intervalo" class="form-label text- font-weight-bold">Horário Ida
 							Intervalo</label>
-						<input type="text" v-model="formData.horario_ida_intervalo" name="horario_ida_intervalo"
+						<input type="time" step="1" v-model="formData.horario_ida_intervalo" name="horario_ida_intervalo"
 							class="text-black border-white form-control mb-2" />
 					</div>
 				</div>
@@ -20,13 +20,13 @@
 					<div class="col-md-6">
 						<label for="horario_volta_intervalo" class="form-label text- font-weight-bold">Horário Volta
 							Intervalo</label>
-						<input type="text" v-model="formData.horario_volta_intervalo" name="horario_volta_intervalo"
+						<input type="time" step="1" v-model="formData.horario_volta_intervalo" name="horario_volta_intervalo"
 							class="text-black border-white form-control mb-2" />
 					</div>
 
 					<div class="col-md-6">
 						<label for="horaroio_saida" class="form-label text- font-weight-bold">Horário Saida</label>
-						<input type="text" v-model="formData.horario_saida" name="horario_saida"
+						<input type="time" step="1" v-model="formData.horario_saida" name="horario_saida"
 							class="text-black border-white form-control mb-2" />
 					</div>
 

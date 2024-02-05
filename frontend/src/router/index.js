@@ -72,12 +72,4 @@ const router = createRouter ({
 	routes
 })
 
-router.beforeResolve((to) => {
-	if (to.meta.requiresAuth && !localStorage.getItem('Auth')) {
-		return { path: '/login' }
-	} else {
-		return true
-	}
-})
-
 export default router;
