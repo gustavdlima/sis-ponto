@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('setor');
             $table->string('matricula');
+            $table->string('carga_horaria');
             $table->string('nivel');
             $table->date('data_nascimento')->nullable();
             $table->string('rg');

@@ -48,6 +48,15 @@
 							class="text-black border-white form-control mb-2" />
 					</div>
 
+					<div class="col-md-4">
+						<label for="carga_horaria" class="form-label text-black font-weight-bold">Carga Horária</label>
+						<select v-model="data.carga_horaria" name="setor" class="border-white form-control">
+							<option disabled value=""></option>"
+							<option value="20h">20h</option>
+							<option value="40h">40h</option>
+						</select><br>
+					</div>
+
 				</div>
 				<div class="row">
 					<div class="col-md-12">
@@ -224,10 +233,11 @@ const data = {
 	uf: "",
 	id_cargo: "",
 	id_horario: "",
+	carga_horaria: ""
 }
 
 const sendForm = () => {
-	if (data.setor == "" || data.matricula == "" || data.dataNascimento == "" || data.nome == "" || data.id_horario == "" || data.id_cargo == "" || data.nivel == "" || data.cep == "" || data.rua == "" || data.bairro == "" || data.cidade == "" || data.uf == "" || data.cpf == "" || data.rg == "" || data.email == "" || data.celular == "" || data.mae == "" || data.pis_pasep == "" || data.titulo_eleitor == "" || data.estado_civil == "") {
+	if (data.setor == "" || data.matricula == "" || data.dataNascimento == "" || data.nome == "" || data.id_horario == "" || data.id_cargo == "" || data.nivel == "" || data.cep == "" || data.rua == "" || data.bairro == "" || data.cidade == "" || data.uf == "" || data.cpf == "" || data.rg == "" || data.email == "" || data.celular == "" || data.mae == "" || data.pis_pasep == "" || data.titulo_eleitor == "" || data.estado_civil == "" || data.carga_horaria == "") {
 		alert("Preencha todos os campos");
 	} else {
 		const res = authStore.cadastroFuncionario(data);

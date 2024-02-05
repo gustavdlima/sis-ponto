@@ -33,5 +33,6 @@ class Funcionario extends Model
         'uf',
         'id_cargo',
         'id_horario',
+        'carga_horaria',
     ];
 }
