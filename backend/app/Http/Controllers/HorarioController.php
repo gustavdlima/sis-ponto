@@ -33,16 +33,14 @@ class HorarioController extends Controller
     {
         // Validar a request
         $validated = $request->validate([
-            'horario_entrada' => 'required|date_format:H:i:s',
-            'horario_ida_intervalo' => 'required|date_format:H:i:s',
-            'horario_volta_intervalo' => 'required|date_format:H:i:s',
-            'horario_saida' => 'required|date_format:H:i:s',
+            'primeiro_horario' => 'required|date_format:H:i:s',
+            'segundo_horario' => 'required|date_format:H:i:s',
         ]);
 
-        $horario = Horario::firstOrNew(['horario_entrada' => $request->horario_entrada,
-            'horario_ida_intervalo' => $request->horario_ida_intervalo,
-            'horario_volta_intervalo' => $request->horario_volta_intervalo,
-            'horario_saida' => $request->horario_saida]);
+        $horario = Horario::firstOrNew(['primeiro_horario' => $request->primeiro_horario,
+            'segundo_horario' => $request->segundo_horario,
+            'terceiro_horario' => $request->terceir_horario,
+            'quarto_horario' => $request->quarto_horario]);
         if ($horario['id'] == null) {
             $horario = Horario::create($request->all());
             return "Horário criado com sucesso.";
@@ -78,10 +76,10 @@ class HorarioController extends Controller
         $horario = Horario::findOrFail($id);
 
         $validated = $request->validate([
-            'horario_entrada' => 'required|date_format:H:i:s',
-            'horario_ida_intervalo' => 'required|date_format:H:i:s',
-            'horario_volta_intervalo' => 'required|date_format:H:i:s',
-            'horario_saida' => 'required|date_format:H:i:s',
+            'primeiro_horario' => 'required|date_format:H:i:s',
+            'segundo_horario' => 'date_format:H:i:s',
+            'terceir_horario' => 'date_format:H:i:s',
+            'quarto_horario' => 'required|date_format:H:i:s',
         ]);
         $horario->update($validated);
 

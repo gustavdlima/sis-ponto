@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
-            $table->time('horario_entrada')->nullable();
-            $table->time('horario_ida_intervalo')->nullable();
-            $table->time('horario_volta_intervalo')->nullable();
-            $table->time('horario_saida')->nullable();
+            $table->time('primeiro_horario')->nullable();
+            $table->time('segundo_horario')->nullable();
+            $table->time('terceiro_horario')->nullable();
+            $table->time('quarto_horario')->nullable();
             $table->timestamps();
         });
     }
@@ -27,10 +27,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropColumns('horarios', [
-            'horario_entrada',
-            'horario_ida_intervalo',
-            'horario_volta_intervalo',
-            'horario_saida',
+            'primeiro_horario',
+            'segundo_horario',
+            'terceiro_horario',
+            'quarto_horario',
         ]);
     }
 };
