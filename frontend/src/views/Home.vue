@@ -1,4 +1,9 @@
 <template>
+	<div class="position-absolute top-0 end-0">
+		<button type="submit"
+						class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white font-weight-bold"
+						v-on:click="loginComoAdministrador()">Login</button>
+	</div>
 	<div class="container h-100 d-flex justify-content-center align-items-center">
 		<div class="col">
 			<div class="row">
@@ -26,31 +31,14 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import RealTimeClock from "../components/RealTimeClock.vue"
 import RegistroPonto from "../components/RegistroPonto.vue"
+import { useRouter } from 'vue-router';
+import router from '../router';
 
-export default {
-	name: "Home",
-	data() {
-		return {
-			funcionarios: ''
-		}
-	},
-	methods: {
-		// async getFuncionarios(resource) {
-		// 	const response = await this.$http.get('http://localhost:8000/api/funcionario');
-		// 	this.funcionarios = response.data;
-		// 	console.log(this.funcionarios);
-		// }
-	},
-	components: {
-		RealTimeClock: RealTimeClock,
-		RegistroPonto: RegistroPonto
-	},
-	created() {
-		// this.getFuncionarios();
-	}
+function loginComoAdministrador() {
+	router.push({ name: 'Login' });
 }
 
 </script>
