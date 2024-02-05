@@ -117,4 +117,8 @@ const redirectToListarFuncionarios = () => {
 	-moz-background-clip: text;
 	-moz-text-fill-color: transparent;
 }
+
+a {
+	text-decoration: none;
+}
 </style>
