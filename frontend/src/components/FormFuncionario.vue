@@ -177,8 +177,8 @@
 						<select name="id_horario" v-model="data.id_horario" class="border-white form-control mb-2">
 							<option disabled value=""></option>
 							<option v-for="horario in horarios" v-bind:value="horario.id">
-								{{ horario.horario_entrada }} - {{ horario.horario_ida_intervalo }} - {{
-									horario.horario_volta_intervalo }} - {{ horario.horario_saida }}</option>
+								{{ horario.primeiro_horario }} - {{ horario.segundo_horario }} - {{
+									horario.terceiro_horario }} - {{ horario.quarto_horario }}</option>
 						</select><br>
 					</div>
 					<div class="col-md-6">

@@ -14,7 +14,7 @@
       <div class="row-md-1 row-sm-12 d-flex justify-content-center">
         <button type="submit"
           class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white font-weight-bold"
-          v-on:click.prevent="authStore.login(user)">Entrar como Administrador
+          v-on:click.prevent="authLogin()">Entrar como Administrador
         </button>
       </div>
     </form>
@@ -31,6 +31,11 @@ const user = ref({
   email: "",
   password: "",
 });
+
+
+async function authLogin() {
+  await authStore.login(user.value);
+}
 
 </script>
 

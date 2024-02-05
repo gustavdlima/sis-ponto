@@ -20,28 +20,28 @@ class RegistroController extends Controller
         $ponto = $this->checkWhichPonto($registroArray);
         switch ($ponto) {
             case 'primeiro_ponto':
-                $horarioEntrada = strtotime($horario->horario_entrada);
+                $horarioEntrada = strtotime($horario->primeiro_horario);
                 $horarioEntrada = strtotime("-15 minutes", $horarioEntrada);
 
                 if ($registrationTime < $horarioEntrada)
                     return "Volte 15 minutos antes do horário de entrada";
                 break;
             case 'segundo_ponto':
-               $horarioIdaIntervalo = strtotime($horario->horario_ida_intervalo);
+               $horarioIdaIntervalo = strtotime($horario->segundo_horario);
                 $horarioIdaIntervalo = strtotime("-15 minutes", $horarioIdaIntervalo);
 
                 if ($registrationTime < $horarioIdaIntervalo)
                     return "Volte 15 minutos antes do horário de ida para intervalo";
                 break;
             case 'terceiro_ponto':
-                $horarioVoltaIntervalo = strtotime($horario->horario_volta_intervalo);
+                $horarioVoltaIntervalo = strtotime($horario->terceiro_horario);
                 $horarioVoltaIntervalo = strtotime("-15 minutes", $horarioVoltaIntervalo);
 
                 if ($registrationTime < $horarioVoltaIntervalo)
                     return "Volte 15 minutos antes do horário de volta para intervalo";
                 break;
             case 'quarto_ponto':
-                $horarioSaida = strtotime($horario->horario_saida);
+                $horarioSaida = strtotime($horario->quarto_horario);
                 $horarioSaida = strtotime("-15 minutes", $horarioSaida);
 
                 if ($registrationTime < $horarioSaida)
@@ -75,7 +75,7 @@ class RegistroController extends Controller
 
         switch ($ponto) {
             case 'primeiro_ponto':
-                $split = explode(':', $horario->horario_entrada);
+                $split = explode(':', $horario->primeiro_horario);
                 $horarioHour = intval($split[0]);
                 $horarioMinute = intval($split[1]) + 15;
 
@@ -87,7 +87,7 @@ class RegistroController extends Controller
                 return $registroArray;
                 break;
             case 'segundo_ponto':
-                $split = explode(':', $horario->horario_ida_intervalo);
+                $split = explode(':', $horario->segundo_horario);
                 $horarioHour = intval($split[0]);
                 $horarioMinute = intval($split[1]) + 15;
                 if ($registrationHour > $horarioHour)
@@ -99,7 +99,7 @@ class RegistroController extends Controller
                 return $registroArray;
                 break;
             case 'terceiro_ponto':
-                $split = explode(':', $horario->horario_volta_intervalo);
+                $split = explode(':', $horario->terceiro_horario);
                 $horarioHour = intval($split[0]);
                 $horarioMinute = intval($split[1]) + 15;
 
@@ -112,7 +112,7 @@ class RegistroController extends Controller
                 return $registroArray;
                 break;
             case 'quarto_ponto':
-                $split = explode(':', $horario->horario_saida);
+                $split = explode(':', $horario->quarto_horario);
                 $horarioHour = intval($split[0]);
                 $horarioMinute = intval($split[1]) + 15;
 
