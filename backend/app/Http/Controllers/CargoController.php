@@ -16,10 +16,19 @@ class CargoController extends Controller
 
     public function store(Request $request)
     {
-        $cargo = new Cargo;
-        $cargo->cargo = $request->cargo;
-        $cargo->save();
-        return $cargo;
+        $validated = $request->validate([
+            'cargo' => 'required|string|max:255',
+        ]);
+
+        $cargo = Cargo::firstOrNew(['cargo' => $request->cargo]);
+        if ($cargo['id'] == null) {
+            $cargo = new Cargo;
+            $cargo->cargo = $request->cargo;
+            $cargo->save();
+            return "Cargo criado com sucesso.";
+        } else {
+            return "Cargo existente.";
+        }
     }
 
     public function show($id)

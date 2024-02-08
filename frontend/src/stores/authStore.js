@@ -68,18 +68,6 @@ export const useAuthStore = defineStore('auth', {
 				})
 		},
 
-		async cadastroCargo(formData) {
-			const bearerToken = 'Bearer ' + this.userToken;
-			axios.defaults.headers.common = {
-				'Authorization': bearerToken
-			}
-			await axios
-				.post('http://localhost:8000/api/cargos', formData)
-				.then((response) => {
-					return response.data;
-				})
-		},
-
 		async cadastroHorario(formData) {
 			const bearerToken = 'Bearer ' + this.userToken;
 			axios.defaults.headers.common = {
