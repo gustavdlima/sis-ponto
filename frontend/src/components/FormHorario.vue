@@ -102,6 +102,9 @@ var formData = {
 
 const sendForm = () => {
 	if (formData.primeiro_horario != "" || formData.segundo_horario != "") {
+		axios.defaults.headers.common = {
+				'Authorization': 'Bearer ' + authStore.userToken
+			}
 		axios
 			.post("http://localhost:8000/api/horarios/", formData)
 			.then((response) => {
