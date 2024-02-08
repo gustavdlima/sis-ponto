@@ -161,7 +161,6 @@ const sendForm = async () => {
 			return;
 		}
 		try {
-			console.log(authStore.userToken)
 			axios.defaults.headers.common = {
 				'Authorization': 'Bearer ' + authStore.userToken
 			}
