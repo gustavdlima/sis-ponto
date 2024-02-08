@@ -30,7 +30,7 @@ Route::resource('/funcionarios', FuncionarioController::class)->only(['index', '
 
 // Route::get('/funcionarios', [FuncionarioController::class, 'index'])->middleware('auth:sanctum');
 
-Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store']);
+Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
 
 Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy']);
 
