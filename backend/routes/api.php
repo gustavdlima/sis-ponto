@@ -32,7 +32,7 @@ Route::resource('/funcionarios', FuncionarioController::class)->only(['index', '
 
 Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
 
-Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy']);
+Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy'])->middleware('auth:sanctum');
 
 // Route::get('/cargo', CargoController::class, 'index');
 // Route::post('/cargo', CargoController::class, 'create');
