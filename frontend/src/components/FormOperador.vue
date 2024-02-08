@@ -133,12 +133,12 @@ import axios from 'axios';
 
 const authStore = useAuthStore();
 
-const cadastroSucesso = ref(false);
-const senhaIncorreta = ref(false);
-const senhaCurta = ref(false);
-const campoVazio = ref(false);
-const erroSistema = ref(false);
-const errorMessage = ref("");
+var cadastroSucesso = ref(false);
+var senhaIncorreta = ref(false);
+var senhaCurta = ref(false);
+var campoVazio = ref(false);
+var erroSistema = ref(false);
+var errorMessage = ref("");
 
 const formData = {
 	name: "",
