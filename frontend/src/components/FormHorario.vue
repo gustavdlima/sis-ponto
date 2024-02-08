@@ -63,7 +63,18 @@
 				</v-card>
 			</v-dialog>
 
-
+			<v-dialog v-model="campoVazio" max-width="500">
+				<v-card>
+					<v-card-title class="headline font-weight-bold">Erro!</v-card-title>
+					<v-card-text class="text-center">
+						{{ errorMessage }}
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="primary" text @click="campoVazio = false">Fechar</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 
 		</div>
 	</div>
@@ -74,11 +85,11 @@ import { ref } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import axios from 'axios';
 
-
 const authStore = useAuthStore();
 
 var horarioExistente = ref(false);
 var horarioCriado = ref(false);
+var campoVazio = ref(false);
 var errorMessage = ref("");
 var mensagem = ref("");
 
@@ -110,6 +121,9 @@ const sendForm = () => {
 			.catch((error) => {
 				console.log(error);
 			});
+	} else {
+		campoVazio.value = true
+		errorMessage.value = "Preencha todos os campos ou apenas os campos Primeiro Horário e Segundo Horário"
 	}
 }
 
