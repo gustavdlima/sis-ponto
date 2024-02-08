@@ -106,6 +106,7 @@ const sendForm = () => {
 					} else if (responseData.indexOf("criado") !== -1) {
 						cadastroSucesso.value = true
 						errorMessage.value = "Cargo cadastrado com sucesso"
+						clearForm();
 					} else {
 						erroSistema.value = true
 						errorMessage.value = ""
@@ -121,6 +122,10 @@ const sendForm = () => {
 		errorMessage.value = "Preencha o campo cargo"
 	}
 	// enviar form para o backend
+}
+
+const clearForm = () => {
+	formData.cargo = "";
 }
 
 </script>
