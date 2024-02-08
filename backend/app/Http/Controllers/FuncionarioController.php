@@ -31,28 +31,28 @@ class FuncionarioController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-            'setor' => 'required|string',
-            'nivel' => 'required|string',
-            'matricula' => 'required|string',
-            'data_nascimento' => 'required|date',
-            'rg' => 'required|string',
-            'cpf' => 'required|string',
-            'pis_pasep' => 'required|string',
-            'titulo_eleitor' => 'required|string',
-            'mae' => 'required|string|max:255',
-            'bairro' => 'required|string|max:255',
-            'rua' => 'required|string|max:255',
-            'numero' => 'required|string|max:255',
-            'cidade' => 'required|string|max:255',
-            'uf' => 'required|string|max:255',
-            'cep' => 'required|string|max:255',
-            'estado_civil' => 'required|string|max:255',
-            'celular' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'carga_horaria' => 'required|string|max:255',
-        ]);
+        // return $request->all();
+        // $validated = $request->validate([
+        //     'nome' => 'required|string|max:255',
+        //     'setor' => 'required|string',
+        //     'matricula' => 'required|string',
+        //     'data_nascimento' => 'required|date',
+        //     'rg' => 'required|string',
+        //     'cpf' => 'required|string',
+        //     'pis_pasep' => 'required|string',
+        //     'titulo_eleitor' => 'required|string',
+        //     'mae' => 'required|string|max:255',
+        //     'bairro' => 'required|string|max:255',
+        //     'rua' => 'required|string|max:255',
+        //     'numero' => 'required|string|max:255',
+        //     'cidade' => 'required|string|max:255',
+        //     'uf' => 'required|string|max:255',
+        //     'cep' => 'required|string|max:255',
+        //     'estado_civil' => 'required|string|max:255',
+        //     'celular' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255',
+        //     'carga_horaria' => 'required|string|max:255',
+        // ]);
 
         $funcionario = Funcionario::firstOrNew(['matricula' => $request->matricula]);
         if ($funcionario['id'] == null) {
@@ -123,7 +123,7 @@ class FuncionarioController extends Controller
      */
     public function destroy(Funcionario $funcionario)
     {
-        $funcionario = Funcionario::findOrFail($id);
+        $funcionario = Funcionario::findOrFail($funcionario->id);
         $funcionario->delete();
 
         return redirect()->route('funcionarios.index');
