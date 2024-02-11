@@ -11,40 +11,40 @@ date_default_timezone_set('America/Sao_Paulo');
 
 class RegistroController extends Controller
 {
-    public function checkIfTheFuncionarioIsAheadOfSchedule($registroArray, $funcionario, $date) {
+    public function checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date) {
         $horario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
 
-        $registrationTime = $this->getJustTimeFromDate($date);
-        $registrationTime = strtotime($registrationTime);
+        $horarioDoRegistro = $this->separarHorarioDaData($date);
+        $horarioDoRegistro = strtotime($horarioDoRegistro);
 
-        $ponto = $this->checkWhichPonto($registroArray);
+        $ponto = $this->checaQualPonto($registroArray);
         switch ($ponto) {
             case 'primeiro_ponto':
                 $horarioEntrada = strtotime($horario->primeiro_horario);
                 $horarioEntrada = strtotime("-15 minutes", $horarioEntrada);
 
-                if ($registrationTime < $horarioEntrada)
+                if ($horarioDoRegistro < $horarioEntrada)
                     return "Volte 15 minutos antes do horário de entrada";
                 break;
             case 'segundo_ponto':
                $horarioIdaIntervalo = strtotime($horario->segundo_horario);
                 $horarioIdaIntervalo = strtotime("-15 minutes", $horarioIdaIntervalo);
 
-                if ($registrationTime < $horarioIdaIntervalo)
+                if ($horarioDoRegistro < $horarioIdaIntervalo)
                     return "Volte 15 minutos antes do horário de ida para intervalo";
                 break;
             case 'terceiro_ponto':
                 $horarioVoltaIntervalo = strtotime($horario->terceiro_horario);
                 $horarioVoltaIntervalo = strtotime("-15 minutes", $horarioVoltaIntervalo);
 
-                if ($registrationTime < $horarioVoltaIntervalo)
+                if ($horarioDoRegistro < $horarioVoltaIntervalo)
                     return "Volte 15 minutos antes do horário de volta para intervalo";
                 break;
             case 'quarto_ponto':
                 $horarioSaida = strtotime($horario->quarto_horario);
                 $horarioSaida = strtotime("-15 minutes", $horarioSaida);
 
-                if ($registrationTime < $horarioSaida)
+                if ($horarioDoRegistro < $horarioSaida)
                     return "Volte 15 minutos antes do horário de saida";
                 break;
         }
@@ -52,7 +52,7 @@ class RegistroController extends Controller
         return null;
     }
 
-    public function getJustTimeFromDate($date) {
+    public function separarHorarioDaData($date) {
         $split = explode(' ', $date);
         $time = $split[1];
         return $time;
@@ -63,13 +63,13 @@ class RegistroController extends Controller
         return $horario;
     }
 
-    public function checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date)
+    public function checaSeOFuncionarioEstaAtrasado($registroArray, $funcionario, $date)
     {
         $horario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
-        $ponto = $this->checkWhichPonto($registroArray);
+        $ponto = $this->checaQualPonto($registroArray);
 
-        $registrationTime = $this->getJustTimeFromDate($date);
-        $split = explode(':', $registrationTime);
+        $horarioDoRegistro = $this->separarHorarioDaData($date);
+        $split = explode(':', $horarioDoRegistro);
         $registrationHour = intval($split[0]);
         $registrationMinute = intval($split[1]);
 
@@ -90,6 +90,7 @@ class RegistroController extends Controller
                 $split = explode(':', $horario->segundo_horario);
                 $horarioHour = intval($split[0]);
                 $horarioMinute = intval($split[1]) + 15;
+
                 if ($registrationHour > $horarioHour)
                     $registroArray['atrasou_segundo_ponto'] = true;
                 else if ($registrationHour == $horarioHour
@@ -128,7 +129,7 @@ class RegistroController extends Controller
         return $registroArray;
     }
 
-    public function fillRegistroWithPonto($registroFuncionario, $ponto, $date)
+    public function batePonto($registroFuncionario, $ponto, $date)
     {
 
         if ($ponto == 'segundo_ponto') {
@@ -155,7 +156,7 @@ class RegistroController extends Controller
         return $registro;
     }
 
-    public function checkWhichPonto($registroFuncionario)
+    public function checaQualPonto($registroFuncionario)
     {
         // tirei o toArray() daqui
         if (strcmp(gettype($registroFuncionario), 'object') == 0)
@@ -180,7 +181,7 @@ class RegistroController extends Controller
         return null;
     }
 
-    public function checkIfTheRegistroWasCreatedOnTheSameDay($registroDate)
+    public function checaSeORegistroFoiCriadoNoMesmoDia($registroDate)
     {
         $date = date('Y-m-d');
         $rest = strpos($registroDate, $date);
@@ -198,13 +199,7 @@ class RegistroController extends Controller
         }
     }
 
-    public function checkIfFuncionarioHasRegistro($funcionarioId) {
-        $registro = Registro::latest()->pluck('id_funcionario')->first();
-
-        return $registro;
-    }
-
-    public function getLastFuncionarioRegistro($funcionarioId)
+    public function getUltimoRegistroDoFuncionario($funcionarioId)
     {
         $registro = Registro::where('id_funcionario', $funcionarioId)->latest()->get()->first();
 
@@ -240,13 +235,13 @@ class RegistroController extends Controller
         return $id;
     }
 
-    public function createFirstPonto($registroArray, $funcionario, $date) {
-        $isEarly = $this->checkIfTheFuncionarioIsAheadOfSchedule($registroArray, $funcionario, $date);
-        if ($isEarly != null)
-            return $isEarly;
+    public function batePrimeiroPonto($registroArray, $funcionario, $date) {
+        $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date);
+        if ($estaAdiantado != null)
+            return $estaAdiantado;
         $registroArray['primeiro_ponto'] = $date;
-        $newRegistro = $this->create($registroArray);
-        return $newRegistro;
+        $novoRegistro = $this->create($registroArray);
+        return $novoRegistro;
     }
 
     /**
@@ -254,44 +249,33 @@ class RegistroController extends Controller
      */
     public function store($funcionario)
     {
-        $date = date('Y-m-d H:i:s');
+        $data = date('Y-m-d H:i:s');
 
-        // checar se está atrasado
-
-        $registroFuncionario = $this->getLastFuncionarioRegistro($funcionario[0]->id);
-
+        $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
         $registroArray = $this->createRegistroArray($funcionario);
+
         if ($registroFuncionario == null) {
-
-            $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
-            $newRegistro = $this->createFirstPonto($registroArray, $funcionario, $date);
-
-            return $newRegistro;
+            $registroArray = $this->checaSeOFuncionarioEstaAtrasado($registroArray, $funcionario, $data);
+            $novoRegistro = $this->batePrimeiroPonto($registroArray, $funcionario, $data);
+            return $novoRegistro;
         } else {
-            if ($this->checkIfTheRegistroWasCreatedOnTheSameDay($registroFuncionario->created_at) !== false) {
-
-                $registroFuncionario = $this->checkIfTheFuncionarioIsLate($registroFuncionario, $funcionario, $date);
-
-                $ponto = $this->checkWhichPonto($registroFuncionario);
+            if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registroFuncionario->created_at) !== false) {
+                $registroFuncionario = $this->checaSeOFuncionarioEstaAtrasado($registroFuncionario, $funcionario, $data);
+                $ponto = $this->checaQualPonto($registroFuncionario);
 
                 if (!$ponto) {
-                    $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
-                    return $this->createFirstPonto($registroArray, $funcionario, $date);
+                    $registroArray = $this->checaSeOFuncionarioEstaAtrasado($registroArray, $funcionario, $data);
+                    return $this->batePrimeiroPonto($registroArray, $funcionario, $data);
                 } else {
-                    // se o ponto existir, verifico o horario e se for antes do horario do funcionario bater o ponto, proibio de bater o ponto
-                    $isEarly = $this->checkIfTheFuncionarioIsAheadOfSchedule($registroFuncionario, $funcionario, $date);
-                    // return $isEarly;
-                    if ($isEarly != null) {
-                        return $isEarly;
-                    }
-
-                    $newRegistro = $this->fillRegistroWithPonto($registroFuncionario, $ponto, $date);
-                    return $newRegistro;
+                    $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $data);
+                    if ($estaAdiantado != null)
+                        return $estaAdiantado;
+                    $novoRegistro = $this->batePonto($registroFuncionario, $ponto, $data);
+                    return $novoRegistro;
                 }
             } else {
-                $registroArray = $this->checkIfTheFuncionarioIsLate($registroArray, $funcionario, $date);
-
-                return $this->createFirstPonto($registroArray, $funcionario, $date);
+                $registroArray = $this->checaSeOFuncionarioEstaAtrasado($registroArray, $funcionario, $data);
+                return $this->batePrimeiroPonto($registroArray, $funcionario, $data);
             }
         }
     }
@@ -299,7 +283,7 @@ class RegistroController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showAllFuncionarioRegistro(Request $request)
+    public function retornaTodoORegistroDoFuncionario(Request $request)
     {
         $funcionarios = Registro::where('id_funcionario', $request->id_funcionario)->get();
         return $funcionarios;
