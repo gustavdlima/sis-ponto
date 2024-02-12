@@ -286,7 +286,7 @@ class RegistroController extends Controller
     public function retornaTodoORegistroDoFuncionario(Request $request)
     {
         // transforma a data para o formato correto
-        $registro = Registro::where('id_funcionario', $request->id_funcionario)->get();
+        $registro = Registro::where('id_funcionario', $request->id_funcionario)->orderBy('created_at', 'desc')->get();
         for ($i = 0; $i < count($registro); $i++) {
             if ($registro[$i]['primeiro_ponto'] != null)
                 $registro[$i]['primeiro_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['primeiro_ponto']));
