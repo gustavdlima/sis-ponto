@@ -236,9 +236,9 @@ class RegistroController extends Controller
     }
 
     public function batePrimeiroPonto($registroArray, $funcionario, $date) {
-        $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date);
-        if ($estaAdiantado != null)
-            return $estaAdiantado;
+        // $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date);
+        // if ($estaAdiantado != null)
+        //     return $estaAdiantado;
         $registroArray['primeiro_ponto'] = $date;
         $novoRegistro = $this->create($registroArray);
         return $novoRegistro;
@@ -267,9 +267,9 @@ class RegistroController extends Controller
                     $registroArray = $this->checaSeOFuncionarioEstaAtrasado($registroArray, $funcionario, $data);
                     return $this->batePrimeiroPonto($registroArray, $funcionario, $data);
                 } else {
-                    $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $data);
-                    if ($estaAdiantado != null)
-                        return $estaAdiantado;
+                    // $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $data);
+                    // if ($estaAdiantado != null)
+                    //     return $estaAdiantado;
                     $novoRegistro = $this->batePonto($registroFuncionario, $ponto, $data);
                     return $novoRegistro;
                 }
@@ -285,8 +285,19 @@ class RegistroController extends Controller
      */
     public function retornaTodoORegistroDoFuncionario(Request $request)
     {
-        $funcionarios = Registro::where('id_funcionario', $request->id_funcionario)->get();
-        return $funcionarios;
+        // transforma a data para o formato correto
+        $registro = Registro::where('id_funcionario', $request->id_funcionario)->get();
+        for ($i = 0; $i < count($registro); $i++) {
+            if ($registro[$i]['primeiro_ponto'] != null)
+                $registro[$i]['primeiro_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['primeiro_ponto']));
+            if ($registro[$i]['segundo_ponto'] != null)
+                $registro[$i]['segundo_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['segundo_ponto']));
+            if ($registro[$i]['terceiro_ponto'] != null)
+                $registro[$i]['terceiro_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['terceiro_ponto']));
+            if ($registro[$i]['quarto_ponto'] != null)
+                $registro[$i]['quarto_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['quarto_ponto']));
+        }
+        return $registro;
     }
 
     /**
