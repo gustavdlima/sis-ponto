@@ -40,7 +40,7 @@ Route::resource('/horarios', HorarioController::class)->only(['index', 'create',
 
 Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
 
-Route::post('/registroFuncionario', [RegistroController::class, 'showAllFuncionarioRegistro']);
+Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario'])->middleware('auth:sanctum');
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 
