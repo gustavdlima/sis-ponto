@@ -54,6 +54,7 @@ const headers = ref([
 ]);
 
 const registroHeaders = ref([
+	{ title: 'Data', key: 'data' },
 	{ title: 'Primeiro Horario', key: 'primeiro_ponto' },
 	{ title: 'Segundo Horario', key: 'segundo_ponto' },
 	{ title: 'Terceiro Horario', key: 'terceiro_ponto' },
@@ -90,7 +91,18 @@ function abrirRegistro(funcionario) {
 }
 
 function tratarOsDadosDoRegistro(registroObject) {
-	
+	for (var i = 0; i < registroObject.length; i++) {
+		if (registroObject[i].data == null)
+			registroObject[i].data = registroObject[i].created_at.split('T')[0];
+		if (registroObject[i].primeiro_ponto != null)
+			registroObject[i].primeiro_ponto = registroObject[i].primeiro_ponto.split(' ')[1];
+		if (registroObject[i].segundo_ponto != null)
+			registroObject[i].segundo_ponto = registroObject[i].segundo_ponto.split(' ')[1];
+		if (registroObject[i].terceiro_ponto != null)
+			registroObject[i].terceiro_ponto = registroObject[i].terceiro_ponto.split(' ')[1];
+		if (registroObject[i].quarto_ponto != null)
+			registroObject[i].quarto_ponto = registroObject[i].quarto_ponto.split(' ')[1];
+	}
 	return registroObject
 }
 
