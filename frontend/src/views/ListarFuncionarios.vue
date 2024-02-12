@@ -10,13 +10,15 @@
 				</template>
 			</v-data-table>
 
-			<v-dialog v-model="dialogRegistro" max-width="500px">
-				<v-card>
-					<v-card-title>
-						Registro de {{ funcionarioSelecionado.nome }}
-					</v-card-title>
+			<v-dialog v-model="dialogRegistro" max-width="920px">
+				<v-card flat title="Registro">
+					<template v-slot:text>
+						<v-text-field v-model="search" label="Pesquisa" prepend-inner-icon="mdi-magnify" single-line
+							variant="outlined" hide-details></v-text-field>
+					</template>
 					<v-card-text>
-						<p> {{ registroFuncionarioSelecionado }} </p>
+						<v-data-table :items="registroFuncionarioSelecionado" :items-perpage="5" :headers="registroHeaders" :search="search">
+						</v-data-table>
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
@@ -24,6 +26,7 @@
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
+
 		</div>
 	</div>
 </template>
@@ -35,11 +38,12 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 const authStore = useAuthStore();
-const funcionarios = ref([]);
+var funcionarios = ref([]);
 
-const dialogRegistro = ref(false);
-const funcionarioSelecionado = ref(null);
-const registroFuncionarioSelecionado = ref(null);
+var search = ref('');
+var dialogRegistro = ref(false);
+var funcionarioSelecionado = ref(null);
+var registroFuncionarioSelecionado = ref([]);
 
 const headers = ref([
 	{ title: 'Nome', align: 'start', key: 'nome' },
@@ -49,10 +53,12 @@ const headers = ref([
 	{ value: 'action', sortable: false },
 ]);
 
-function abrirRegistro(funcionario) {
-	funcionarioSelecionado.value = funcionario;
-	dialogRegistro.value = true;
-}
+const registroHeaders = ref([
+	{ title: 'Primeiro Horario', key: 'primeiro_ponto' },
+	{ title: 'Segundo Horario', key: 'segundo_ponto' },
+	{ title: 'Terceiro Horario', key: 'terceiro_ponto' },
+	{ title: 'Quarto Horario', key: 'quarto_ponto' },
+])
 
 function getFuncionarios() {
 	const bearerToken = 'Bearer ' + authStore.userToken;
@@ -68,17 +74,25 @@ function getFuncionarios() {
 		});
 }
 
-function getRegistros() {
-	axios.post('http://localhost:8000/api/registroFuncionario', funcionarioSelecionado.id).then(response => {
-		registroFuncionarioSelecionado.value = response.data;
-		console.log(registroFuncionarioSelecionado);
-	})
-		.catch(error => {
-			console.log(error);
-		});
+function abrirRegistro(funcionario) {
+	dialogRegistro.value = true;
+	funcionarioSelecionado.value = funcionario;
+	try {
+		axios.post('http://localhost:8000/api/registroFuncionario', { id_funcionario: funcionario.id }).then(response => {
+			registroFuncionarioSelecionado.value = tratarOsDadosDoRegistro(response.data);
+		})
+			.catch(error => {
+				console.log(error);
+			});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+function tratarOsDadosDoRegistro(registroObject) {
+	
+	return registroObject
 }
 
 getFuncionarios();
-getRegistros();
-
 </script>
