@@ -15,15 +15,15 @@
 					<div class="d-flex justify-content-center gap-3">
 						<v-btn @click="converterRegistroJsonParaExcel(item)"
 							class="btn btn-light btn-sm border-black">excel</v-btn>
-						<v-btn @click="imprimirRegistro(item)" class="btn btn-light btn-sm border-black">imprimir</v-btn>
+						<v-btn @click="imprimirRegistro()" class="btn btn-light btn-sm border-black">imprimir</v-btn>
 					</div>
 					<template v-slot:text>
 						<v-text-field v-model="search" label="Pesquisa" prepend-inner-icon="mdi-magnify" single-line
 							variant="outlined" hide-details></v-text-field>
 					</template>
 					<v-card-text>
-						<v-data-table :items="registroFuncionarioSelecionado" :items-perpage="5" :headers="registroHeaders"
-							:search="search">
+						<v-data-table id="imprimirTabela" :items="registroFuncionarioSelecionado" :items-perpage="5"
+							:headers="registroHeaders" :search="search">
 						</v-data-table>
 					</v-card-text>
 					<v-card-actions>
@@ -131,5 +131,21 @@ function converterRegistroJsonParaExcel() {
 	writeFileXLSX(wb, 'registros-' + funcionarioSelecionado.value.nome + '.xlsx');
 }
 
+function imprimirRegistro() {
+	const print = document.getElementById('imprimirTabela');
+	const printContent = print.innerHTML;
+	var win = window.open();
+	win.document.write(printContent);
+	win.print();
+	win.close();
+}
+
 getFuncionarios();
 </script>
+
+<style>
+@media print {
+	#imprimirTabela {}
+
+}
+</style>
