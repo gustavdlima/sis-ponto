@@ -12,12 +12,18 @@
 
 			<v-dialog v-model="dialogRegistro" max-width="920px">
 				<v-card flat title="Registro">
+					<div class="d-flex justify-content-center gap-3">
+						<v-btn @click="converterRegistroJsonParaExcel(item)"
+							class="btn btn-light btn-sm border-black">excel</v-btn>
+						<v-btn @click="imprimirRegistro(item)" class="btn btn-light btn-sm border-black">imprimir</v-btn>
+					</div>
 					<template v-slot:text>
 						<v-text-field v-model="search" label="Pesquisa" prepend-inner-icon="mdi-magnify" single-line
 							variant="outlined" hide-details></v-text-field>
 					</template>
 					<v-card-text>
-						<v-data-table :items="registroFuncionarioSelecionado" :items-perpage="5" :headers="registroHeaders" :search="search">
+						<v-data-table :items="registroFuncionarioSelecionado" :items-perpage="5" :headers="registroHeaders"
+							:search="search">
 						</v-data-table>
 					</v-card-text>
 					<v-card-actions>
@@ -36,6 +42,7 @@ import SideBar from '../components/SideBar.vue';
 import { useAuthStore } from '../stores/authStore';
 import { ref } from 'vue';
 import axios from 'axios';
+import { utils, writeFileXLSX } from 'xlsx';
 
 const authStore = useAuthStore();
 var funcionarios = ref([]);
@@ -59,6 +66,7 @@ const registroHeaders = ref([
 	{ title: 'Segundo Horario', key: 'segundo_ponto' },
 	{ title: 'Terceiro Horario', key: 'terceiro_ponto' },
 	{ title: 'Quarto Horario', key: 'quarto_ponto' },
+	{ value: 'action', sortable: false },
 ])
 
 function getFuncionarios() {
@@ -79,6 +87,10 @@ function abrirRegistro(funcionario) {
 	dialogRegistro.value = true;
 	funcionarioSelecionado.value = funcionario;
 	try {
+		const bearerToken = 'Bearer ' + authStore.userToken;
+		axios.defaults.headers.common = {
+			'Authorization': bearerToken
+		}
 		axios.post('http://localhost:8000/api/registroFuncionario', { id_funcionario: funcionario.id }).then(response => {
 			registroFuncionarioSelecionado.value = tratarOsDadosDoRegistro(response.data);
 		})
@@ -104,6 +116,19 @@ function tratarOsDadosDoRegistro(registroObject) {
 			registroObject[i].quarto_ponto = registroObject[i].quarto_ponto.split(' ')[1];
 	}
 	return registroObject
+}
+
+function converterRegistroJsonParaExcel() {
+	var registro = registroFuncionarioSelecionado.value;
+	for (var i = 0; i < registro.length; i++) {
+		delete registro[i].created_at;
+		delete registro[i].updated_at;
+		delete registro[i].id_horario;
+	}
+	const ws = utils.json_to_sheet(registro);
+	const wb = utils.book_new();
+	utils.book_append_sheet(wb, ws, 'Registros');
+	writeFileXLSX(wb, 'registros-' + funcionarioSelecionado.value.nome + '.xlsx');
 }
 
 getFuncionarios();
