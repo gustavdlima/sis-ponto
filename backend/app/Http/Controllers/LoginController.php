@@ -29,12 +29,13 @@ class LoginController extends Controller
             $authUser = Auth::user();
             return response()->json([
                 'token' => $token->plainTextToken,
-                'authUser' => $authUser
+                'authUser' => $authUser,
+                'message' => 'Login realizado com sucesso',
             ]);
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Erro: Email ou Senha Incorreta',
         ])->onlyInput('email');
     }
 
