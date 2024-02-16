@@ -106,6 +106,7 @@ export default {
 						if (this.mensagem.indexOf("15 minutos") !== -1) {
 							this.pontoAdiantado = true
 							this.errorMessage = response.data
+							clearForm();
 							return;
 						} else if (this.mensagem.indexOf("Funcionário") !== -1) {
 							this.matriculaErrada = true
@@ -114,6 +115,7 @@ export default {
 						}
 						this.pontoBatido = true
 						this.errorMessage = "Ponto batido com sucesso!"
+						clearForm();
 					})
 					.catch(error => {
 						console.log(error);
@@ -122,6 +124,11 @@ export default {
 				this.campoVazio = true
 				this.errorMessage = "Preencha todos os campos"
 			}
+		},
+
+		clearForm() {
+			this.input.matricula = "";
+			this.input.data_nascimento = "";
 		},
 
 	},
