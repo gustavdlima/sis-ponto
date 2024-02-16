@@ -4,7 +4,7 @@
 			<SideBar></SideBar>
 		</div>
 		<div class="col-md-8 w-75 h-100 ml-15 d-flex">
-			<v-data-table :items="funcionarios" :items-per-page="5" :headers="headers">
+			<v-data-table :items="funcionarios" :items-per-page="5" :headers="headers" >
 				<template v-slot:item.action="{ item }">
 					<v-btn @click="abrirRegistro(item)" color="teal">Registro</v-btn>
 				</template>
@@ -22,8 +22,11 @@
 							variant="outlined" hide-details></v-text-field>
 					</template>
 					<v-card-text>
-						<v-data-table id="imprimirTabela" :items="registroFuncionarioSelecionado" :items-perpage="5"
-							:headers="registroHeaders" :search="search">
+						<v-data-table id="imprimirTabela"
+						class="elevation-1" :items="registroFuncionarioSelecionado" :items-per-page="30"
+						:headers="registroHeaders"
+						:search="search">
+						<template #bottom></template>
 						</v-data-table>
 					</v-card-text>
 					<v-card-actions>
@@ -142,10 +145,3 @@ function imprimirRegistro() {
 
 getFuncionarios();
 </script>
-
-<style>
-@media print {
-	#imprimirTabela {}
-
-}
-</style>
