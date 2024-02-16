@@ -4,7 +4,7 @@
 			<SideBar></SideBar>
 		</div>
 		<div class="col-md-8 w-75 h-100 ml-15 d-flex">
-			<v-data-table :items="funcionarios" :items-per-page="5" :headers="headers" >
+			<v-data-table :items="funcionarios" :items-per-page="5" :headers="headers">
 				<template v-slot:item.action="{ item }">
 					<v-btn @click="abrirRegistro(item)" color="teal">Registro</v-btn>
 				</template>
@@ -22,11 +22,9 @@
 							variant="outlined" hide-details></v-text-field>
 					</template>
 					<v-card-text>
-						<v-data-table id="imprimirTabela"
-						class="elevation-1" :items="registroFuncionarioSelecionado" :items-per-page="30"
-						:headers="registroHeaders"
-						:search="search">
-						<template #bottom></template>
+						<v-data-table id="imprimirTabela" class="elevation-1" :items="registroFuncionarioSelecionado"
+							:items-per-page="30" :headers="registroHeaders" :search="search">
+							<template #bottom></template>
 						</v-data-table>
 					</v-card-text>
 					<v-card-actions>
@@ -66,9 +64,13 @@ const headers = ref([
 const registroHeaders = ref([
 	{ title: 'Data', key: 'data' },
 	{ title: 'Primeiro Horario', key: 'primeiro_ponto' },
+	{ title: 'Atrasou', key: 'atrasou_primeiro_ponto' },
 	{ title: 'Segundo Horario', key: 'segundo_ponto' },
+	{ title: 'Atrasou', key: 'atrasou_segundo_ponto' },
 	{ title: 'Terceiro Horario', key: 'terceiro_ponto' },
+	{ title: 'Atrasou', key: 'atrasou_terceiro_ponto' },
 	{ title: 'Quarto Horario', key: 'quarto_ponto' },
+	{ title: 'Atrasou', key: 'atrasou_quarto_ponto' },
 	{ value: 'action', sortable: false },
 ])
 
@@ -105,20 +107,22 @@ function abrirRegistro(funcionario) {
 	}
 }
 
-function tratarOsDadosDoRegistro(registroObject) {
-	for (var i = 0; i < registroObject.length; i++) {
-		if (registroObject[i].data == null)
-			registroObject[i].data = registroObject[i].created_at.split('T')[0];
-		if (registroObject[i].primeiro_ponto != null)
-			registroObject[i].primeiro_ponto = registroObject[i].primeiro_ponto.split(' ')[1];
-		if (registroObject[i].segundo_ponto != null)
-			registroObject[i].segundo_ponto = registroObject[i].segundo_ponto.split(' ')[1];
-		if (registroObject[i].terceiro_ponto != null)
-			registroObject[i].terceiro_ponto = registroObject[i].terceiro_ponto.split(' ')[1];
-		if (registroObject[i].quarto_ponto != null)
-			registroObject[i].quarto_ponto = registroObject[i].quarto_ponto.split(' ')[1];
-	}
-	return registroObject
+function tratarOsDadosDoRegistro(registroObj) {
+	for (var i = 0; i < registroObj.length; i++) {
+		registroObj[i].data = registroObj[i].data == null ? registroObj[i].created_at.split('T')[0] : registroObj[i].data;
+		registroObj[i].primeiro_ponto = registroObj[i].primeiro_ponto != null ? registroObj[i].primeiro_ponto.split(' ')[1] : null;
+		registroObj[i].segundo_ponto = registroObj[i].segundo_ponto != null ? registroObj[i].segundo_ponto.split(' ')[1] : null;
+		registroObj[i].terceiro_ponto = registroObj[i].terceiro_ponto != null ? registroObj[i].terceiro_ponto.split(' ')[1] : null;
+		registroObj[i].quarto_ponto = registroObj[i].quarto_ponto != null ? registroObj[i].quarto_ponto.split(' ')[1] : null;
+
+
+		console.log(registroObj[i].atrasou_primeiro_ponto);
+		registroObj[i].atrasou_primeiro_ponto = registroObj[i].atrasou_primeiro_ponto != false ? registroObj[i].atrasou_primeiro_ponto = "x" : " ";
+		registroObj[i].atrasou_segundo_ponto = registroObj[i].atrasou_segundo_ponto != false ? "x" : " ";
+		registroObj[i].atrasou_terceiro_ponto = registroObj[i].atrasou_terceiro_ponto != false ? "x" : " ";
+		registroObj[i].atrasou_quarto_ponto = registroObj[i].atrasou_quarto_ponto != false ? "x" : " ";
+			}
+	return registroObj;
 }
 
 function converterRegistroJsonParaExcel() {
