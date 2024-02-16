@@ -5,14 +5,14 @@
 			<div class="row">
 				<div class="row-md-1 row-sm-12 d-flex justify-content-center">
 					<input type="text" id="matricula" placeholder="Matricula"
-						class="w-50 mt-2 text-white border-white form-control"
+						class="w-75 mt-2 text-white border-white form-control"
 						style="background-color: rgba(255, 255, 255, 0);" v-model="input.matricula" />
 				</div>
-				<div class="row-md-1 row-sm-12 d-flex justify-content-center">
+				<!-- <div class="row-md-1 row-sm-12 d-flex justify-content-center">
 					<input type="date" id="dataNascimento" placeholder="Dt Nascimento Ex. 31/08/1994"
 						class="w-50 mt-3 text-white border-white form-control"
 						style="background-color: rgba(255, 255, 255, 0);" v-model="input.data_nascimento" />
-				</div>
+				</div> -->
 			</div>
 			<div class="row-md-1 row-sm-12 d-flex justify-content-center">
 				<button type="submit"
@@ -99,7 +99,7 @@ export default {
 	},
 	methods: {
 		registrar() {
-			if (this.input.matricula != "" && this.input.data_nascimento != "") {
+			if (this.input.matricula != "") {
 				axios.post("http://localhost:8000/api/ponto", this.input)
 					.then(response => {
 						this.mensagem = JSON.stringify(response.data);
