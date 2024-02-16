@@ -10,7 +10,7 @@
 						<v-text-field v-model="search" label="Pesquisa" single-line variant="outlined"
 							hide-details></v-text-field>
 					</template>
-					<v-data-table class="elevation-1" :items="funcionarios" :items-per-page="5" :headers="headers">
+					<v-data-table class="elevation-1 p-3" :items="funcionarios" :items-per-page="5" :headers="headers">
 						<template v-slot:item.action="{ item }" width="50%">
 							<v-btn @click="abrirRegistro(item)" color="teal">Registro</v-btn>
 						</template>
@@ -30,7 +30,7 @@
 							hide-details></v-text-field>
 					</template>
 					<v-card-text>
-						<div id="imprimirTabela" >
+						<div id="imprimirTabela">
 							<p>
 								Nome: <b>{{ funcionarioSelecionado.nome }}</b>
 							</p>
@@ -44,10 +44,10 @@
 								Setor: {{ funcionarioSelecionado.setor }}
 							</p>
 							<v-data-table id="imprimirTabela" class="elevation-1" :items="registroFuncionarioSelecionado"
-							:items-per-page="30" :headers="registroHeaders" :search="search">
-							<template #bottom></template>
-						</v-data-table>
-					</div>
+								:items-per-page="30" :headers="registroHeaders" :search="search">
+								<template #bottom></template>
+							</v-data-table>
+						</div>
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
@@ -172,11 +172,10 @@ getFuncionarios();
 </script>
 
 <style>
-@media print{
- table thead tr th{
+th,
+td {
 	border: 1px solid #ddd !important;
-	border-collapse: collapse;
-	width: 100%;
-  }
+	text-align: left;
+	padding: 8px;
 }
 </style>
