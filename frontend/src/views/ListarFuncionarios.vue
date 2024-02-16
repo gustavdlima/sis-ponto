@@ -131,6 +131,10 @@ function abrirRegistro(funcionario) {
 function tratarOsDadosDoRegistro(registroObj) {
 	for (var i = 0; i < registroObj.length; i++) {
 		registroObj[i].data = registroObj[i].data == null ? registroObj[i].created_at.split('T')[0] : registroObj[i].data;
+		const dia = registroObj[i].data.split('-')[2];
+		const mes = registroObj[i].data.split('-')[1];
+		const ano = registroObj[i].data.split('-')[0];
+		registroObj[i].data = dia + '/' + mes + '/' + ano;
 		registroObj[i].primeiro_ponto = registroObj[i].primeiro_ponto != null ? registroObj[i].primeiro_ponto.split(' ')[1] : null;
 		registroObj[i].segundo_ponto = registroObj[i].segundo_ponto != null ? registroObj[i].segundo_ponto.split(' ')[1] : null;
 		registroObj[i].terceiro_ponto = registroObj[i].terceiro_ponto != null ? registroObj[i].terceiro_ponto.split(' ')[1] : null;
