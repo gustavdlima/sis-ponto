@@ -78,7 +78,20 @@ export const useAuthStore = defineStore('auth', {
 				.then((response) => {
 					return response.data;
 				})
-		}
+		},
+
+		setAuthUser(authUser) {
+            this.authUser = authUser;
+
+		},
+
+		setUserToken(userToken) {
+			this.token = userToken;
+		},
+
+		setUserLogged(isLogged) {
+			this.isLogged = isLogged;
+		},
 
 	},
 
