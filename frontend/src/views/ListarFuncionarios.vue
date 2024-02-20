@@ -44,7 +44,7 @@
 								Setor: {{ funcionarioSelecionado.setor }}
 							</p>
 							<p>
-								Horário: {{ funcionarioSelecionado.horario }}
+								Horário: {{ horarioFuncionario }}
 							</p>
 							<v-data-table id="imprimirTabela" class="elevation-1" :items="registroFuncionarioSelecionado"
 								:items-per-page="30" :headers="registroHeaders" :search="search">
@@ -77,6 +77,7 @@ var search = ref('');
 var dialogRegistro = ref(false);
 var funcionarioSelecionado = ref(null);
 var registroFuncionarioSelecionado = ref([]);
+var horarioFuncionario = ref([]);
 var hidden = ref(true);
 
 const headers = ref([
@@ -115,11 +116,21 @@ function getFuncionarios() {
 function abrirRegistro(funcionario) {
 	dialogRegistro.value = true;
 	funcionarioSelecionado.value = funcionario;
+
+
 	try {
 		const bearerToken = 'Bearer ' + authStore.userToken;
 		axios.defaults.headers.common = {
 			'Authorization': bearerToken
 		}
+
+		axios.get('http://localhost:8000/api/horarios/' + funcionarioSelecionado.value.id_horario).then(response => {
+			horarioFuncionario.value = response.data.primeiro_horario + ' - ' + response.data.segundo_horario + ' - ' + response.data.terceiro_horario + ' - ' + response.data.quarto_horario;
+
+		}).catch(error => {
+			console.log(error);
+		});
+
 		axios.post('http://localhost:8000/api/registroFuncionario', { id_funcionario: funcionario.id }).then(response => {
 			registroFuncionarioSelecionado.value = tratarOsDadosDoRegistro(response.data);
 		})
