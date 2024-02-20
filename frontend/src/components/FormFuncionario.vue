@@ -371,12 +371,7 @@ function getHorarios() {
 }
 
 function checkIfInputIsEmpty() {
-	console.log(formData);
-	if (formData.nome == "" || formData.setor == "" || formData.matricula == "" || formData.data_nascimento == ""
-		|| formData.rg == "" || formData.cpf == "" || formData.pis_pasep == "" || formData.titulo_eleitor == "" || formData.cartao_sus == ""
-		|| formData.mae == "" || formData.celular == "" || formData.email == "" || formData.estado_civil == ""
-		|| formData.rua == "" || formData.bairro == "" || formData.cep == "" || formData.numero == "" || formData.cidade == ""
-		|| formData.uf == "" || formData.id_horario == "" || formData.carga_horaria == "") {
+	if (formData.setor == "" || formData.matricula == "" || formData.carga_horaria == "" || formData.nome == "" || formData.cpf == "") {
 		return true
 	} else {
 		return false
