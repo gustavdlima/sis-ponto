@@ -43,6 +43,9 @@
 							<p>
 								Setor: {{ funcionarioSelecionado.setor }}
 							</p>
+							<p>
+								Horário: {{ funcionarioSelecionado.horario }}
+							</p>
 							<v-data-table id="imprimirTabela" class="elevation-1" :items="registroFuncionarioSelecionado"
 								:items-per-page="30" :headers="registroHeaders" :search="search">
 								<template #bottom></template>
