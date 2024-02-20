@@ -10,6 +10,7 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\JustificativaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ Route::resource('/funcionarios', FuncionarioController::class)->only(['index', '
 // Route::get('/funcionarios', [FuncionarioController::class, 'index'])->middleware('auth:sanctum');
 
 Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
+
+Route::resource('/justificativas', JustificativaController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
 
 Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy'])->middleware('auth:sanctum');
 

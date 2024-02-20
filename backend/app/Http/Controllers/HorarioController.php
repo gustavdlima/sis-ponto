@@ -53,7 +53,7 @@ class HorarioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
         $horario = Horario::findOrFail($id);
         return $horario;
