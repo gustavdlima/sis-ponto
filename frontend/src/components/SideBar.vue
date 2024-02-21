@@ -26,6 +26,9 @@
 							<li><a role="button" class="link-dark  rounded fs-6 list-group-item-action"
 									@click="redirectToCadastroCargo">Cargo</a>
 							</li>
+							<li><a role="button" class="link-dark  rounded fs-6 list-group-item-action"
+									@click="redirectToCadastroJustificativa">Justificativa</a>
+							</li>
 						</ul>
 					</div>
 				</li>
@@ -101,6 +104,10 @@ const redirectToCadastroCargo = () => {
 
 const redirectToListarFuncionarios = () => {
 	router.push({ path: '/listarfuncionarios' });
+};
+
+const redirectToCadastroJustificativa = () => {
+	router.push({ path: '/cadastroJustificativa' });
 };
 
 </script>

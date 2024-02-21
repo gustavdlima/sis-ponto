@@ -42,6 +42,14 @@ const routes = [
 		}
 	},
 	{
+		path: '/cadastroJustificativa',
+		name: 'CadastroJustificativa',
+		component: () => import('../views/CadastroJustificativa.vue'),
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
 		path: '/admin',
 		name: 'Admin',
 		component: () => import('../views/AdminPanel.vue'),
