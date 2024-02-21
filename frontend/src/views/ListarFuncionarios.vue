@@ -11,8 +11,11 @@
 							hide-details></v-text-field>
 					</template>
 					<v-data-table class="elevation-1 p-3" :items="funcionarios" :items-per-page="5" :headers="headers">
-						<template v-slot:item.action="{ item }" width="50%">
-							<v-btn @click="abrirRegistro(item)" color="teal">Registro</v-btn>
+						<template v-slot:item.action="{ item }" width="100px">
+							<v-btn @click="abrirRegistro(item)" type="button" color="teal" size="small"
+								class="mr-3">Registro</v-btn>
+							<v-btn @click="justificarFalta(item)" type="button" color="teal" size="small"
+								outlined="outlined">Justificativa</v-btn>
 						</template>
 					</v-data-table>
 				</v-card>
@@ -59,6 +62,16 @@
 				</v-card>
 			</v-dialog>
 
+			<v-dialog v-model="dialogJustificativa" max-width="720px">
+					<v-card flat title="Justificativa">
+
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="blue darken-1" text @click="dialogJustificativa = false">Fechar</v-btn>
+						</v-card-actions>
+					</v-card>
+			</v-dialog>
+
 		</div>
 	</div>
 </template>
@@ -75,16 +88,18 @@ var funcionarios = ref([]);
 
 var search = ref('');
 var dialogRegistro = ref(false);
+var dialogJustificativa = ref(false);
 var funcionarioSelecionado = ref(null);
 var registroFuncionarioSelecionado = ref([]);
 var horarioFuncionario = ref([]);
 var hidden = ref(true);
 
 const headers = ref([
-	{ title: 'Nome', align: 'start', key: 'nome', width: '1%', align: 'center' },
-	{ title: 'Matrícula', key: 'matricula', align: 'start', width: '1%', align: 'center' },
-	{ title: 'Setor', key: 'setor', align: 'start', width: '1%', align: 'center' },
-	{ value: 'action', sortable: false, width: '1%', align: 'center' },
+	{ title: 'Nome', align: 'start', key: 'nome', align: 'center' },
+	{ title: 'Matrícula', key: 'matricula', align: 'start', align: 'center' },
+	{ title: 'Setor', key: 'setor', align: 'start', align: 'center' },
+	{ value: 'action', sortable: false, align: 'center' },
+
 ]);
 
 const registroHeaders = ref([
@@ -184,6 +199,10 @@ function imprimirRegistro() {
 	win.print();
 	win.close();
 	hidden.value = true;
+}
+
+function justificarFalta() {
+	dialogJustificativa.value = true;
 }
 
 getFuncionarios();
