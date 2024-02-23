@@ -8,10 +8,11 @@
 			<ul class="list-unstyled ps-0">
 				<li class="mb-1">
 					<button class="btn btn-toggle align-items-center rounded collapsed fs-4 gradientText"
-						data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+						data-bs-toggle="collapse" data-bs-target="#home-collapse"
+						aria-expanded="true">
 						Cadastrar
 					</button>
-					<div class="collapse show t" id="home-collapse">
+					<div class="collapse show" id="home-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small list-group pl-6">
 							<li @click="redirectToCadastroOperador"><a role="button"
 									class="link-dark  rounded fs-6 list-group-item-action"
@@ -37,7 +38,7 @@
 						data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
 						Listar
 					</button>
-					<div class="collapse" id="dashboard-collapse">
+					<div class="collapse show" id="dashboard-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small pl-6 ">
 							<li><a role="button" class="link-dark  rounded fs-6 list-group-item-action"
 									@click="redirectToListarFuncionarios">
