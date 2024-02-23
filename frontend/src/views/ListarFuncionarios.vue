@@ -72,7 +72,7 @@
 						<div class="">
 							<label class="form-label text-black font-weight-bold">Justificativa:</label>
 							<select name="id_horario" v-model="faltaInput.id_justificativa"
-								class=" form-select border-white form-control border border-info">
+								class="form-select border-white form-control border border-info">
 								<option disabled selected value="">Selecione</option>
 								<option v-for="justificativa in justificativas" v-bind:value="justificativa.id">
 									{{ justificativa.justificativa }} </option>

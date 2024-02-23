@@ -50,17 +50,33 @@ const routes = [
 		}
 	},
 	{
-		path: '/admin',
-		name: 'Admin',
-		component: () => import('../views/AdminPanel.vue'),
+		path: '/listarfuncionarios',
+		name: 'Funcionarios',
+		component: () => import('../views/ListarFuncionarios.vue'),
 		meta: {
 			requiresAuth: true
 		}
 	},
 	{
-		path: '/listarfuncionarios',
-		name: 'Funcionarios',
-		component: () => import('../views/ListarFuncionarios.vue'),
+		path: '/listarHorarios',
+		name: 'Horarios',
+		component: () => import('../views/ListarHorarios.vue'),
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/listarCargos',
+		name: 'Cargos',
+		component: () => import('../views/ListarCargos.vue'),
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/admin',
+		name: 'Admin',
+		component: () => import('../views/AdminPanel.vue'),
 		meta: {
 			requiresAuth: true
 		}
