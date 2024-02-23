@@ -74,6 +74,14 @@ const routes = [
 		}
 	},
 	{
+		path: '/listarJustificativas',
+		name: 'Justificativas',
+		component: () => import('../views/ListarJustificativas.vue'),
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
 		path: '/admin',
 		name: 'Admin',
 		component: () => import('../views/AdminPanel.vue'),

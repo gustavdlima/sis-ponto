@@ -53,6 +53,11 @@
 									@click="redirectToListarCargos">
 									Cargos</a></li>
 						</ul>
+						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small pl-6 ">
+							<li><a role="button" class="link-dark  rounded fs-6 list-group-item-action"
+									@click="redirectToListarJustificativas">
+									Justificativas</a></li>
+						</ul>
 					</div>
 				</li>
 				<li class="border-top my-3"></li>
@@ -113,6 +118,10 @@ const redirectToListarHorarios = () => {
 
 const redirectToListarCargos = () => {
 	router.push({ path: '/listarCargos' });
+};
+
+const redirectToListarJustificativas = () => {
+	router.push({ path: '/listarJustificativas' });
 };
 
 </script>
