@@ -14,6 +14,13 @@ class CargoController extends Controller
         return $cargos;
     }
 
+    public function create(Request $request)
+    {
+        $cargo = new Cargo;
+        $cargo->cargo = $request->cargo;
+        $cargo->save();
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -22,9 +29,7 @@ class CargoController extends Controller
 
         $cargo = Cargo::firstOrNew(['cargo' => $request->cargo]);
         if ($cargo['id'] == null) {
-            $cargo = new Cargo;
-            $cargo->cargo = $request->cargo;
-            $cargo->save();
+            $cargo = Cargo::create($request);
             return "Cargo criado com sucesso.";
         } else {
             return "Cargo existente.";
