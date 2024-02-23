@@ -28,7 +28,6 @@
 				</v-card>
 			</v-dialog>
 
-
 			<v-dialog v-model="justificativaExistente" max-width="300">
 				<v-card>
 					<v-card-title class="headline font-weight-bold">Sucesso!</v-card-title>

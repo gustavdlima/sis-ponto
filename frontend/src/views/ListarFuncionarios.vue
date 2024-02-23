@@ -15,7 +15,7 @@
 							<v-btn @click="abrirRegistro(item)" type="button" color="teal" size="small"
 								class="mr-3">Registro</v-btn>
 							<v-btn @click="justificarFalta(item)" type="button" color="teal" size="small"
-								outlined="outlined">Justificativa</v-btn>
+								outlined="outlined">Registrar Falta</v-btn>
 						</template>
 					</v-data-table>
 				</v-card>
@@ -24,9 +24,9 @@
 			<v-dialog v-model="dialogRegistro" max-width="1080px">
 				<v-card flat title="Registro">
 					<div class="d-flex justify-content-center gap-3">
-						<v-btn @click="converterRegistroJsonParaExcel(item)"
-							class="btn btn-light btn-sm border-black">excel</v-btn>
-						<v-btn @click="imprimirRegistro()" class="btn btn-light btn-sm border-black">imprimir</v-btn>
+						<v-btn color="teal" @click="converterRegistroJsonParaExcel(item)"
+							class="btn btn-light btn-sm">excel</v-btn>
+						<v-btn color="teal" @click="imprimirRegistro()" class="btn btn-light btn-sm">imprimir</v-btn>
 					</div>
 					<template v-slot:text>
 						<v-text-field v-model="search" label="Pesquisa" single-line variant="outlined"
@@ -62,16 +62,56 @@
 				</v-card>
 			</v-dialog>
 
-			<v-dialog v-model="dialogJustificativa" max-width="720px">
-					<v-card flat title="Justificativa">
-
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text @click="dialogJustificativa = false">Fechar</v-btn>
-						</v-card-actions>
-					</v-card>
+			<v-dialog v-model="dialogFalta" max-width="520px">
+				<v-card flat class="flex justify-content-center align-items-center">
+					<div class="col-md-6 mt-8 flex justify-content-center align-items-center">
+						<div class="">
+							<label class="form-label text-black font-weight-bold mb-2">Data:</label>
+							<input type="date" class="form-control mb-4" v-model="faltaInput.data" />
+						</div>
+						<div class="">
+							<label class="form-label text-black font-weight-bold">Justificativa:</label>
+							<select name="id_horario" v-model="faltaInput.id_justificativa"
+								class=" form-select border-white form-control border border-info">
+								<option disabled selected value="">Selecione</option>
+								<option v-for="justificativa in justificativas" v-bind:value="justificativa.id">
+									{{ justificativa.justificativa }} </option>
+							</select><br>
+						</div>
+					</div>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="teal" class="btn btn-light btn-sm mt-3" text
+							@click="registrarFalta()">Cadastrar</v-btn>
+					</v-card-actions>
+				</v-card>
 			</v-dialog>
 
+			<v-dialog v-model="faltaRegistrada" max-width="300">
+				<v-card>
+					<v-card-title class="headline font-weight-bold">Sucesso!</v-card-title>
+					<v-card-text class="text-center">
+						{{ erroMessage }}
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="primary" text @click="faltaRegistrada = false">Fechar</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+
+			<v-dialog v-model="erroSistema" max-width="300">
+				<v-card>
+					<v-card-title class="headline font-weight-bold">Erro!</v-card-title>
+					<v-card-text class="text-center">
+						{{ erroMessage }}
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="primary" text @click="erroSistema = false">Fechar</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 		</div>
 	</div>
 </template>
@@ -85,10 +125,20 @@ import { utils, writeFileXLSX } from 'xlsx';
 
 const authStore = useAuthStore();
 var funcionarios = ref([]);
+const justificativas = ref([]);
+var faltaInput = ref({
+	id_justificativa: "",
+	id_funcionario: "",
+	data: "",
+});
+
+var faltaRegistrada = ref(false);
+var erroSistema = ref(false);
+var erroMessage = ref("");
 
 var search = ref('');
 var dialogRegistro = ref(false);
-var dialogJustificativa = ref(false);
+var dialogFalta = ref(false);
 var funcionarioSelecionado = ref(null);
 var registroFuncionarioSelecionado = ref([]);
 var horarioFuncionario = ref([]);
@@ -201,8 +251,58 @@ function imprimirRegistro() {
 	hidden.value = true;
 }
 
-function justificarFalta() {
-	dialogJustificativa.value = true;
+function justificarFalta(funcionario) {
+	funcionarioSelecionado.value = funcionario;
+	dialogFalta.value = true;
+	getJustificativa();
+}
+
+function getJustificativa() {
+	try {
+		const bearerToken = 'Bearer ' + authStore.userToken;
+		axios.defaults.headers.common = {
+			'Authorization': bearerToken
+		}
+		axios.get('http://localhost:8000/api/justificativas').then(response => {
+			justificativas.value = response.data;
+		})
+			.catch(error => {
+				console.log(error);
+			});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+function registrarFalta() {
+	try {
+		if (faltaInput.value.id_justificativa != "" && faltaInput.value.data != "") {
+			faltaInput.value.id_funcionario = funcionarioSelecionado.value.id;
+			const bearerToken = 'Bearer ' + authStore.userToken;
+			axios.defaults.headers.common = {
+				'Authorization': bearerToken
+			}
+			axios
+				.post('http://localhost:8000/api/faltas', faltaInput.value)
+				.then((response) => {
+					const responseData = JSON.stringify(response.data);
+					if (responseData.indexOf("registrada") !== -1) {
+						faltaRegistrada.value = true;
+						erroMessage.value = responseData;
+						getFuncionarios();
+					} else {
+						erroMessage.value = error;
+						erroSistema.value = true;
+						console.log(responseData);
+					}
+				})
+		}
+	} catch (error) {
+		erroMessage.value = error;
+		erroSistema.value = true;
+		console.log(error);
+	}
+	dialogFalta.value = false
 }
 
 getFuncionarios();
@@ -211,6 +311,12 @@ getFuncionarios();
 <style>
 th,
 td {
+	border: 1px solid #ddd !important;
+	text-align: left;
+	padding: 8px;
+}
+
+#motivoTextarea {
 	border: 1px solid #ddd !important;
 	text-align: left;
 	padding: 8px;

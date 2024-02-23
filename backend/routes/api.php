@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\JustificativaController;
+use App\Http\Controllers\FaltaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,8 @@ Route::resource('/horarios', HorarioController::class)->only(['index', 'create',
 // Route::get('/cargo/{$id}', CargoController::class, 'show');
 
 Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
+
+Route::resource('/faltas', FaltaController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
 
 Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario'])->middleware('auth:sanctum');
 

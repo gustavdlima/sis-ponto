@@ -6,6 +6,8 @@ use App\Models\Registro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Horario;
+use App\Models\Funcionario;
+use App\Models\Justificativa;
 use DateTime;
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -298,6 +300,21 @@ class RegistroController extends Controller
                 $registro[$i]['quarto_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['quarto_ponto']));
         }
         return $registro;
+    }
+
+    public function cadastraJustificativaNoRegistro(Request $request)
+    {
+        $validated = $request->validate([
+            'justificativa' => 'required|string|max:255',
+            'id_justificativa' => 'required',
+        ]);
+
+        $funcionario = Funcionario::findOrFail($request->id_funcionario);
+        if ($funcionario != null) {
+            $registro = Registro::where('id_funcionario', $request->id_funcionario)->orderBy('created_at', 'desc')->get();
+
+        }
+        return $request;
     }
 
     /**

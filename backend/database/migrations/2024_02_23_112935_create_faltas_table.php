@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('registros', function (Blueprint $table) {
-            $table->bigInteger('id_justificativa')->nullable();
-            $table->string('justificativa')->nullable();
+        Schema::create('faltas', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('id_funcionario');
+            $table->bigInteger('id_justificativa');
+            $table->date('data');
+            $table->timestamps();
         });
     }
 
@@ -22,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropColumns('registros', [
-            'id_justificativa',
-            'justificativa',
-        ]);
+        Schema::dropIfExists('faltas');
     }
 };

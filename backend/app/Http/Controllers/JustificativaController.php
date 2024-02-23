@@ -36,4 +36,5 @@ class JustificativaController extends Controller
         $justificativa = DB::select('select * from justificativas where id = ?', [$id]);
         return $justificativa;
     }
+
 }

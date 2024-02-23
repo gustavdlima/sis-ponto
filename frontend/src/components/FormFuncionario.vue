@@ -5,7 +5,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label class="form-label text-black font-weight-bold">Setor</label>
-						<select v-model="formData.setor" name="setor" class="border-white form-control">
+						<select v-model="formData.setor" name="setor" class="form-select border-white form-control">
 							<option disabled value=""></option>"
 							<option value="AEE">AEE</option>
 							<option value="AJU">AJU</option>
@@ -50,7 +50,7 @@
 
 					<div class="col-md-4">
 						<label for="carga_horaria" class="form-label text-black font-weight-bold">Carga Horária</label>
-						<select v-model="formData.carga_horaria" name="setor" class="border-white form-control">
+						<select v-model="formData.carga_horaria" name="setor" class="form-select border-white form-control">
 							<option disabled value=""></option>"
 							<option value="20h">20h</option>
 							<option value="40h">40h</option>
@@ -180,7 +180,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<label class="form-label text-black font-weight-bold">Horário</label>
-						<select name="id_horario" v-model="formData.id_horario" class="border-white form-control mb-2">
+						<select name="id_horario" v-model="formData.id_horario" class="form-select border-white form-control mb-2">
 							<option disabled value=""></option>
 							<option v-for="horario in horarios" v-bind:value="horario.id">
 								{{ horario.primeiro_horario }} - {{ horario.segundo_horario }} - {{
@@ -189,7 +189,7 @@
 					</div>
 					<div class="col-md-6">
 						<label class="form-label text-black font-weight-bold">Cargo</label>
-						<select name="id_cargo" v-model="formData.id_cargo" class="border-white form-control">
+						<select name="id_cargo" v-model="formData.id_cargo" class="form-select border-white form-control">
 							<option disabled value=""></option>
 							<option v-for="cargo in cargos" v-bind:value="cargo.id">
 								{{ cargo.cargo }}</option>
