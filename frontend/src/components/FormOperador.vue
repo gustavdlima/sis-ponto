@@ -83,7 +83,7 @@
 					</v-card>
 				</v-dialog>
 
-				<v-dialog v-model="senhaCurta" max-width="300">
+				<v-dialog v-model="usuarioExistente" max-width="300">
 					<v-card>
 						<v-card-title class="headline font-weight-bold">Erro!</v-card-title>
 						<v-card-text class="text-center">
@@ -91,7 +91,7 @@
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="primary" text @click="senhaCurta = false">Fechar</v-btn>
+							<v-btn color="primary" text @click="usuarioExistente = false">Fechar</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
@@ -136,6 +136,7 @@ const authStore = useAuthStore();
 var cadastroSucesso = ref(false);
 var senhaIncorreta = ref(false);
 var senhaCurta = ref(false);
+var usuarioExistente = ref(false);
 var campoVazio = ref(false);
 var erroSistema = ref(false);
 var errorMessage = ref("");
@@ -172,11 +173,9 @@ const sendForm = async () => {
 						cadastroSucesso.value = true;
 						errorMessage.value = "Funcionário cadastrado com sucesso";
 						clearForm();
-					} else if (responseData.indexOf("existente") !== -1) {
-						senhaIncorreta.value = true;
-						errorMessage.value = "Funcionário já existe";
 					} else {
-
+						usuarioExistente.value = true;
+						errorMessage.value = "Funcionário já existe";
 					}
 				})
 		} catch (error) {
@@ -187,16 +186,14 @@ const sendForm = async () => {
 		campoVazio.value = true;
 		errorMessage.value = "Preencha todos os campos";
 	}
-
-	function clearForm() {
-		formData.name = "";
-		formData.email = "";
-		formData.password = "";
-		formData.confirmPassword = "";
-		formData.level = "";
-	}
 }
 
-
+function clearForm() {
+	formData.name = "";
+	formData.email = "";
+	formData.password = "";
+	formData.confirmPassword = "";
+	formData.level = "";
+}
 
 </script>

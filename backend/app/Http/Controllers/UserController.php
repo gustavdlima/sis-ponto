@@ -32,21 +32,23 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-			'name' => 'required|string|max:255',
-			'email' => 'required|string|email|max:255|unique:users',
-			'password' => 'required|string|min:8',
-			'level' => 'required|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'level' => 'required|string',
         ]);
 
-        $user = User::firstOrNew(['email' => $request->email]);
-        if ($user['id'] == null) {
-            $user = User::create($request->all());
+        $user = User::firstOrCreate([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'level' => $request->level
+        ]);
+        if ($user->wasRecentlyCreated === true) {
             return "User criado com sucesso.";
         } else {
             return "User existente.";
         }
-
-        return $user;
     }
 
     /**
@@ -63,7 +65,6 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-
     }
 
     /**
@@ -71,13 +72,11 @@ class UserController extends Controller
      */
     public function update($request, $id)
     {
-
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
-
     }
 }
