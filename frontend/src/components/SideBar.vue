@@ -6,7 +6,7 @@
 					class="text-opacity-100 fs-2 fw-semibold gradientText">ePonto</span>
 			</a>
 			<ul class="list-unstyled ps-0">
-				<li class="mb-1">
+				<li class="">
 					<button class="btn btn-toggle align-items-center rounded collapsed fs-4 gradientText"
 						data-bs-toggle="collapse" data-bs-target="#home-collapse"
 						aria-expanded="true">
@@ -33,7 +33,7 @@
 						</ul>
 					</div>
 				</li>
-				<li class="mb-1">
+				<li class="">
 					<button class="btn btn-toggle align-items-center rounded collapsed fs-4 gradientText"
 						data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
 						Listar

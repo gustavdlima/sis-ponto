@@ -13,9 +13,9 @@
 					<v-data-table class="elevation-1 p-3" :items="funcionarios" :items-per-page="5" :headers="headers">
 						<template v-slot:item.action="{ item }" width="100px">
 							<v-btn @click="abrirRegistro(item)" type="button" color="teal" size="small"
-								class="m-1">Registro</v-btn>
+								class="m-2">Registro</v-btn>
 							<v-btn @click="justificarFalta(item)" type="button" color="teal" size="small"
-								outlined="outlined" class="m-1 mb-2">Registrar Falta</v-btn>
+								outlined="outlined" class="m-2">Registrar Falta</v-btn>
 						</template>
 					</v-data-table>
 				</v-card>
