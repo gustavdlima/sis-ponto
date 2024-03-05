@@ -62,7 +62,7 @@
 
 		<v-dialog v-model="pontoBatido" max-width="500">
 			<v-card>
-				<v-card-title class="headline font-weight-bold">Sucesso!</v-card-title>
+				<v-card-title class="headline font-weight-bold">Ponto batido com sucesso!</v-card-title>
 				<v-card-text class="text-center">
 					{{ errorMessage }}
 				</v-card-text>
@@ -76,63 +76,60 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import { useFuncionarioStore } from '../stores/funcionarioStore';
+import { ref } from 'vue';
 import axios from 'axios';
 
-export default {
-	name: 'RegistroPonto',
-	data() {
-		return {
-			input: {
-				matricula: "",
-				data_nascimento: "",
+const input = {
+	matricula: "",
+	data_nascimento: "",
+};
+var mensagem = ref("");
+var matriculaErrada = ref(false);
+var errorMessage = ref("");
+var campoVazio = ref(false);
+var pontoAdiantado = ref(false);
+var pontoBatido = ref(false);
+var store = useFuncionarioStore();
 
-			},
-			mensagem: "",
-			matriculaErrada: false,
-			errorMessage: "",
-			campoVazio: false,
-			pontoAdiantado: false,
-			pontoBatido: false,
-		}
-	},
-	methods: {
-		registrar() {
-			if (this.input.matricula != "") {
-				axios.post("http://localhost:8000/api/ponto", this.input)
-					.then(response => {
-						this.mensagem = JSON.stringify(response.data);
-						if (this.mensagem.indexOf("15 minutos") !== -1) {
-							this.pontoAdiantado = true
-							this.errorMessage = response.data
-							clearForm();
-							return;
-						} else if (this.mensagem.indexOf("Funcionário") !== -1) {
-							this.matriculaErrada = true
-							this.errorMessage = "Matrícula incorreta"
-							return;
-						}
-						this.pontoBatido = true
-						this.errorMessage = "Ponto batido com sucesso!"
-						clearForm();
-					})
-					.catch(error => {
-						console.log(error);
-					});
-			} else {
-				this.campoVazio = true
-				this.errorMessage = "Preencha todos os campos"
-			}
-		},
-
-		clearForm() {
-			this.input.matricula = "";
-			this.input.data_nascimento = "";
-		},
-
-	},
+function registrar() {
+	if (input.matricula != "") {
+		axios.post("http://localhost:8000/api/ponto", input)
+			.then(response => {
+				mensagem = JSON.stringify(response.data);
+				if (mensagem.indexOf("15 minutos") !== -1) {
+					pontoAdiantado.value = true
+					errorMessage.value = response.data
+					limparFormulario();
+					return;
+				} else if (mensagem.indexOf("Funcionário") !== -1) {
+					errorMessage.value = "Matrícula incorreta"
+					matriculaErrada.value = true
+					return;
+				}
+				const timestamp = response.data.terceiro_ponto.split(" ");
+				const data = timestamp[0].split("-");
+				const hora = timestamp[1].split(":");
+				const timestampFormatada = data[2] + "/" + data[1] + "/" + data[0] + " às " + hora[0] + ":" + hora[1];
+				errorMessage.value = timestampFormatada.toString();
+				pontoBatido.value = true
+				limparFormulario();
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	} else {
+		errorMessage.value = "Preencha todos os campos"
+		campoVazio.value = true
+	}
 }
+
+const limparFormulario = () => {
+	input.matricula = ""
+	input.data_nascimento = ""
+}
+
 </script>
 
 <style scoped>
