@@ -5,12 +5,17 @@
 		</div>
 		<div class="col-md-8 w-75 h-100 ml-15 d-flex justify-content-center align-items-center">
 			<div class="w-75">
+
 				<v-card flat title="Funcionários">
+					<div class="d-flex justify-content-center gap-3">
+						<v-btn color="teal" @click="converterFuncionariosJsonParaExcel(item)"
+							class="btn btn-light btn-sm">excel</v-btn>
+					</div>
 					<template v-slot:text>
 						<v-text-field v-model="search" label="Pesquisa" single-line variant="outlined"
 							hide-details></v-text-field>
 					</template>
-					<v-data-table class="elevation-1 p-3" :items="funcionarios" :items-per-page="5" :headers="headers">
+					<v-data-table class="elevation-1 p-3" :items="funcionarios" :items-per-page="5" :headers="headers" :search="search">
 						<template v-slot:item.action="{ item }" width="100px">
 							<v-btn @click="abrirRegistro(item)" type="button" color="teal" size="small"
 								class="m-2">Registro</v-btn>
@@ -149,7 +154,6 @@ const headers = ref([
 	{ title: 'Matrícula', key: 'matricula', align: 'start', align: 'center' },
 	{ title: 'Setor', key: 'setor', align: 'start', align: 'center' },
 	{ value: 'action', sortable: false, align: 'center' },
-
 ]);
 
 const registroHeaders = ref([
@@ -181,7 +185,6 @@ function getFuncionarios() {
 function abrirRegistro(funcionario) {
 	dialogRegistro.value = true;
 	funcionarioSelecionado.value = funcionario;
-
 
 	try {
 		const bearerToken = 'Bearer ' + authStore.userToken;
@@ -225,6 +228,19 @@ function tratarOsDadosDoRegistro(registroObj) {
 		registroObj[i].atrasou_quarto_ponto = registroObj[i].atrasou_quarto_ponto != false ? "x" : " ";
 	}
 	return registroObj;
+}
+
+function converterFuncionariosJsonParaExcel() {
+	var registro = funcionarios.value;
+	for (var i = 0; i < registro.length; i++) {
+		delete registro[i].created_at;
+		delete registro[i].updated_at;
+		delete registro[i].id_horario;
+	}
+	const ws = utils.json_to_sheet(registro);
+	const wb = utils.book_new();
+	utils.book_append_sheet(wb, ws, 'Funcionários');
+	writeFileXLSX(wb, 'funcionários.xlsx');
 }
 
 function converterRegistroJsonParaExcel() {
