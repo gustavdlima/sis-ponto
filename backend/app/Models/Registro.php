@@ -20,5 +20,6 @@ class Registro extends Model
         'atrasou_segundo_ponto',
         'atrasou_terceiro_ponto',
         'atrasou_quarto_ponto',
+        'id_falta',
     ];
 }
