@@ -29,7 +29,7 @@ class CargoController extends Controller
 
         $cargo = Cargo::firstOrNew(['cargo' => $request->cargo]);
         if ($cargo['id'] == null) {
-            $cargo = Cargo::create($request);
+            $cargo = Cargo::create($request->all());
             return "Cargo criado com sucesso.";
         } else {
             return "Cargo existente.";
