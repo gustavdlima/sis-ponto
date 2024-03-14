@@ -76,7 +76,7 @@
 						<label for="rg" class="form-label text-black font-weight-bold">RG</label>
 						<input type="text" v-model="formData.rg" name="rg" class=" text-black border-white form-control mb-2" />
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<label for="dataNascimento" class="form-label text-black font-weight-bold">Data de
 							Nascimento</label>
 						<input type="date" v-model="formData.data_nascimento" name="dataNascimento"
