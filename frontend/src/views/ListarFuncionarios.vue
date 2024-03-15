@@ -15,7 +15,8 @@
 						<v-text-field v-model="search" label="Pesquisa" single-line variant="outlined"
 							hide-details></v-text-field>
 					</template>
-					<v-data-table class="elevation-1 p-3" :items="funcionarios" :items-per-page="5" :headers="headers" :search="search">
+					<v-data-table class="elevation-1 p-3" :items="funcionarios" :items-per-page="5" :headers="headers"
+						:search="search">
 						<template v-slot:item.action="{ item }" width="100px">
 							<v-btn @click="abrirRegistro(item)" type="button" color="teal" size="small"
 								class="m-2">Registro</v-btn>
@@ -54,8 +55,9 @@
 							<p>
 								Horário: {{ horarioFuncionario }}
 							</p>
-							<v-data-table id="imprimirTabela" class="elevation-1" :items="registroFuncionarioSelecionado"
-								:items-per-page="30" :headers="registroHeaders" :search="search">
+							<v-data-table id="imprimirTabela" class="elevation-1"
+								:items="registroFuncionarioSelecionado" :items-per-page="30" :headers="registroHeaders"
+								:search="search">
 								<template #bottom></template>
 							</v-data-table>
 						</div>
@@ -69,19 +71,30 @@
 
 			<v-dialog v-model="dialogFalta" max-width="520px">
 				<v-card flat class="flex justify-content-center align-items-center">
-					<div class="col-md-6 mt-8 flex justify-content-center align-items-center">
-						<div class="">
-							<label class="form-label text-black font-weight-bold mb-2">Data:</label>
-							<input type="date" class="form-control mb-4" v-model="faltaInput.data" />
+					<div class="col-md-6 mt-8 flex justify-content-center align-items-center" style="width: 500px;">
+						<div class="flex justify-content-center align-items-center">
+							<label class="form-label text-black font-weight-bold mb-2 ml-14">Data:</label>
+							<div class="d-flex justify-content-center">
+								<input type="date" class="form-control mb-2" v-model="faltaInput.data"
+									style="width: 150px;" />
+								<label class="ml-3 mr-3 mt-2">
+									a
+								</label>
+								<input type="date" class="form-control mb-2" v-model="faltaInput.data2"
+									style="width: 144px;" />
+							</div>
 						</div>
 						<div class="">
-							<label class="form-label text-black font-weight-bold">Justificativa:</label>
-							<select name="id_horario" v-model="faltaInput.id_justificativa"
-								class="form-select border-white form-control border border-info">
-								<option disabled selected value="">Selecione</option>
-								<option v-for="justificativa in justificativas" v-bind:value="justificativa.id">
-									{{ justificativa.justificativa }} </option>
-							</select><br>
+							<label class="form-label text-black font-weight-bold ml-14 mt-2">Justificativa:</label>
+							<div class="d-flex justify-content-center">
+								<select name="id_horario" v-model="faltaInput.id_justificativa"
+									class="form-select border-white form-control border border-info w-50">
+									<option disabled selected value="">Selecione</option>
+									<option v-for="justificativa in justificativas" v-bind:value="justificativa.id">
+										{{ justificativa.justificativa }} </option>
+								</select>
+								<br>
+							</div>
 						</div>
 					</div>
 					<v-card-actions>
@@ -135,6 +148,7 @@ var faltaInput = ref({
 	id_justificativa: "",
 	id_funcionario: "",
 	data: "",
+	data2: "",
 });
 
 var faltaRegistrada = ref(false);
@@ -185,6 +199,7 @@ function getFuncionarios() {
 function abrirRegistro(funcionario) {
 	dialogRegistro.value = true;
 	funcionarioSelecionado.value = funcionario;
+	this.getFaltas(funcionarioSelecionado.value);
 
 	try {
 		const bearerToken = 'Bearer ' + authStore.userToken;
@@ -319,6 +334,23 @@ function registrarFalta() {
 		console.log(error);
 	}
 	dialogFalta.value = false
+}
+
+function getFaltas(funcionario) {
+	try {
+		const bearerToken = 'Bearer ' + authStore.userToken;
+		axios.defaults.headers.common = {
+			'Authorization': bearerToken
+		}
+		axios.get('http://localhost:8000/api/faltas/', funcionarioSelecionado.value.id).then(response => {
+			console.log(response.data);
+		})
+			.catch(error => {
+				console.log(error);
+			});
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 getFuncionarios();
