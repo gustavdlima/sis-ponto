@@ -1,10 +1,17 @@
 <template>
-	<div class="d-flex justify-content-center">
-		<div hidden>
-			<video :srcObject="stream" width="330" height="250" autoplay></video>
+	<div class="row d-flex justify-content-center">
+		<div class="row">
+			<video :srcObject="stream" autoplay></video>
 		</div>
-		<div class="m-1 mt-3">
+		<!-- <div class="m-1 mt-3">
 			<img class="rounded-5" :src="capturedImage" alt="Captured Image" style="width: 330px; height: 250px;" />
+		</div> -->
+		<div class="row">
+						<div class="row-md-1 row-sm-12 d-flex justify-content-center">
+				<button color="teal" type="submit"
+					class="row-4 row-sm-2 row-md-2 btn m-3 d-flex justify-content-center text-white border-white font-weight-bold"
+					v-on:click.prevent="tirarFoto()">Registrar Foto</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -40,13 +47,9 @@ const iniciarCamera = async () => {
 	});
 	console.log('Streaming', frontCamStream);
 	stream.value = frontCamStream;
-	tirarFoto();
 };
 
 onMounted(() => iniciarCamera());
 onBeforeUnmount(() => {
-	if (stream.value) {
-		stream.value.getTracks().forEach(track => track.stop());
-	}
 });
 </script>
