@@ -240,7 +240,7 @@ class RegistroController extends Controller
     public function batePrimeiroPonto($registroArray, $funcionario, $date) {
         $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date);
         if ($estaAdiantado != null)
-            return $this->retornaOUltimoRegistroDoFuncionario($funcionario[0]->id);
+            return $estaAdiantado;
         $registroArray['primeiro_ponto'] = $date;
         $novoRegistro = $this->create($registroArray);
         return $novoRegistro;
@@ -271,7 +271,7 @@ class RegistroController extends Controller
                 } else {
                     $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $data);
                     if ($estaAdiantado != null)
-                        return $this->retornaOUltimoRegistroDoFuncionario($funcionario[0]->id);
+                        return $estaAdiantado;
                     $novoRegistro = $this->batePonto($registroFuncionario, $ponto, $data);
                     return $novoRegistro;
                 }
@@ -302,9 +302,11 @@ class RegistroController extends Controller
         return $registro;
     }
 
-    public function retornaOUltimoRegistroDoFuncionario($funcionarioId)
+    public function retornaOUltimoRegistroDoFuncionario(Request $request)
     {
-        $registro = Registro::where('id_funcionario', $funcionarioId)->orderBy('created_at', 'desc')->get()->first();
+        //
+        $funcionario = Funcionario::where('matricula', $request->matricula)->get()->first();
+        $registro = Registro::where('id_funcionario', $funcionario->id)->orderBy('created_at', 'desc')->get()->first();
         return $registro;
     }
 

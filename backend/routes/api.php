@@ -48,6 +48,8 @@ Route::resource('/faltas', FaltaController::class)->only(['index', 'create', 'sh
 
 Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario'])->middleware('auth:sanctum');
 
+Route::post('/registroDoDia', [RegistroController::class, 'retornaOUltimoRegistroDoFuncionario']);
+
 Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
