@@ -137,6 +137,17 @@ function registrarPonto() {
 					return;
 				}
 				else {
+					if (mensagem.indexOf("15 minutos") !== -1) {
+							axios.post("http://localhost:8000/api/registroDoDia", input).then(async response => {
+								const dataArray = Array.isArray(response.data) ? response.data : [response.data];
+								registroAtual.value = tratarOsDadosDoRegistro(dataArray);
+								pontoBatido.value = true
+							})
+							.catch(error => {
+								console.log(error);
+							});
+						return;
+					}
 					registrarFoto.value = true;
 					await startCountdown();
 					const dataArray = Array.isArray(response.data) ? response.data : [response.data];
@@ -157,6 +168,7 @@ function registrarPonto() {
 }
 
 function tratarOsDadosDoRegistro(registroObj) {
+
 	for (var i = 0; i < registroObj.length; i++) {
 		registroObj[i].data = registroObj[i].data == null ? registroObj[i].created_at.split('T')[0] : registroObj[i].data;
 		const dia = registroObj[i].data.split('-')[2];
