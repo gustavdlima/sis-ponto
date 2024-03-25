@@ -70,7 +70,7 @@
 		<v-dialog v-model="pontoBatido" max-width="720" max-height="600">
 			<v-card class="">
 				<v-card flat title="Ponto batido com Sucesso!" class="">
-					<v-data-table :headers="registroHeaders" :items="registroAtual">
+					<v-data-table :headers="registroHeaders" :items="registroTemp.value">
 						<template #bottom></template>
 					</v-data-table>
 				</v-card>
@@ -86,26 +86,28 @@
 </template>
 
 <script setup>
-import { useFuncionarioStore } from '../stores/funcionarioStore';
 import { onMounted, ref } from 'vue';
-import CameraComponent from './CameraComponente.vue';
 import axios from 'axios';
 
 const input = {
 	matricula: "",
 	data_nascimento: "",
 };
-var mensagem = ref("");
 var matriculaErrada = ref(false);
 var errorMessage = ref("");
 var campoVazio = ref(false);
 var pontoAdiantado = ref(false);
 var pontoBatido = ref(false);
 const registroAtual = ref([]);
+const registroTemp = ref([]);
 var registrarFoto = ref(false);
 const stream = ref(null);
 const capturedImage = ref(null);
 const tempoRestante = ref(5);
+
+const getInitialRegistro = () => {
+	registroAtual.value = [];
+};
 
 const registroHeaders = ref([
 	{ align: 'center', width: '1%', title: 'Data', key: 'data', width: '1%' },
@@ -127,34 +129,46 @@ function sleep(ms) {
 }
 
 function registrarPonto() {
+	let responseString;
 	if (input.matricula != "") {
+		console.log("INPUT VALUE");
+		console.log(input);
 		axios.post("http://localhost:8000/api/ponto", input)
 			.then(async response => {
-				mensagem = JSON.stringify(response.data);
-				if (mensagem.indexOf("Funcionário") !== -1) {
+				console.log("Response.data value:")
+				console.log(response.data);
+				console.log("############################")
+				responseString = JSON.stringify(response.data);
+				if (responseString.indexOf("Funcionário") !== -1) {
 					errorMessage.value = "Matrícula incorreta"
 					matriculaErrada.value = true
 					return;
 				}
 				else {
-					if (mensagem.indexOf("15 minutos") !== -1) {
-							axios.post("http://localhost:8000/api/registroDoDia", input).then(async response => {
-								const dataArray = Array.isArray(response.data) ? response.data : [response.data];
-								registroAtual.value = tratarOsDadosDoRegistro(dataArray);
-								pontoBatido.value = true
-							})
-							.catch(error => {
+					if (responseString.indexOf("15 minutos") !== -1) {
+						axios.post("http://localhost:8000/api/registroDoDia", input).then(async response => {
+							const dataArray = Array.isArray(response.data) ? response.data : [response.data];
+							registroAtual.value = tratarOsDadosDoRegistro(dataArray);
+							registroTemp.value = registroAtual;
+							Object.assign(registroAtual.value, null);
+							pontoBatido.value = true;
+						}).catch(error => {
 								console.log(error);
 							});
 						return;
 					}
-					registrarFoto.value = true;
-					await startCountdown();
-					const dataArray = Array.isArray(response.data) ? response.data : [response.data];
-					registroAtual.value = tratarOsDadosDoRegistro(dataArray);
-					// registroAtual.value = dataArray;
-					registrarFoto.value = false
-					pontoBatido.value = true
+					axios.post("http://localhost:8000/api/registroDoDia", input).then(async response => {
+							registrarFoto.value = true;
+							await startCountdown();
+							const dataArray = Array.isArray(response.data) ? response.data : [response.data];
+							registroAtual.value = tratarOsDadosDoRegistro(dataArray);
+							registroTemp.value = registroAtual;
+							Object.assign(registroAtual.value, null);
+							registrarFoto.value = false;
+							pontoBatido.value = true;
+						}).catch(error => {
+								console.log(error);
+							});
 				}
 				limparFormulario();
 			})
@@ -189,8 +203,8 @@ function tratarOsDadosDoRegistro(registroObj) {
 }
 
 const limparFormulario = () => {
-	input.matricula = ""
-	input.data_nascimento = ""
+	input.matricula = "";
+	input.data_nascimento = "";
 }
 
 const tirarFoto = async () => {
