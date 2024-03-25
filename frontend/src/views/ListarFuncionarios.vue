@@ -180,6 +180,7 @@ const registroHeaders = ref([
 	{ align: 'center', width: '1%', title: 'Atrasou', key: 'atrasou_terceiro_ponto', },
 	{ align: 'center', width: '1%', title: 'Quarto Horario', key: 'quarto_ponto', width: '1%' },
 	{ align: 'center', width: '1%', title: 'Atrasou', key: 'atrasou_quarto_ponto' },
+	{ align: 'center', width: '1%', title: 'Total Horas', key: 'horas_trabalhadas', },
 ])
 
 function getFuncionarios() {
@@ -215,7 +216,8 @@ function abrirRegistro(funcionario) {
 		});
 
 		axios.post('http://localhost:8000/api/registroFuncionario', { id_funcionario: funcionario.id }).then(response => {
-			registroFuncionarioSelecionado.value = tratarOsDadosDoRegistro(response.data);
+			console.log(response.data);
+			registroFuncionarioSelecionado.value = response.data;
 		})
 			.catch(error => {
 				console.log(error);
@@ -223,26 +225,6 @@ function abrirRegistro(funcionario) {
 	} catch (error) {
 		console.log(error);
 	}
-}
-
-function tratarOsDadosDoRegistro(registroObj) {
-	for (var i = 0; i < registroObj.length; i++) {
-		registroObj[i].data = registroObj[i].data == null ? registroObj[i].created_at.split('T')[0] : registroObj[i].data;
-		const dia = registroObj[i].data.split('-')[2];
-		const mes = registroObj[i].data.split('-')[1];
-		const ano = registroObj[i].data.split('-')[0];
-		registroObj[i].data = dia + '/' + mes + '/' + ano;
-		registroObj[i].primeiro_ponto = registroObj[i].primeiro_ponto != null ? registroObj[i].primeiro_ponto.split(' ')[1] : null;
-		registroObj[i].segundo_ponto = registroObj[i].segundo_ponto != null ? registroObj[i].segundo_ponto.split(' ')[1] : null;
-		registroObj[i].terceiro_ponto = registroObj[i].terceiro_ponto != null ? registroObj[i].terceiro_ponto.split(' ')[1] : null;
-		registroObj[i].quarto_ponto = registroObj[i].quarto_ponto != null ? registroObj[i].quarto_ponto.split(' ')[1] : null;
-
-		registroObj[i].atrasou_primeiro_ponto = registroObj[i].atrasou_primeiro_ponto != false ? registroObj[i].atrasou_primeiro_ponto = "x" : " ";
-		registroObj[i].atrasou_segundo_ponto = registroObj[i].atrasou_segundo_ponto != false ? "x" : " ";
-		registroObj[i].atrasou_terceiro_ponto = registroObj[i].atrasou_terceiro_ponto != false ? "x" : " ";
-		registroObj[i].atrasou_quarto_ponto = registroObj[i].atrasou_quarto_ponto != false ? "x" : " ";
-	}
-	return registroObj;
 }
 
 function converterFuncionariosJsonParaExcel() {
@@ -342,7 +324,7 @@ function getFaltas(funcionario) {
 		axios.defaults.headers.common = {
 			'Authorization': bearerToken
 		}
-		axios.get('http://localhost:8000/api/faltas/', funcionarioSelecionado.value.id).then(response => {
+		axios.get('http://localhost:8000/api/faltas/' + funcionarioSelecionado.value.id).then(response => {
 			console.log(response.data);
 		})
 			.catch(error => {
@@ -353,6 +335,7 @@ function getFaltas(funcionario) {
 	}
 }
 
+// getFaltas();
 getFuncionarios();
 </script>
 

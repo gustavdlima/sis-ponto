@@ -8,12 +8,15 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Horario;
 use App\Models\Funcionario;
 use App\Models\Justificativa;
+use App\Models\Falta;
 use DateTime;
+
 date_default_timezone_set('America/Sao_Paulo');
 
 class RegistroController extends Controller
 {
-    public function checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date) {
+    public function checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date)
+    {
         $horario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
 
         $horarioDoRegistro = $this->separarHorarioDaData($date);
@@ -29,7 +32,7 @@ class RegistroController extends Controller
                     return "Volte 15 minutos antes do horário de entrada";
                 break;
             case 'segundo_ponto':
-               $horarioIdaIntervalo = strtotime($horario->segundo_horario);
+                $horarioIdaIntervalo = strtotime($horario->segundo_horario);
                 $horarioIdaIntervalo = strtotime("-15 minutes", $horarioIdaIntervalo);
 
                 if ($horarioDoRegistro < $horarioIdaIntervalo)
@@ -54,13 +57,15 @@ class RegistroController extends Controller
         return null;
     }
 
-    public function separarHorarioDaData($date) {
+    public function separarHorarioDaData($date)
+    {
         $split = explode(' ', $date);
         $time = $split[1];
         return $time;
     }
 
-    public function getFuncionarioHorario($horarioId) {
+    public function getFuncionarioHorario($horarioId)
+    {
         $horario = Horario::where('id', $horarioId)->first();
         return $horario;
     }
@@ -95,8 +100,10 @@ class RegistroController extends Controller
 
                 if ($registrationHour > $horarioHour)
                     $registroArray['atrasou_segundo_ponto'] = true;
-                else if ($registrationHour == $horarioHour
-                    && $registrationMinute > $horarioMinute)
+                else if (
+                    $registrationHour == $horarioHour
+                    && $registrationMinute > $horarioMinute
+                )
                     $registroArray['atrasou_segundo_ponto'] = true;
 
                 return $registroArray;
@@ -108,8 +115,10 @@ class RegistroController extends Controller
 
                 if ($registrationHour > $horarioHour)
                     $registroArray['atrasou_terceiro_ponto'] = true;
-                else if ($registrationHour == $horarioHour
-                    && $registrationMinute > $horarioMinute)
+                else if (
+                    $registrationHour == $horarioHour
+                    && $registrationMinute > $horarioMinute
+                )
                     $registroArray['atrasou_terceiro_ponto'] = true;
 
                 return $registroArray;
@@ -121,8 +130,10 @@ class RegistroController extends Controller
 
                 if ($registrationHour > $horarioHour)
                     $registroArray['atrasou_quarto_ponto'] = true;
-                else if ($registrationHour == $horarioHour
-                    && $registrationMinute > $horarioMinute)
+                else if (
+                    $registrationHour == $horarioHour
+                    && $registrationMinute > $horarioMinute
+                )
                     $registroArray['atrasou_quarto_ponto'] = true;
 
                 return $registroArray;
@@ -137,21 +148,24 @@ class RegistroController extends Controller
         if ($ponto == 'segundo_ponto') {
             Db::table('registros')
                 ->where('id', $registroFuncionario->id)
-                ->update([$ponto => $date,
+                ->update([
+                    $ponto => $date,
                     'atrasou_segundo_ponto' => $registroFuncionario->atrasou_segundo_ponto,
-                        ]);
+                ]);
         } else if ($ponto == 'terceiro_ponto') {
             Db::table('registros')
                 ->where('id', $registroFuncionario->id)
-                ->update([$ponto => $date,
+                ->update([
+                    $ponto => $date,
                     'atrasou_terceiro_ponto' => $registroFuncionario->atrasou_terceiro_ponto,
-                        ]);
+                ]);
         } else if ($ponto == 'quarto_ponto') {
             Db::table('registros')
                 ->where('id', $registroFuncionario->id)
-                ->update([$ponto => $date,
+                ->update([
+                    $ponto => $date,
                     'atrasou_quarto_ponto' => $registroFuncionario->atrasou_quarto_ponto,
-                        ]);
+                ]);
         }
         $registro = Registro::latest()->first();
 
@@ -237,7 +251,8 @@ class RegistroController extends Controller
         return $id;
     }
 
-    public function batePrimeiroPonto($registroArray, $funcionario, $date) {
+    public function batePrimeiroPonto($registroArray, $funcionario, $date)
+    {
         $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date);
         if ($estaAdiantado != null)
             return $estaAdiantado;
@@ -287,19 +302,53 @@ class RegistroController extends Controller
      */
     public function retornaTodoORegistroDoFuncionario(Request $request)
     {
-        // transforma a data para o formato correto
-        $registro = Registro::where('id_funcionario', $request->id_funcionario)->orderBy('created_at', 'desc')->get();
+        $funcionario = Funcionario::findOrFail($request->id_funcionario);
+        $horario = $this->getFuncionarioHorario($funcionario->id_horario);
+        $registro = Registro::where('id_funcionario', $request->id_funcionario)
+            ->orderBy('created_at', 'desc')->get();
+
         for ($i = 0; $i < count($registro); $i++) {
             if ($registro[$i]['primeiro_ponto'] != null)
-                $registro[$i]['primeiro_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['primeiro_ponto']));
+                $registro[$i]['primeiro_ponto'] = date("H:i:s", strtotime($registro[$i]['primeiro_ponto']));
             if ($registro[$i]['segundo_ponto'] != null)
-                $registro[$i]['segundo_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['segundo_ponto']));
+                $registro[$i]['segundo_ponto'] = date("H:i:s", strtotime($registro[$i]['segundo_ponto']));
             if ($registro[$i]['terceiro_ponto'] != null)
-                $registro[$i]['terceiro_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['terceiro_ponto']));
+                $registro[$i]['terceiro_ponto'] = date("H:i:s", strtotime($registro[$i]['terceiro_ponto']));
             if ($registro[$i]['quarto_ponto'] != null)
-                $registro[$i]['quarto_ponto'] = date("d/m/Y H:i:s", strtotime($registro[$i]['quarto_ponto']));
+                $registro[$i]['quarto_ponto'] = date("H:i:s", strtotime($registro[$i]['quarto_ponto']));
+
+            $registro[$i]['data'] = date("d/m/Y", strtotime($registro[$i]['created_at']));
+
+            if ($horario != null) {
+                if ($funcionario->carga_horaria == '40h')
+                    $registro[$i]['horas_trabalhadas'] = $this->calculaHorasTrabalhadas40h($horario, $registro[$i]);
+            }
         }
         return $registro;
+    }
+
+    public function calculaHorasTrabalhadas40h($horario, $registro)
+    {
+        $horarioInicio = strtotime($registro['primeiro_ponto']);
+        $intervaloIda = strtotime($registro['segundo_ponto']);
+        $intervaloRetorno = strtotime($registro['terceiro_ponto']);
+        $horarioFim = strtotime($registro['quarto_ponto']);
+
+        $tempoTotalTrabalhoBruto = $horarioFim - $horarioInicio;
+        $tempoIntervalo = $intervaloRetorno - $intervaloIda;
+        $tempoTotalLiquido = $tempoTotalTrabalhoBruto - $tempoIntervalo;
+
+
+        $totalHorasTrabalhadas = $tempoTotalLiquido / 3600;
+        if ($totalHorasTrabalhadas < 0) $totalHorasTrabalhadas = 0;
+        return $totalHorasTrabalhadas;
+
+    }
+
+    public function getFaltaDoFuncionario($id_funcionario)
+    {
+        $falta = Falta::show($id_funcionario);
+        return $falta;
     }
 
     public function retornaOUltimoRegistroDoFuncionario(Request $request)
@@ -320,7 +369,6 @@ class RegistroController extends Controller
         $funcionario = Funcionario::findOrFail($request->id_funcionario);
         if ($funcionario != null) {
             $registro = Registro::where('id_funcionario', $request->id_funcionario)->orderBy('created_at', 'desc')->get();
-
         }
         return $request;
     }
