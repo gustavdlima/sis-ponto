@@ -322,6 +322,8 @@ class RegistroController extends Controller
             if ($horario != null) {
                 if ($funcionario->carga_horaria == '40h')
                     $registro[$i]['horas_trabalhadas'] = $this->calculaHorasTrabalhadas40h($horario, $registro[$i]);
+                if ($funcionario->carga_horaria == '20h')
+                    $registro[$i]['horas_trabalhadas'] = $this->calculaHorasTrabalhadas20h($horario, $registro[$i]);
             }
         }
         return $registro;
@@ -338,11 +340,22 @@ class RegistroController extends Controller
         $tempoIntervalo = $intervaloRetorno - $intervaloIda;
         $tempoTotalLiquido = $tempoTotalTrabalhoBruto - $tempoIntervalo;
 
-
-        $totalHorasTrabalhadas = $tempoTotalLiquido / 3600;
+        $totalHorasTrabalhadas = round(($tempoTotalLiquido / 3600), 1);
         if ($totalHorasTrabalhadas < 0) $totalHorasTrabalhadas = 0;
         return $totalHorasTrabalhadas;
+    }
 
+    public function calculaHorasTrabalhadas20h($horario, $registro)
+    {
+        $horarioInicio = strtotime($registro['primeiro_ponto']);
+        $horarioFim = strtotime($registro['quarto_ponto']);
+
+        $tempoTotalLiquido = $horarioFim - $horarioInicio;
+
+        $totalHorasTrabalhadas = round(($tempoTotalLiquido / 3600), 2);
+        if ($totalHorasTrabalhadas < 0)
+            $totalHorasTrabalhadas = 0;
+        return $totalHorasTrabalhadas;
     }
 
     public function getFaltaDoFuncionario($id_funcionario)
