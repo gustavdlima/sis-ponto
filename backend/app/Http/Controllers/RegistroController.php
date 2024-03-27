@@ -277,13 +277,12 @@ class RegistroController extends Controller
             $novoRegistro = $this->batePrimeiroPonto($registroArray, $funcionario, $data);
             return $novoRegistro;
         } else {
-            if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registroFuncionario->created_at) !== false) {
+            if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registroFuncionario->created_at) == true) {
                 $registroFuncionario = $this->checaSeOFuncionarioEstaAtrasado($registroFuncionario, $funcionario, $data);
                 $ponto = $this->checaQualPonto($registroFuncionario);
 
                 if (!$ponto) {
-                    $registroArray = $this->checaSeOFuncionarioEstaAtrasado($registroArray, $funcionario, $data);
-                    return $this->batePrimeiroPonto($registroArray, $funcionario, $data);
+                    return $registroFuncionario;
                 } else {
                     $estaAdiantado = $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $data);
                     if ($estaAdiantado != null)
