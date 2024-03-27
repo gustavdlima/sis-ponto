@@ -46,6 +46,8 @@ Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
 
 Route::resource('/faltas', FaltaController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
 
+Route::get('/faltasFuncionario', [FaltaController::class, 'retornaFaltasDoFuncionario'])->middleware('auth:sanctum');
+
 Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario'])->middleware('auth:sanctum');
 
 Route::post('/registroDoDia', [RegistroController::class, 'retornaOUltimoRegistroDoFuncionario']);
