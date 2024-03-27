@@ -8,13 +8,14 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Horario;
 use App\Models\Funcionario;
 use App\Models\Justificativa;
-use App\Models\Falta;
 use DateTime;
+use App\Models\Falta;
 
 date_default_timezone_set('America/Sao_Paulo');
 
 class RegistroController extends Controller
 {
+
     public function checaSeOFuncionarioEstaAdiantado($registroArray, $funcionario, $date)
     {
         $horario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
@@ -304,8 +305,9 @@ class RegistroController extends Controller
     {
         $funcionario = Funcionario::findOrFail($request->id_funcionario);
         $horario = $this->getFuncionarioHorario($funcionario->id_horario);
-        $registro = Registro::where('id_funcionario', $request->id_funcionario)
+        $registro = Registro::where('id_funcionario', $funcionario->id)
             ->orderBy('created_at', 'desc')->get();
+        $faltas = Falta::where('id_funcionario', $funcionario->id)->get();
 
         for ($i = 0; $i < count($registro); $i++) {
             if ($registro[$i]['primeiro_ponto'] != null)
@@ -325,6 +327,13 @@ class RegistroController extends Controller
                 if ($funcionario->carga_horaria == '20h')
                     $registro[$i]['horas_trabalhadas'] = $this->calculaHorasTrabalhadas20h($horario, $registro[$i]);
             }
+
+            // for ($j = 0; $j < count($faltas); $j++) {
+            //     $faltas[$j]['data'] = date("d/m/Y", strtotime($faltas[$j]['data']));
+            //     if ($faltas[$j]['data'] == $registro[$i]['data']) {
+            //         $registro[$i]['falta'] = $faltas[$j]['id'];
+            //     }
+            // }
         }
         return $registro;
     }
@@ -345,6 +354,7 @@ class RegistroController extends Controller
         return $totalHorasTrabalhadas;
     }
 
+
     public function calculaHorasTrabalhadas20h($horario, $registro)
     {
         $horarioInicio = strtotime($registro['primeiro_ponto']);
@@ -352,7 +362,7 @@ class RegistroController extends Controller
 
         $tempoTotalLiquido = $horarioFim - $horarioInicio;
 
-        $totalHorasTrabalhadas = round(($tempoTotalLiquido / 3600), 2);
+        $totalHorasTrabalhadas = round(($tempoTotalLiquido / 3600), 1);
         if ($totalHorasTrabalhadas < 0)
             $totalHorasTrabalhadas = 0;
         return $totalHorasTrabalhadas;
