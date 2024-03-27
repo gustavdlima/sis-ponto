@@ -66,7 +66,13 @@ class FaltaController extends Controller
      */
     public function show(string $id)
     {
-        $falta = DB::select('select * from faltas where id_funcionario = ?', [$id]);
+        $falta = DB::select('select * from faltas where id = ?', [$id]);
+        return $falta;
+    }
+
+    public function retornaFaltasDoFuncionario(string $id_funcionario)
+    {
+        $falta = DB::select('select * from faltas where id_funcionario = ?', [$id_funcionario]);
         return $falta;
     }
 
