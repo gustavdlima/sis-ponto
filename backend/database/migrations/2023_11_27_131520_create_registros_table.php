@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('id_funcionario')->nullable();
             $table->bigInteger('id_horario')->nullable();
-            $table->dateTime('primeiro_ponto')->nullable();
-            $table->dateTime('segundo_ponto')->nullable();
-            $table->dateTime('terceiro_ponto')->nullable();
-            $table->dateTime('quarto_ponto')->nullable();
+            $table->string('primeiro_ponto')->nullable();
+            $table->string('segundo_ponto')->nullable();
+            $table->string('terceiro_ponto')->nullable();
+            $table->string('quarto_ponto')->nullable();
             $table->boolean('atrasou_primeiro_ponto')->nullable();
             $table->boolean('atrasou_segundo_ponto')->nullable();
             $table->boolean('atrasou_terceiro_ponto')->nullable();
