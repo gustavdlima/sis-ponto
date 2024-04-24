@@ -91,7 +91,6 @@ import axios from 'axios';
 
 const input = {
 	matricula: "",
-	data_nascimento: "",
 };
 var matriculaErrada = ref(false);
 var errorMessage = ref("");
@@ -131,11 +130,12 @@ function sleep(ms) {
 function registrarPonto() {
 	let responseString;
 	if (input.matricula != "") {
-		console.log("INPUT VALUE");
+		console.log("INPUT:");
 		console.log(input);
+		console.log("############################")
 		axios.post("http://localhost:8000/api/ponto", input)
 			.then(async response => {
-				console.log("Response.data value:")
+				console.log("RESPONSE:")
 				console.log(response.data);
 				console.log("############################")
 				responseString = JSON.stringify(response.data);
@@ -145,7 +145,7 @@ function registrarPonto() {
 					return;
 				}
 				else {
-					if (responseString.indexOf("15 minutos") !== -1) {
+					if (responseString.indexOf("Todos os pontos") !== -1) {
 						axios.post("http://localhost:8000/api/registroDoDia", input).then(async response => {
 							const dataArray = Array.isArray(response.data) ? response.data : [response.data];
 							registroAtual.value = tratarOsDadosDoRegistro(dataArray);
@@ -189,10 +189,15 @@ function tratarOsDadosDoRegistro(registroObj) {
 		const mes = registroObj[i].data.split('-')[1];
 		const ano = registroObj[i].data.split('-')[0];
 		registroObj[i].data = dia + '/' + mes + '/' + ano;
-		registroObj[i].primeiro_ponto = registroObj[i].primeiro_ponto != null ? registroObj[i].primeiro_ponto.split(' ')[1] : null;
-		registroObj[i].segundo_ponto = registroObj[i].segundo_ponto != null ? registroObj[i].segundo_ponto.split(' ')[1] : null;
-		registroObj[i].terceiro_ponto = registroObj[i].terceiro_ponto != null ? registroObj[i].terceiro_ponto.split(' ')[1] : null;
-		registroObj[i].quarto_ponto = registroObj[i].quarto_ponto != null ? registroObj[i].quarto_ponto.split(' ')[1] : null;
+
+		if (registroObj[i].primeiro_ponto != null && registroObj[i].primeiro_ponto.indexOf("FALTA") === -1)
+			registroObj[i].primeiro_ponto = registroObj[i].primeiro_ponto != null ? registroObj[i].primeiro_ponto.split(' ')[1] : null;
+		if (registroObj[i].segundo_ponto != null && registroObj[i].segundo_ponto.indexOf("FALTA") === -1)
+			registroObj[i].segundo_ponto = registroObj[i].segundo_ponto != null ? registroObj[i].segundo_ponto.split(' ')[1] : null;
+		if (registroObj[i].terceiro_ponto != null && registroObj[i].terceiro_ponto.indexOf("FALTA") === -1)
+			registroObj[i].terceiro_ponto = registroObj[i].terceiro_ponto != null ? registroObj[i].terceiro_ponto.split(' ')[1] : null;
+		if (registroObj[i].quarto_ponto != null && registroObj[i].quarto_ponto.indexOf("FALTA") === -1)
+			registroObj[i].quarto_ponto = registroObj[i].quarto_ponto != null ? registroObj[i].quarto_ponto.split(' ')[1] : null;
 
 		registroObj[i].atrasou_primeiro_ponto = registroObj[i].atrasou_primeiro_ponto != false ? registroObj[i].atrasou_primeiro_ponto = "x" : " ";
 		registroObj[i].atrasou_segundo_ponto = registroObj[i].atrasou_segundo_ponto != false ? "x" : " ";
@@ -204,7 +209,6 @@ function tratarOsDadosDoRegistro(registroObj) {
 
 const limparFormulario = () => {
 	input.matricula = "";
-	input.data_nascimento = "";
 }
 
 const tirarFoto = async () => {
