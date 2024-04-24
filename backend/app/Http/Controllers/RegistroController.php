@@ -32,7 +32,6 @@ class RegistroController extends Controller
         }
     }
 
-
     public function separarHorarioDaData($date) {
         $split = explode(' ', $date);
         $time = $split[1];
@@ -48,23 +47,23 @@ class RegistroController extends Controller
         // tirei o toArray() daqui
         if (strcmp(gettype($registroFuncionario), 'object') == 0)
         $registroArray = $registroFuncionario->toArray();
-    else
-    $registroArray = $registroFuncionario;
+        else
+        $registroArray = $registroFuncionario;
 
-foreach ($registroArray as $key => $value) {
-    if ($key == 'primeiro_ponto' && $value == null) {
-        return $key;
-    }
-    if ($key == 'segundo_ponto' && $value == null) {
-        return $key;
-    }
-    if ($key == 'terceiro_ponto' && $value == null) {
-                return $key;
-            }
-            if ($key == 'quarto_ponto' && $value == null) {
-                return $key;
-            }
+        foreach ($registroArray as $key => $value) {
+        if ($key == 'primeiro_ponto' && $value == null) {
+            return $key;
         }
+        if ($key == 'segundo_ponto' && $value == null) {
+            return $key;
+        }
+        if ($key == 'terceiro_ponto' && $value == null) {
+                    return $key;
+                }
+                if ($key == 'quarto_ponto' && $value == null) {
+                    return $key;
+                }
+            }
         return null;
     }
 
@@ -435,7 +434,6 @@ foreach ($registroArray as $key => $value) {
         if ($totalHorasTrabalhadas < 0) $totalHorasTrabalhadas = 0;
         return $totalHorasTrabalhadas;
     }
-
 
     public function calculaHorasTrabalhadas20h($horario, $registro) {
         $horarioInicio = strtotime($registro['primeiro_ponto']);
