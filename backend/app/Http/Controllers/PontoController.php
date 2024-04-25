@@ -26,8 +26,6 @@ class PontoController extends Controller
         if ($funcionario == null)
             return "Funcionário não existe";
 
-        return $funcionario;
-
         // criar registro de ponto e registrar o primeiro ponto
         $registro = new RegistroController();
         return $registro->store($funcionario);
