@@ -12,6 +12,7 @@ use DateTime;
 use DateInterval;
 use App\Models\Falta;
 
+
 date_default_timezone_set('America/Sao_Paulo');
 
 class RegistroController extends Controller
@@ -389,6 +390,7 @@ class RegistroController extends Controller
         $data = date('Y-m-d H:i:s');
 
         $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
+
         $registroArray = $this->createRegistroArray($funcionario);
 
         if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registroFuncionario->created_at) == false) {
@@ -442,30 +444,11 @@ class RegistroController extends Controller
     }
 
     public function calculaHorasTrabalhadas40h($horario, $registro) {
-        $horarioInicio = strtotime($registro['primeiro_ponto']);
-        $intervaloIda = strtotime($registro['segundo_ponto']);
-        $intervaloRetorno = strtotime($registro['terceiro_ponto']);
-        $horarioFim = strtotime($registro['quarto_ponto']);
 
-        $tempoTotalTrabalhoBruto = $horarioFim - $horarioInicio;
-        $tempoIntervalo = $intervaloRetorno - $intervaloIda;
-        $tempoTotalLiquido = $tempoTotalTrabalhoBruto - $tempoIntervalo;
-
-        $totalHorasTrabalhadas = round(($tempoTotalLiquido / 3600), 1);
-        if ($totalHorasTrabalhadas < 0) $totalHorasTrabalhadas = 0;
-        return $totalHorasTrabalhadas;
     }
 
     public function calculaHorasTrabalhadas20h($horario, $registro) {
-        $horarioInicio = strtotime($registro['primeiro_ponto']);
-        $horarioFim = strtotime($registro['quarto_ponto']);
 
-        $tempoTotalLiquido = $horarioFim - $horarioInicio;
-
-        $totalHorasTrabalhadas = round(($tempoTotalLiquido / 3600), 1);
-        if ($totalHorasTrabalhadas < 0)
-            $totalHorasTrabalhadas = 0;
-        return $totalHorasTrabalhadas;
     }
 
     public function getFaltaDoFuncionario($id_funcionario) {
@@ -480,6 +463,12 @@ class RegistroController extends Controller
         return $registro;
     }
 
+    public function retornaORegistroDaDataEspecificada($funcionario, $data) {
+        $funcionario = Funcionario::findOrFail($funcionario->id);
+        $registro = Registro::where('id_funcionario', $funcionario->id)->where('created_at', 'like', '%' . $data . '%')->get();
+        return $registro;
+    }
+
     public function cadastraJustificativaNoRegistro(Request $request) {
         $validated = $request->validate([
             'justificativa' => 'required|string|max:255',
@@ -491,5 +480,31 @@ class RegistroController extends Controller
             $registro = Registro::where('id_funcionario', $request->id_funcionario)->orderBy('created_at', 'desc')->get();
         }
         return $request;
+    }
+
+    public function gerarRelatorioDeRegistroDoPonto(Request $request) {
+        $funcionario = Funcionario::firstOrNew(['matricula' => $request->matricula]);
+        if ($funcionario == null)
+            return response()->json(['message' => 'Funcionário não encontrado'], 404);
+
+        $mesAtual = date('m');
+        $anoAtual = date('Y');
+        $totalDiasDoMesAtual = cal_days_in_month(CAL_GREGORIAN, $mesAtual, $anoAtual);
+        $relatorio = array(
+                array(
+                    'dia' => null,
+                    'registroDoDia' => null,
+                )
+        );
+
+        for ($day = 1, $i = 0; $day <= $totalDiasDoMesAtual; $day++) {
+            $data = sprintf('%02d', $day) . '/' . $mesAtual . '/' . $anoAtual;
+            $dataDB = $anoAtual . '-' . $mesAtual . '-' . sprintf('%02d', $day);
+            $relatorio[$i]['dia'] = $data;
+            $relatorio[$i]['registroDoDia'] = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB);
+            $i++;
+        }
+
+        return $relatorio;
     }
 }
