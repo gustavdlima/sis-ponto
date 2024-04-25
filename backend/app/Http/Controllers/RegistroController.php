@@ -460,26 +460,24 @@ class RegistroController extends Controller
         //
         $funcionario = Funcionario::where('matricula', $request->matricula)->get()->first();
         $registro = Registro::where('id_funcionario', $funcionario->id)->orderBy('created_at', 'desc')->get()->first();
+
+        if (!$registro)
+            return null;
         return $registro;
     }
 
     public function retornaORegistroDaDataEspecificada($funcionario, $data) {
-        $funcionario = Funcionario::findOrFail($funcionario->id);
         $registro = Registro::where('id_funcionario', $funcionario->id)->where('created_at', 'like', '%' . $data . '%')->get();
+        if (count($registro) == 0)
+            return null;
         return $registro;
     }
 
-    public function cadastraJustificativaNoRegistro(Request $request) {
-        $validated = $request->validate([
-            'justificativa' => 'required|string|max:255',
-            'id_justificativa' => 'required',
-        ]);
-
-        $funcionario = Funcionario::findOrFail($request->id_funcionario);
-        if ($funcionario != null) {
-            $registro = Registro::where('id_funcionario', $request->id_funcionario)->orderBy('created_at', 'desc')->get();
-        }
-        return $request;
+    public function cadastraFaltaNoRegistro($funcionario, $data) {
+        $falta = Falta::where('id_funcionario', $funcionario->id)->where('data', 'like', '%' . $data . '%')->get();
+        if (count($falta) == 0)
+            return null;
+        return $falta;
     }
 
     public function gerarRelatorioDeRegistroDoPonto(Request $request) {
@@ -489,22 +487,46 @@ class RegistroController extends Controller
 
         $mesAtual = date('m');
         $anoAtual = date('Y');
+        $diaAtual = date('d');
         $totalDiasDoMesAtual = cal_days_in_month(CAL_GREGORIAN, $mesAtual, $anoAtual);
         $relatorio = array(
+                // 'funcionario' => $funcionario,
                 array(
                     'dia' => null,
                     'registroDoDia' => null,
+                    'justificativa' => null
                 )
         );
 
-        for ($day = 1, $i = 0; $day <= $totalDiasDoMesAtual; $day++) {
+        for ($day = 1, $i = 0; $day <= $totalDiasDoMesAtual; $day++, $i++) {
             $data = sprintf('%02d', $day) . '/' . $mesAtual . '/' . $anoAtual;
             $dataDB = $anoAtual . '-' . $mesAtual . '-' . sprintf('%02d', $day);
             $relatorio[$i]['dia'] = $data;
             $relatorio[$i]['registroDoDia'] = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB);
-            $i++;
+            $relatorio[$i]['justificativa'] = $this->cadastraFaltaNoRegistro($funcionario, $dataDB);
         }
+        $relatorioTratado = $this->tratarDadosRelatorio($relatorio);
 
+        return $relatorioTratado;
+    }
+
+    public function tratarDadosRelatorio($relatorio) {
+
+        for ($i = 0; $i < sizeof($relatorio); $i++) {
+            if ($relatorio[$i]['justificativa'] && !$relatorio[$i]['registroDoDia']) {
+                $relatorio[$i]['registroDoDia'] = array(
+                    'primeiro_ponto' => 'JUSTIFICADO',
+                    'segundo_ponto' => 'JUSTIFICADO',
+                    'terceiro_ponto' => 'JUSTIFICADO',
+                    'quarto_ponto' => 'JUSTIFICADO',
+                    'atrasou_primeiro_ponto' => false,
+                    'atrasou_segundo_ponto' => false,
+                    'atrasou_terceiro_ponto' => false,
+                    'atrasou_quarto_ponto' => false
+                );
+            // pegar o range da data da justificativa e preencher, tambem ver os casos das justificativas de meio periodo
+            }
+        }
         return $relatorio;
     }
 }
