@@ -12,19 +12,21 @@ class PontoController extends Controller
     public function check(Request $request)
     {
         // checa se o funcionário existe
-        $funcionario = Db::select('select * from funcionarios where matricula = ? ', [$request->matricula]);
+        $funcionario = Funcionario::firstOrNew(['matricula' => $request->matricula]);
 
         if ($funcionario != null)
             return $funcionario;
-        return 0;
+        return null;
     }
 
     public function criarTabelaRegistro(Request $request)
     {
         // checar se o funcionário existe
         $funcionario = $this->check($request);
-        if ($funcionario == 0)
+        if ($funcionario == null)
             return "Funcionário não existe";
+
+        return $funcionario;
 
         // criar registro de ponto e registrar o primeiro ponto
         $registro = new RegistroController();
