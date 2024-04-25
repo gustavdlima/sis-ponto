@@ -112,7 +112,7 @@ class RegistroController extends Controller
         return $id;
     }
 
-    public function checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $date) {
+    public function checaSeOFuncionarioEstaAdiantadoPrimeiroPonto($registroFuncionario, $funcionario, $date) {
         $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
         $horarioDoRegistro = new DateTime($this->separarHorarioDaData($date));
 
@@ -124,6 +124,11 @@ class RegistroController extends Controller
                 return "Volte 15 minutos antes do horário de entrada do primeiro horário";
             return null;
         }
+    }
+
+    public function checaSeOFuncionarioEstaAdiantadoSegundoPonto($registroFuncionario, $funcionario, $date) {
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioDoRegistro = new DateTime($this->separarHorarioDaData($date));
 
         if ($registroFuncionario->segundo_ponto == NULL) {
             $segundoHorario = new DateTime($horarioFuncionario->segundo_horario);
@@ -133,6 +138,11 @@ class RegistroController extends Controller
                 return "Volte 15 minutos antes do horário de saída do primeiro horário";
             return null;
         }
+    }
+
+    public function checaSeOFuncionarioEstaAdiantadoTerceiroPonto($registroFuncionario, $funcionario, $date) {
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioDoRegistro = new DateTime($this->separarHorarioDaData($date));
 
         if ($registroFuncionario->terceiro_ponto == NULL) {
             $terceiroHorario = new DateTime($horarioFuncionario->terceiro_horario);
@@ -141,6 +151,11 @@ class RegistroController extends Controller
                 return "Volte 15 minutos antes do horário de entrada do segundo horário";
             return null;
         }
+    }
+
+    public function checaSeOFuncionarioEstaAdiantadoQuartoPonto($registroFuncionario, $funcionario, $date) {
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioDoRegistro = new DateTime($this->separarHorarioDaData($date));
 
         if ($registroFuncionario->quarto_ponto == NULL) {
             $quartoHorario = new DateTime($horarioFuncionario->quarto_horario);
@@ -246,8 +261,10 @@ class RegistroController extends Controller
             $horaFuncionarioArray[3] = $horarioFuncionario->quarto_horario;
         }
 
+
+        // o que está acontecendo é que checa se o funcionario esta adiantado mas ele checa todos os pontos e em algum momento retorna nulo
         for ($i = 0; $i < count($horaFuncionarioArray); $i++) {
-            if ($registroFuncionario->primeiro_horario == null && $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $date) == null) {
+            if ($registroFuncionario->primeiro_horario == null && $this->checaSeOFuncionarioEstaAdiantadoPrimeiroPonto($registroFuncionario, $funcionario, $date) == null) {
                 if ($registroFuncionario['atrasou_primeiro_ponto'] == true) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
@@ -266,7 +283,7 @@ class RegistroController extends Controller
                 $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
             }
 
-            if ($registroFuncionario->segundo_horario == null && $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $date) == null) {
+            if ($registroFuncionario->segundo_horario == null && $this->checaSeOFuncionarioEstaAdiantadoSegundoPonto($registroFuncionario, $funcionario, $date) == null) {
                 if ($registroFuncionario['primeiro_ponto'] == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
@@ -294,7 +311,7 @@ class RegistroController extends Controller
                 $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
             }
 
-            if ($registroFuncionario->terceiro_horario == null && $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $date) == null) {
+            if ($registroFuncionario->terceiro_horario == null && $this->checaSeOFuncionarioEstaAdiantadoTerceiroPonto($registroFuncionario, $funcionario, $date) == null) {
                 if ($registroFuncionario['segundo_ponto'] == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
@@ -323,7 +340,7 @@ class RegistroController extends Controller
                 $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
             }
 
-            if ($registroFuncionario->quarto_horario == null && $this->checaSeOFuncionarioEstaAdiantado($registroFuncionario, $funcionario, $date) == null) {
+            if ($registroFuncionario->quarto_horario == null && $this->checaSeOFuncionarioEstaAdiantadoQuartoPonto($registroFuncionario, $funcionario, $date) == null) {
                 if ($registroFuncionario['terceiro_ponto'] == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
