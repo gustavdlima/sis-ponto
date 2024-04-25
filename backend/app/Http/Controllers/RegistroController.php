@@ -92,8 +92,8 @@ class RegistroController extends Controller
 
     public function createRegistroArray($funcionario) {
         $registroArray = array(
-            'id_funcionario' => $funcionario[0]->id,
-            'id_horario' => $funcionario[0]->id_horario,
+            'id_funcionario' => $funcionario->id,
+            'id_horario' => $funcionario->id_horario,
             'primeiro_ponto' => null,
             'segundo_ponto' => null,
             'terceiro_ponto' => null,
@@ -113,7 +113,7 @@ class RegistroController extends Controller
     }
 
     public function checaSeOFuncionarioEstaAdiantadoPrimeiroPonto($registroFuncionario, $funcionario, $date) {
-        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario->id_horario);
         $horarioDoRegistro = new DateTime($this->separarHorarioDaData($date));
 
         if ($registroFuncionario->primeiro_ponto == NULL) {
@@ -127,7 +127,7 @@ class RegistroController extends Controller
     }
 
     public function checaSeOFuncionarioEstaAdiantadoSegundoPonto($registroFuncionario, $funcionario, $date) {
-        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario->id_horario);
         $horarioDoRegistro = new DateTime($this->separarHorarioDaData($date));
 
         if ($registroFuncionario->segundo_ponto == NULL) {
@@ -141,7 +141,7 @@ class RegistroController extends Controller
     }
 
     public function checaSeOFuncionarioEstaAdiantadoTerceiroPonto($registroFuncionario, $funcionario, $date) {
-        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario->id_horario);
         $horarioDoRegistro = new DateTime($this->separarHorarioDaData($date));
 
         if ($registroFuncionario->terceiro_ponto == NULL) {
@@ -154,7 +154,7 @@ class RegistroController extends Controller
     }
 
     public function checaSeOFuncionarioEstaAdiantadoQuartoPonto($registroFuncionario, $funcionario, $date) {
-        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario->id_horario);
         $horarioDoRegistro = new DateTime($this->separarHorarioDaData($date));
 
         if ($registroFuncionario->quarto_ponto == NULL) {
@@ -169,14 +169,14 @@ class RegistroController extends Controller
     }
 
     public function checaSeOFuncionarioEstaAtrasado($registroFuncionario, $funcionario, $date) {
-        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario->id_horario);
         $horaDoPonto = $this->separarHorarioDaData($date);
 
-        if ($funcionario[0]->carga_horaria == "20h") {
+        if ($funcionario->carga_horaria == "20h") {
             $horaFuncionarioArray[0] = $horarioFuncionario->primeiro_horario;
             $horaFuncionarioArray[1] = $horarioFuncionario->segundo_horario;
         }
-        else if ($funcionario[0]->carga_horaria == "40h") {
+        else if ($funcionario->carga_horaria == "40h") {
             $horaFuncionarioArray[0] = $horarioFuncionario->primeiro_horario;
             $horaFuncionarioArray[1] = $horarioFuncionario->segundo_horario;
             $horaFuncionarioArray[2] = $horarioFuncionario->terceiro_horario;
@@ -242,37 +242,38 @@ class RegistroController extends Controller
 
         }
 
-        return $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
+        return $this->getUltimoRegistroDoFuncionario($funcionario->id);
     }
 
     public function batePonto($funcionario, $registroFuncionario, $date) {
 
-        $horarioFuncionario = $this->getFuncionarioHorario($funcionario[0]->id_horario);
+        $horarioFuncionario = $this->getFuncionarioHorario($funcionario->id_horario);
         $horaDoPonto = $this->separarHorarioDaData($date);
-        if ($funcionario[0]->carga_horaria == "20h") {
+        if ($funcionario->carga_horaria == "20h") {
             $horaFuncionarioArray[0] = $horarioFuncionario->primeiro_horario;
             $horaFuncionarioArray[1] = $horarioFuncionario->segundo_horario;
 
         }
-        else if ($funcionario[0]->carga_horaria == "40h") {
+        else if ($funcionario->carga_horaria == "40h") {
             $horaFuncionarioArray[0] = $horarioFuncionario->primeiro_horario;
             $horaFuncionarioArray[1] = $horarioFuncionario->segundo_horario;
             $horaFuncionarioArray[2] = $horarioFuncionario->terceiro_horario;
             $horaFuncionarioArray[3] = $horarioFuncionario->quarto_horario;
         }
 
-
-        // o que está acontecendo é que checa se o funcionario esta adiantado mas ele checa todos os pontos e em algum momento retorna nulo
         for ($i = 0; $i < count($horaFuncionarioArray); $i++) {
-            if ($registroFuncionario->primeiro_horario == null && $this->checaSeOFuncionarioEstaAdiantadoPrimeiroPonto($registroFuncionario, $funcionario, $date) == null) {
-                if ($registroFuncionario['atrasou_primeiro_ponto'] == true) {
+
+            if ($registroFuncionario->primeiro_ponto == null && $this->checaSeOFuncionarioEstaAdiantadoPrimeiroPonto($registroFuncionario, $funcionario, $date) == null) {
+                if ($registroFuncionario->atrasou_primeiro_ponto == true  &&
+                $registroFuncionario->primeiro_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
                     ->update([
                         'primeiro_ponto' => "FALTA",
                         'atrasou_primeiro_ponto' => $registroFuncionario->atrasou_primeiro_ponto,
                     ]);
-                } else {
+                } if ($registroFuncionario->atrasou_primeiro_ponto == false &&
+                $registroFuncionario->primeiro_ponto == null) {
                     Db::table('registros')
                         ->where('id', $registroFuncionario->id)
                         ->update([
@@ -280,11 +281,11 @@ class RegistroController extends Controller
                             'atrasou_primeiro_ponto' => $registroFuncionario->atrasou_primeiro_ponto,
                         ]);
                 }
-                $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
+                $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
             }
 
-            if ($registroFuncionario->segundo_horario == null && $this->checaSeOFuncionarioEstaAdiantadoSegundoPonto($registroFuncionario, $funcionario, $date) == null) {
-                if ($registroFuncionario['primeiro_ponto'] == null) {
+            if ($registroFuncionario->segundo_ponto == null && $this->checaSeOFuncionarioEstaAdiantadoSegundoPonto($registroFuncionario, $funcionario, $date) == null) {
+                if ($registroFuncionario->primeiro_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
                     ->update([
@@ -292,14 +293,17 @@ class RegistroController extends Controller
                         'atrasou_primeiro_ponto' => true,
                     ]);
                 }
-                if ($registroFuncionario['atrasou_segundo_ponto'] == true) {
+                if ($registroFuncionario->atrasou_segundo_ponto == true &&
+                $registroFuncionario->segundo_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
                     ->update([
                         'segundo_ponto' => "FALTA",
                         'atrasou_segundo_ponto' => $registroFuncionario->atrasou_segundo_ponto,
                     ]);
-                } else {
+                }
+                if ($registroFuncionario->atrasou_segundo_ponto == false &&
+                    $registroFuncionario->segundo_ponto == null) {
                     if ($registroFuncionario)
                     Db::table('registros')
                         ->where('id', $registroFuncionario->id)
@@ -308,11 +312,11 @@ class RegistroController extends Controller
                             'atrasou_segundo_ponto' => $registroFuncionario->atrasou_segundo_ponto,
                         ]);
                 }
-                $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
+                $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
             }
 
-            if ($registroFuncionario->terceiro_horario == null && $this->checaSeOFuncionarioEstaAdiantadoTerceiroPonto($registroFuncionario, $funcionario, $date) == null) {
-                if ($registroFuncionario['segundo_ponto'] == null) {
+            if ($registroFuncionario->terceiro_ponto == null && $this->checaSeOFuncionarioEstaAdiantadoTerceiroPonto($registroFuncionario, $funcionario, $date) == null) {
+                if ($registroFuncionario->segundo_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
                     ->update([
@@ -322,14 +326,14 @@ class RegistroController extends Controller
                         'atrasou_segundo_ponto' => true,
                     ]);
                 }
-                if ($registroFuncionario['atrasou_terceiro_ponto'] == true) {
+                if ($registroFuncionario->atrasou_terceiro_ponto == true && $registroFuncionario->terceiro_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
                     ->update([
                         'terceiro_ponto' => "FALTA",
                         'atrasou_terceiro_ponto' => $registroFuncionario->atrasou_terceiro_ponto,
                     ]);
-                } else {
+                } if ($registroFuncionario->atrasou_terceiro_ponto == false && $registroFuncionario->terceiro_ponto == null) {
                     Db::table('registros')
                         ->where('id', $registroFuncionario->id)
                         ->update([
@@ -337,11 +341,11 @@ class RegistroController extends Controller
                             'atrasou_terceiro_ponto' => $registroFuncionario->atrasou_terceiro_ponto,
                         ]);
                 }
-                $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
+                $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
             }
 
-            if ($registroFuncionario->quarto_horario == null && $this->checaSeOFuncionarioEstaAdiantadoQuartoPonto($registroFuncionario, $funcionario, $date) == null) {
-                if ($registroFuncionario['terceiro_ponto'] == null) {
+            if ($registroFuncionario->quarto_ponto == null && $this->checaSeOFuncionarioEstaAdiantadoQuartoPonto($registroFuncionario, $funcionario, $date) == null) {
+                if ($registroFuncionario->terceiro_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
                     ->update([
@@ -353,14 +357,14 @@ class RegistroController extends Controller
                         'atrasou_terceiro_ponto' => true,
                     ]);
                 }
-                if ($registroFuncionario['atrasou_quarto_ponto'] == true) {
+                if ($registroFuncionario->atrasou_quarto_ponto == true && $registroFuncionario->quarto_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
                     ->update([
                         'quarto_ponto' => "FALTA",
                         'atrasou_quarto_ponto' => $registroFuncionario->atrasou_quarto_ponto,
                     ]);
-                } else {
+                } if ($registroFuncionario->atrasou_quarto_ponto == false && $registroFuncionario->quarto_ponto == null) {
                     Db::table('registros')
                         ->where('id', $registroFuncionario->id)
                         ->update([
@@ -368,7 +372,7 @@ class RegistroController extends Controller
                             'atrasou_quarto_ponto' => $registroFuncionario->atrasou_quarto_ponto,
                         ]);
                 }
-                $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
+                $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
             }
         }
         return $registroFuncionario;
@@ -384,7 +388,7 @@ class RegistroController extends Controller
     public function store($funcionario) {
         $data = date('Y-m-d H:i:s');
 
-        $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario[0]->id);
+        $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
         $registroArray = $this->createRegistroArray($funcionario);
 
         if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registroFuncionario->created_at) == false) {
