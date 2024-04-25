@@ -64,3 +64,4 @@ Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index'
 
 Route::post('/users', [UserController::class, 'store'])->middleware('auth:sanctum');
 
+Route::post('/relatorio', [RegistroController::class, 'gerarRelatorioDeRegistroDoPonto'])->middleware('auth:sanctum');
