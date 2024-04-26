@@ -88,6 +88,10 @@ class RegistroController extends Controller
     public function getUltimoRegistroDoFuncionario($funcionarioId) {
         $registro = Registro::where('id_funcionario', $funcionarioId)->latest()->get()->first();
 
+        if ($registro == null) {
+            return null;
+        }
+
         return $registro;
     }
 
@@ -391,6 +395,11 @@ class RegistroController extends Controller
 
         $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
 
+        if ($registroFuncionario == null) {
+            $registroArray = $this->createRegistroArray($funcionario);
+            $registroFuncionario = $this->create($registroArray);
+        }
+
         $registroArray = $this->createRegistroArray($funcionario);
 
         if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registroFuncionario->created_at) == false) {
@@ -524,7 +533,21 @@ class RegistroController extends Controller
                     'atrasou_terceiro_ponto' => false,
                     'atrasou_quarto_ponto' => false
                 );
-            // pegar o range da data da justificativa e preencher, tambem ver os casos das justificativas de meio periodo
+                // pegar o range da data da justificativa e preencher, tambem ver os casos das justificativas de meio periodo
+            }
+            if ($relatorio[$i]['justificativa'] && $relatorio[$i]['registroDoDia']) {
+                if (!isset($relatorio[$i]['registroDoDia']['primeiro_ponto'])) {
+                    $relatorio[$i]['registroDoDia'][0]['primeiro_ponto'] = 'JUSTIFICADO';
+                }
+                if (!isset($relatorio[$i]['registroDoDia']['segundo_ponto'])) {
+                    $relatorio[$i]['registroDoDia'][0]['segundo_ponto'] = 'JUSTIFICADO';
+                }
+                if (!isset($relatorio[$i]['registroDoDia']['terceiro_ponto'])) {
+                    $relatorio[$i]['registroDoDia'][0]['terceiro_ponto'] = 'JUSTIFICADO';
+                }
+                if (!isset($relatorio[$i]['registroDoDia']['quarto_ponto'])) {
+                    $relatorio[$i]['registroDoDia'][0]['quarto_ponto'] = 'JUSTIFICADO';
+                }
             }
         }
         return $relatorio;
