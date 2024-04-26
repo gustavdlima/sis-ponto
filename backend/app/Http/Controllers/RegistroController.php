@@ -536,16 +536,16 @@ class RegistroController extends Controller
                 // pegar o range da data da justificativa e preencher, tambem ver os casos das justificativas de meio periodo
             }
             if ($relatorio[$i]['justificativa'] && $relatorio[$i]['registroDoDia']) {
-                if (!isset($relatorio[$i]['registroDoDia']['primeiro_ponto'])) {
+                if (!isset($relatorio[$i]['registroDoDia'][0]['primeiro_ponto'])) {
                     $relatorio[$i]['registroDoDia'][0]['primeiro_ponto'] = 'JUSTIFICADO';
                 }
-                if (!isset($relatorio[$i]['registroDoDia']['segundo_ponto'])) {
+                if (!isset($relatorio[$i]['registroDoDia'][0]['segundo_ponto'])) {
                     $relatorio[$i]['registroDoDia'][0]['segundo_ponto'] = 'JUSTIFICADO';
                 }
-                if (!isset($relatorio[$i]['registroDoDia']['terceiro_ponto'])) {
+                if (!isset($relatorio[$i]['registroDoDia'][0]['terceiro_ponto'])) {
                     $relatorio[$i]['registroDoDia'][0]['terceiro_ponto'] = 'JUSTIFICADO';
                 }
-                if (!isset($relatorio[$i]['registroDoDia']['quarto_ponto'])) {
+                if (!isset($relatorio[$i]['registroDoDia'][0]['quarto_ponto'])) {
                     $relatorio[$i]['registroDoDia'][0]['quarto_ponto'] = 'JUSTIFICADO';
                 }
             }
