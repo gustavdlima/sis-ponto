@@ -33,13 +33,14 @@
 						<v-btn color="teal" @click="converterRegistroJsonParaExcel(item)"
 							class="btn btn-light btn-sm">excel</v-btn>
 						<v-btn color="teal" @click="imprimirRegistro()" class="btn btn-light btn-sm">imprimir</v-btn>
+						<v-btn color="teal" class="btn btn-light btn-sm" text @click="imprimirRelatorioMensal()">Relatório Mensal</v-btn>
 					</div>
 					<template v-slot:text>
 						<v-text-field v-model="search" label="Pesquisa" single-line variant="outlined"
 							hide-details></v-text-field>
 					</template>
 					<v-card-text>
-						<div id="imprimirTabela">
+						<div id="registroTabela">
 							<p>
 								Nome: <b>{{ funcionarioSelecionado.nome }}</b>
 							</p>
@@ -55,8 +56,30 @@
 							<p>
 								Horário: {{ horarioFuncionario }}
 							</p>
-							<v-data-table id="imprimirTabela" class="elevation-1"
+							<v-data-table id="registroTabela" class="elevation-1"
 								:items="registroFuncionarioSelecionado" :items-per-page="30" :headers="registroHeaders"
+								:search="search">
+								<template #bottom></template>
+							</v-data-table>
+						</div>
+						<div id="imprimirRelatorio" hidden>
+							<p>
+								Nome: <b>{{ funcionarioSelecionado.nome }}</b>
+							</p>
+							<p>
+								CPF: {{ funcionarioSelecionado.cpf }}
+							</p>
+							<p>
+								Matrícula: {{ funcionarioSelecionado.matricula }}
+							</p>
+							<p>
+								Setor: {{ funcionarioSelecionado.setor }}
+							</p>
+							<p>
+								Horário: {{ horarioFuncionario }}
+							</p>
+							<v-data-table id="imprimirRelatorio" class="elevation-1"
+								:items="relatorioRef" :items-per-page="30" :headers="relatorioHeaders"
 								:search="search">
 								<template #bottom></template>
 							</v-data-table>
@@ -151,6 +174,8 @@ var faltaInput = ref({
 	data2: "",
 });
 
+var relatorioRef = ref([]);
+
 var faltaRegistrada = ref(false);
 var erroSistema = ref(false);
 var erroMessage = ref("");
@@ -170,6 +195,16 @@ const headers = ref([
 	{ value: 'action', sortable: false, align: 'center' },
 ]);
 
+const relatorioHeaders = ref([
+	{ align: 'center', width: '1%', title: 'Data', key: 'dia', width: '1%' },
+	{ align: 'center', width: '1%', title: 'Primeiro Horario', key: 'primeiro_ponto', width: '1%' },
+	{ align: 'center', width: '1%', title: 'Segundo Horario', key: 'segundo_ponto', width: '1%' },
+	{ align: 'center', width: '1%', title: 'Terceiro Horario', key: 'terceiro_ponto', width: '1%' },
+	{ align: 'center', width: '1%', title: 'Quarto Horario', key: 'quarto_ponto', width: '1%' },
+	// { align: 'center', width: '1%', title: 'Total Horas', key: 'horas_trabalhadas', },
+	// { align: 'center', width: '1%', title: 'Justificativa', key: 'justificativa', },
+])
+
 const registroHeaders = ref([
 	{ align: 'center', width: '1%', title: 'Data', key: 'data', width: '1%' },
 	{ align: 'center', width: '1%', title: 'Primeiro Horario', key: 'primeiro_ponto', width: '1%' },
@@ -182,6 +217,8 @@ const registroHeaders = ref([
 	{ align: 'center', width: '1%', title: 'Atrasou', key: 'atrasou_quarto_ponto' },
 	{ align: 'center', width: '1%', title: 'Total Horas', key: 'horas_trabalhadas', },
 ])
+
+// const relatorioHeaders
 
 function getFuncionarios() {
 	const bearerToken = 'Bearer ' + authStore.userToken;
@@ -255,13 +292,84 @@ function converterRegistroJsonParaExcel() {
 
 function imprimirRegistro() {
 	hidden.value = false;
-	const print = document.getElementById('imprimirTabela');
+	const print = document.getElementById('registroTabela');
+	console.log(print);
 	const printContent = print.innerHTML;
 	var win = window.open();
 	win.document.write(printContent);
 	win.print();
-	win.close();
 	hidden.value = true;
+}
+
+function imprimirRelatorioMensal() {
+	try {
+		const bearerToken = 'Bearer ' + authStore.userToken;
+		axios.defaults.headers.common = {
+			'Authorization': bearerToken
+	}
+
+	axios.post('http://localhost:8000/api/relatorio', { matricula: funcionarioSelecionado.value.matricula }).then(response => {
+		var relatorio = [];
+		for (var i = 0; i < response.data.length; i++) {
+			var dia = response.data[i].dia;
+			var registroDoDia = response.data[i].registroDoDia;
+			if (Array.isArray(registroDoDia)) {
+				registroDoDia = registroDoDia[0];
+			}
+			if (response.data[i].justificativa == null) {
+				response.data[i].justificativa = { id: 0, justificativa: "Sem justificativa" }
+			}
+			var justificativa = response.data[i].justificativa;
+			if (justificativa == null) {
+				justificativa = { id: 0, justificativa: "Sem justificativa" }
+			}
+			if (registroDoDia == null) {
+				registroDoDia = {
+					primeiro_ponto: "Sem Registro",
+					segundo_ponto: "Sem Registro",
+					terceiro_ponto: "Sem Registro",
+					quarto_ponto: "Sem Registro"
+				}
+			}
+			if (registroDoDia != null && justificativa != null) {
+				relatorio[i] = {
+					dia: dia,
+					primeiro_ponto: registroDoDia.primeiro_ponto,
+					segundo_ponto: registroDoDia.segundo_ponto,
+					terceiro_ponto: registroDoDia.terceiro_ponto,
+					quarto_ponto: registroDoDia.quarto_ponto,
+					justificativa: justificativa.id
+				}
+			}
+			if (registroDoDia != null && justificativa == null) {
+				relatorio[i] = {
+					dia: dia,
+					primeiro_ponto: registroDoDia.primeiro_ponto,
+					segundo_ponto: registroDoDia.segundo_ponto,
+					terceiro_ponto: registroDoDia.terceiro_ponto,
+					quarto_ponto: registroDoDia.quarto_ponto,
+					justificativa: ""
+				}
+			}
+		}
+		relatorioRef.value = relatorio;
+		console.log(relatorioRef.value)
+		setTimeout(() => {
+			const print = document.getElementById('imprimirRelatorio');
+			const printContent = print.innerHTML;
+			var win = window.open();
+			win.document.write(printContent);
+			win.print();
+		}, 500);
+		// gerar pagina de impressao do relatorio
+	})
+		.catch(error => {
+			console.log(error);
+		});
+	} catch (error) {
+		console.log(error);
+	}
+
 }
 
 function justificarFalta(funcionario) {
