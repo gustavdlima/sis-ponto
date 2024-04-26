@@ -320,7 +320,7 @@ class RegistroController extends Controller
                 $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
             }
 
-            if ($registroFuncionario->terceiro_ponto == null && $this->checaSeOFuncionarioEstaAdiantadoTerceiroPonto($registroFuncionario, $funcionario, $date) == null) {
+            if ($funcionario->carga_horaria == "40h" &&  $registroFuncionario->terceiro_ponto == null && $this->checaSeOFuncionarioEstaAdiantadoTerceiroPonto($registroFuncionario, $funcionario, $date) == null) {
                 if ($registroFuncionario->segundo_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
@@ -349,7 +349,7 @@ class RegistroController extends Controller
                 $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
             }
 
-            if ($registroFuncionario->quarto_ponto == null && $this->checaSeOFuncionarioEstaAdiantadoQuartoPonto($registroFuncionario, $funcionario, $date) == null) {
+            if ($funcionario->carga_horaria == "40h" &&  $registroFuncionario->quarto_ponto == null && $this->checaSeOFuncionarioEstaAdiantadoQuartoPonto($registroFuncionario, $funcionario, $date) == null) {
                 if ($registroFuncionario->terceiro_ponto == null) {
                     Db::table('registros')
                     ->where('id', $registroFuncionario->id)
@@ -405,11 +405,11 @@ class RegistroController extends Controller
         }
 
         if ($this->checaSeJaBateuTodosOsPontosDoDia($registroFuncionario))
-        return "Todos os pontos já foram batidos";
+            return "Todos os pontos já foram batidos";
 
         $registroFuncionario = $this->checaSeOFuncionarioEstaAtrasado($registroFuncionario, $funcionario, $data);
 
-        return $registroFuncionario;
+        // return $registroFuncionario;
 
         $novoRegistro = $this->batePonto($funcionario, $registroFuncionario, $data);
 
