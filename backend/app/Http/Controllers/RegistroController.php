@@ -507,7 +507,18 @@ class RegistroController extends Controller
             $data = sprintf('%02d', $day) . '/' . $mesAtual . '/' . $anoAtual;
             $dataDB = $anoAtual . '-' . $mesAtual . '-' . sprintf('%02d', $day);
             $relatorio[$i]['dia'] = $data;
-            $relatorio[$i]['registroDoDia'] = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB);
+            $registro = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB);
+            if ($registro) {
+                if ($registro[0]['primeiro_ponto'] != null && $registro[0]['primeiro_ponto'] != 'FALTA' && $registro[0]['primeiro_ponto'] != 'JUSTIFICATIVA')
+                    $registro[0]['primeiro_ponto'] = explode(' ', $registro[0]['primeiro_ponto'])[1];
+                if ($registro[0]['segundo_ponto'] != null && $registro[0]['segundo_ponto'] != 'FALTA' && $registro[0]['segundo_ponto'] != 'JUSTIFICATIVA')
+                    $registro[0]['segundo_ponto'] = explode(' ', $registro[0]['segundo_ponto'])[1];
+                if ($registro[0]['terceiro_ponto'] != null && $registro[0]['terceiro_ponto'] != 'FALTA' && $registro[0]['terceiro_ponto'] != 'JUSTIFICATIVA')
+                    $registro[0]['terceiro_ponto'] = explode(' ', $registro[0]['terceiro_ponto'])[1];
+                if ($registro[0]['quarto_ponto'] != null && $registro[0]['quarto_ponto'] != 'FALTA' && $registro[0]['quarto_ponto'] != 'JUSTIFICATIVA')
+                    $registro[0]['quarto_ponto'] = explode(' ', $registro[0]['quarto_ponto'])[1];
+            }
+            $relatorio[$i]['registroDoDia'] = $registro;
             $relatorio[$i]['justificativa'] = $this->cadastraFaltaNoRegistro($funcionario, $dataDB);
         }
         $relatorioTratado = $this->tratarDadosRelatorio($funcionario, $relatorio);
