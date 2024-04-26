@@ -383,8 +383,11 @@ class RegistroController extends Controller
         return $registroFuncionario;
     }
 
-    public function checaSeJaBateuTodosOsPontosDoDia($registroArray) {
-        if ($registroArray['primeiro_ponto'] != null && $registroArray['segundo_ponto'] != null && $registroArray['terceiro_ponto'] != null && $registroArray['quarto_ponto'] != null)
+    public function checaSeJaBateuTodosOsPontosDoDia($funcionario, $registroArray) {
+        if ($funcionario->carga_horaria == "20h")
+            if ($registroArray['primeiro_ponto'] != null && $registroArray['segundo_ponto'] != null)
+                return true;
+        else if ($registroArray['primeiro_ponto'] != null && $registroArray['segundo_ponto'] != null && $registroArray['terceiro_ponto'] != null && $registroArray['quarto_ponto'] != null )
             return true;
         else
             return false;
@@ -394,17 +397,17 @@ class RegistroController extends Controller
         $data = date('Y-m-d H:i:s');
 
         $registroFuncionario = $this->getUltimoRegistroDoFuncionario($funcionario->id);
-
         if ($registroFuncionario == null) {
             $registroArray = $this->createRegistroArray($funcionario);
             $registroFuncionario = $this->create($registroArray);
         }
 
         if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registroFuncionario->created_at) == false) {
+            $registroArray = $this->createRegistroArray($funcionario);
             $registroFuncionario = $this->create($registroArray);
         }
 
-        if ($this->checaSeJaBateuTodosOsPontosDoDia($registroFuncionario))
+        if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registroFuncionario))
             return "Todos os pontos já foram batidos";
 
         $registroFuncionario = $this->checaSeOFuncionarioEstaAtrasado($registroFuncionario, $funcionario, $data);
