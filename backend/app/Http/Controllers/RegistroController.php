@@ -533,7 +533,6 @@ class RegistroController extends Controller
                     'atrasou_terceiro_ponto' => false,
                     'atrasou_quarto_ponto' => false
                 );
-                // pegar o range da data da justificativa e preencher, tambem ver os casos das justificativas de meio periodo
             }
             if ($relatorio[$i]['justificativa'] && $relatorio[$i]['registroDoDia']) {
                 if (!isset($relatorio[$i]['registroDoDia'][0]['primeiro_ponto'])) {
@@ -549,6 +548,22 @@ class RegistroController extends Controller
                     $relatorio[$i]['registroDoDia'][0]['quarto_ponto'] = 'JUSTIFICADO';
                 }
             }
+            // se a data for um sábado ou domingo, o registro do dia é nulo
+            $data = explode('/', $relatorio[$i]['dia']);
+            $diaDaSemana = date('w', strtotime($data[2] . '-' . $data[1] . '-' . $data[0]));
+            if ($diaDaSemana == 0 || $diaDaSemana == 6) {
+                $relatorio[$i]['registroDoDia'] = array(
+                    'primeiro_ponto' => '-',
+                    'segundo_ponto' => '-',
+                    'terceiro_ponto' => '-',
+                    'quarto_ponto' => '-',
+                    'atrasou_primeiro_ponto' => false,
+                    'atrasou_segundo_ponto' => false,
+                    'atrasou_terceiro_ponto' => false,
+                    'atrasou_quarto_ponto' => false
+                );
+            }
+
         }
         return $relatorio;
     }
