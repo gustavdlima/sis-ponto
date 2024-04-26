@@ -202,7 +202,7 @@ const relatorioHeaders = ref([
 	{ align: 'center', width: '1%', title: 'Terceiro Horario', key: 'terceiro_ponto', width: '1%' },
 	{ align: 'center', width: '1%', title: 'Quarto Horario', key: 'quarto_ponto', width: '1%' },
 	// { align: 'center', width: '1%', title: 'Total Horas', key: 'horas_trabalhadas', },
-	// { align: 'center', width: '1%', title: 'Justificativa', key: 'justificativa', },
+	{ align: 'center', width: '1%', title: 'Justificativa', key: 'justificativa', },
 ])
 
 const registroHeaders = ref([
@@ -309,6 +309,7 @@ function imprimirRelatorioMensal() {
 	}
 
 	axios.post('http://localhost:8000/api/relatorio', { matricula: funcionarioSelecionado.value.matricula }).then(response => {
+		console.log(response.data)
 		var relatorio = [];
 		for (var i = 0; i < response.data.length; i++) {
 			var dia = response.data[i].dia;
@@ -316,13 +317,7 @@ function imprimirRelatorioMensal() {
 			if (Array.isArray(registroDoDia)) {
 				registroDoDia = registroDoDia[0];
 			}
-			if (response.data[i].justificativa == null) {
-				response.data[i].justificativa = { id: 0, justificativa: "Sem justificativa" }
-			}
 			var justificativa = response.data[i].justificativa;
-			if (justificativa == null) {
-				justificativa = { id: 0, justificativa: "Sem justificativa" }
-			}
 			if (registroDoDia == null) {
 				registroDoDia = {
 					primeiro_ponto: "Sem Registro",
@@ -338,7 +333,7 @@ function imprimirRelatorioMensal() {
 					segundo_ponto: registroDoDia.segundo_ponto,
 					terceiro_ponto: registroDoDia.terceiro_ponto,
 					quarto_ponto: registroDoDia.quarto_ponto,
-					justificativa: justificativa.id
+					justificativa: justificativa
 				}
 			}
 			if (registroDoDia != null && justificativa == null) {
@@ -348,7 +343,7 @@ function imprimirRelatorioMensal() {
 					segundo_ponto: registroDoDia.segundo_ponto,
 					terceiro_ponto: registroDoDia.terceiro_ponto,
 					quarto_ponto: registroDoDia.quarto_ponto,
-					justificativa: ""
+					justificativa: "-"
 				}
 			}
 		}

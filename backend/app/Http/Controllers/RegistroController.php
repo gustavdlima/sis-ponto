@@ -607,6 +607,18 @@ class RegistroController extends Controller
             }
 
         }
+        $novoRelatorio = $this->inserirJustificativaNoRelatorio($relatorio);
+        return $novoRelatorio;
+    }
+
+    public function inserirJustificativaNoRelatorio($relatorio) {
+        for ($i = 0; $i < sizeof($relatorio); $i++) {
+            // pegar o id da justificativa e substituir pelo valor da justificativa vinda do where no banco de dados
+            if ($relatorio[$i]['justificativa']) {
+                $justificativa = Justificativa::where('id', $relatorio[$i]['justificativa'][0]['id_justificativa'])->get();
+                $relatorio[$i]['justificativa'] = $justificativa[0]->justificativa;
+            }
+        }
         return $relatorio;
     }
 }
