@@ -217,7 +217,7 @@ class RegistroController extends Controller
                 }
             }
 
-            if ($registroFuncionario->terceiro_ponto == NULL) {
+            if ($registroFuncionario->terceiro_ponto == NULL && $funcionario->carga_horaria == "40h") {
                 $diferenca = strtotime($horaDoPonto) - strtotime($horarioFuncionario->terceiro_horario);
                 $diferencaHora = floor($diferenca / 3600);
                 $diferencaMinutos = floor(($diferenca % 3600) / 60);
@@ -231,7 +231,7 @@ class RegistroController extends Controller
                 }
             }
 
-            if ($registroFuncionario->quarto_ponto == NULL) {
+            if ($registroFuncionario->quarto_ponto == NULL && $funcionario->carga_horaria == "40h") {
                 $diferenca = strtotime($horaDoPonto) - strtotime($horarioFuncionario->quarto_horario);
                 $diferencaHora = floor($diferenca / 3600);
                 $diferencaMinutos = floor(($diferenca % 3600) / 60);
@@ -400,16 +400,16 @@ class RegistroController extends Controller
             $registroFuncionario = $this->create($registroArray);
         }
 
-        $registroArray = $this->createRegistroArray($funcionario);
-
         if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registroFuncionario->created_at) == false) {
             $registroFuncionario = $this->create($registroArray);
         }
 
         if ($this->checaSeJaBateuTodosOsPontosDoDia($registroFuncionario))
-            return "Todos os pontos já foram batidos";
+        return "Todos os pontos já foram batidos";
 
         $registroFuncionario = $this->checaSeOFuncionarioEstaAtrasado($registroFuncionario, $funcionario, $data);
+
+        return $registroFuncionario;
 
         $novoRegistro = $this->batePonto($funcionario, $registroFuncionario, $data);
 
