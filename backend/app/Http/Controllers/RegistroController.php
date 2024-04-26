@@ -444,13 +444,6 @@ class RegistroController extends Controller
                 if ($funcionario->carga_horaria == '20h')
                     $registro[$i]['horas_trabalhadas'] = $this->calculaHorasTrabalhadas20h($horario, $registro[$i]);
             }
-
-            // for ($j = 0; $j < count($faltas); $j++) {
-            //     $faltas[$j]['data'] = date("d/m/Y", strtotime($faltas[$j]['data']));
-            //     if ($faltas[$j]['data'] == $registro[$i]['data']) {
-            //         $registro[$i]['falta'] = $faltas[$j]['id'];
-            //     }
-            // }
         }
         return $registro;
     }
@@ -517,26 +510,26 @@ class RegistroController extends Controller
             $relatorio[$i]['registroDoDia'] = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB);
             $relatorio[$i]['justificativa'] = $this->cadastraFaltaNoRegistro($funcionario, $dataDB);
         }
-        $relatorioTratado = $this->tratarDadosRelatorio($relatorio);
+        $relatorioTratado = $this->tratarDadosRelatorio($funcionario, $relatorio);
 
         return $relatorioTratado;
     }
 
-    public function tratarDadosRelatorio($relatorio) {
+    public function tratarDadosRelatorio($funcionario, $relatorio) {
 
         for ($i = 0; $i < sizeof($relatorio); $i++) {
-            if ($relatorio[$i]['justificativa'] && !$relatorio[$i]['registroDoDia']) {
-                $relatorio[$i]['registroDoDia'] = array(
-                    'primeiro_ponto' => 'JUSTIFICADO',
-                    'segundo_ponto' => 'JUSTIFICADO',
-                    'terceiro_ponto' => 'JUSTIFICADO',
-                    'quarto_ponto' => 'JUSTIFICADO',
-                    'atrasou_primeiro_ponto' => false,
-                    'atrasou_segundo_ponto' => false,
-                    'atrasou_terceiro_ponto' => false,
-                    'atrasou_quarto_ponto' => false
-                );
-            }
+            // if ($relatorio[$i]['justificativa'] && !$relatorio[$i]['registroDoDia']) {
+            //     $relatorio[$i]['registroDoDia'] = array(
+            //         'primeiro_ponto' => 'JUSTIFICADO',
+            //         'segundo_ponto' => 'JUSTIFICADO',
+            //         'terceiro_ponto' => 'JUSTIFICADO',
+            //         'quarto_ponto' => 'JUSTIFICADO',
+            //         'atrasou_primeiro_ponto' => false,
+            //         'atrasou_segundo_ponto' => false,
+            //         'atrasou_terceiro_ponto' => false,
+            //         'atrasou_quarto_ponto' => false
+            //     );
+            // }
             if ($relatorio[$i]['justificativa'] && $relatorio[$i]['registroDoDia']) {
                 if (!isset($relatorio[$i]['registroDoDia'][0]['primeiro_ponto'])) {
                     $relatorio[$i]['registroDoDia'][0]['primeiro_ponto'] = 'JUSTIFICADO';
@@ -544,10 +537,10 @@ class RegistroController extends Controller
                 if (!isset($relatorio[$i]['registroDoDia'][0]['segundo_ponto'])) {
                     $relatorio[$i]['registroDoDia'][0]['segundo_ponto'] = 'JUSTIFICADO';
                 }
-                if (!isset($relatorio[$i]['registroDoDia'][0]['terceiro_ponto'])) {
+                if (!isset($relatorio[$i]['registroDoDia'][0]['terceiro_ponto']) && $funcionario->carga_horaria == '40h') {
                     $relatorio[$i]['registroDoDia'][0]['terceiro_ponto'] = 'JUSTIFICADO';
                 }
-                if (!isset($relatorio[$i]['registroDoDia'][0]['quarto_ponto'])) {
+                if (!isset($relatorio[$i]['registroDoDia'][0]['quarto_ponto']) && $funcionario->carga_horaria == '40h') {
                     $relatorio[$i]['registroDoDia'][0]['quarto_ponto'] = 'JUSTIFICADO';
                 }
             }
@@ -567,23 +560,37 @@ class RegistroController extends Controller
                 );
             }
 
-            // se a data de inicio da justificativa for diferente da data de fim, preencher os pontos dos dias entre com 'JUSTIFICADO'
             if ($relatorio[$i]['justificativa']) {
                 $dataInicio = explode('-', $relatorio[$i]['justificativa'][0]['data']);
                 $dataFim = explode('-', $relatorio[$i]['justificativa'][0]['data2']);
                 if ($dataInicio[2] != $dataFim[2]) {
-                    for ($j = $dataInicio[2] + 1; $j <= $dataFim[2]; $j++) {
-                        $relatorio[$j - 1]['registroDoDia'] = array(
-                            'primeiro_ponto' => 'JUSTIFICADO',
-                            'segundo_ponto' => 'JUSTIFICADO',
-                            'terceiro_ponto' => 'JUSTIFICADO',
-                            'quarto_ponto' => 'JUSTIFICADO',
-                            'atrasou_primeiro_ponto' => false,
-                            'atrasou_segundo_ponto' => false,
-                            'atrasou_terceiro_ponto' => false,
-                            'atrasou_quarto_ponto' => false
-                        );
-                        $relatorio[$j - 1]['justificativa'] = $relatorio[$i]['justificativa'];
+                    for ($j = $dataInicio[2]; $j <= $dataFim[2]; $j++) {
+                        // se a data for um fim de semana, o registro do dia é nulo
+                        $diaDaSemana = date('w', strtotime($dataInicio[0] . '-' . $dataInicio[1] . '-' . $j));
+                        if ($diaDaSemana == 0 || $diaDaSemana == 6) {
+                            $relatorio[$j - 1]['registroDoDia'] = array(
+                                'primeiro_ponto' => '-',
+                                'segundo_ponto' => '-',
+                                'terceiro_ponto' => '-',
+                                'quarto_ponto' => '-',
+                                'atrasou_primeiro_ponto' => false,
+                                'atrasou_segundo_ponto' => false,
+                                'atrasou_terceiro_ponto' => false,
+                                'atrasou_quarto_ponto' => false
+                            );
+                        } else {
+                            $relatorio[$j - 1]['registroDoDia'] = array(
+                                'primeiro_ponto' => 'JUSTIFICADO',
+                                'segundo_ponto' => 'JUSTIFICADO',
+                                'terceiro_ponto' => 'JUSTIFICADO',
+                                'quarto_ponto' => 'JUSTIFICADO',
+                                'atrasou_primeiro_ponto' => false,
+                                'atrasou_segundo_ponto' => false,
+                                'atrasou_terceiro_ponto' => false,
+                                'atrasou_quarto_ponto' => false
+                            );
+                            $relatorio[$j - 1]['justificativa'] = $relatorio[$i]['justificativa'];
+                        }
                     }
                 }
             }
