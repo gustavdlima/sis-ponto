@@ -563,13 +563,13 @@ class RegistroController extends Controller
                     'atrasou_quarto_ponto' => false
                 );
             }
-            
+
             // se a data de inicio da justificativa for diferente da data de fim, preencher os pontos dos dias entre com 'JUSTIFICADO'
             if ($relatorio[$i]['justificativa']) {
                 $dataInicio = explode('-', $relatorio[$i]['justificativa'][0]['data']);
                 $dataFim = explode('-', $relatorio[$i]['justificativa'][0]['data2']);
                 if ($dataInicio[2] != $dataFim[2]) {
-                    for ($j = $dataInicio[2] + 1; $j < $dataFim[2]; $j++) {
+                    for ($j = $dataInicio[2] + 1; $j <= $dataFim[2]; $j++) {
                         $relatorio[$j - 1]['registroDoDia'] = array(
                             'primeiro_ponto' => 'JUSTIFICADO',
                             'segundo_ponto' => 'JUSTIFICADO',
@@ -580,6 +580,7 @@ class RegistroController extends Controller
                             'atrasou_terceiro_ponto' => false,
                             'atrasou_quarto_ponto' => false
                         );
+                        $relatorio[$j - 1]['justificativa'] = $relatorio[$i]['justificativa'];
                     }
                 }
             }
