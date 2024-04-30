@@ -85,7 +85,7 @@
 								<template #bottom></template>
 							</v-data-table>
 						</div>
-						<div id="imprimirRelatorio">
+						<div id="imprimirRelatorio" hidden>
 							<div class="row no-gutters mb-2 relatorioHeader">
 								<div class="col">
 									<div class="border">
