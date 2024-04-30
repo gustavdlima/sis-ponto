@@ -33,7 +33,9 @@
 						<v-btn color="teal" @click="converterRegistroJsonParaExcel(item)"
 							class="btn btn-light btn-sm">excel</v-btn>
 						<v-btn color="teal" @click="imprimirRegistro()" class="btn btn-light btn-sm">imprimir</v-btn>
-						<v-btn color="teal" class="btn btn-light btn-sm" text @click="imprimirRelatorioMensal()">Relatório Mensal</v-btn>
+						<v-btn color="teal" class="btn btn-light btn-sm" text
+							@click="imprimirRelatorioMensal()">Relatório
+							Mensal</v-btn>
 					</div>
 					<template v-slot:text>
 						<v-text-field v-model="search" label="Pesquisa" single-line variant="outlined"
@@ -41,46 +43,88 @@
 					</template>
 					<v-card-text>
 						<div id="registroTabela">
-							<p>
-								Nome: <b>{{ funcionarioSelecionado.nome }}</b>
-							</p>
-							<p>
-								CPF: {{ funcionarioSelecionado.cpf }}
-							</p>
-							<p>
-								Matrícula: {{ funcionarioSelecionado.matricula }}
-							</p>
-							<p>
-								Setor: {{ funcionarioSelecionado.setor }}
-							</p>
-							<p>
-								Horário: {{ horarioFuncionario }}
-							</p>
+							<div class="row no-gutters mb-2">
+								<div class="col">
+									<div class="border">
+										<span>
+											Nome: <b>{{ funcionarioSelecionado.nome }}</b>
+										</span>
+									</div>
+									<div class="border">
+										<span>
+											CPF: {{ funcionarioSelecionado.cpf }}
+										</span>
+									</div>
+									<div class="border">
+										<span>
+											<span>
+												Matrícula: {{ funcionarioSelecionado.matricula }}
+											</span>
+										</span>
+									</div>
+								</div>
+								<div class="col">
+									<div class="border">
+										Setor: {{ funcionarioSelecionado.setor }}
+									</div>
+									<div class="border">
+										<span>
+											Carga Horaria: {{ funcionarioSelecionado.carga_horaria }}
+										</span>
+									</div>
+									<div class="border">
+										<span>
+											Horário: {{ horarioFuncionario }}
+										</span>
+									</div>
+								</div>
+							</div>
 							<v-data-table id="registroTabela" class="elevation-1"
 								:items="registroFuncionarioSelecionado" :items-per-page="30" :headers="registroHeaders"
-								:search="search">
+								:search="search" density="compact">
 								<template #bottom></template>
 							</v-data-table>
 						</div>
-						<div id="imprimirRelatorio" hidden>
-							<p>
-								Nome: <b>{{ funcionarioSelecionado.nome }}</b>
-							</p>
-							<p>
-								CPF: {{ funcionarioSelecionado.cpf }}
-							</p>
-							<p>
-								Matrícula: {{ funcionarioSelecionado.matricula }}
-							</p>
-							<p>
-								Setor: {{ funcionarioSelecionado.setor }}
-							</p>
-							<p>
-								Horário: {{ horarioFuncionario }}
-							</p>
-							<v-data-table id="imprimirRelatorio" class="elevation-1"
-								:items="relatorioRef" :items-per-page="30" :headers="relatorioHeaders"
-								:search="search">
+						<div id="imprimirRelatorio">
+							<div class="row no-gutters mb-2 relatorioHeader">
+								<div class="col">
+									<div class="border">
+										<span>
+											Nome: <b>{{ funcionarioSelecionado.nome }}</b>
+										</span>
+									</div>
+									<div class="border">
+										<span>
+											CPF: {{ funcionarioSelecionado.cpf }}
+										</span>
+									</div>
+									<div class="border">
+										<span>
+											<span>
+												Matrícula: {{ funcionarioSelecionado.matricula }}
+											</span>
+										</span>
+									</div>
+								</div>
+								<div class="col">
+									<div class="border">
+										Setor: {{ funcionarioSelecionado.setor }}
+									</div>
+									<div class="border">
+										<span>
+											Carga Horaria: {{ funcionarioSelecionado.carga_horaria }}
+										</span>
+									</div>
+									<div class="border">
+										<span>
+											Horário: {{ horarioFuncionario }}
+										</span>
+									</div>
+								</div>
+							</div>
+							<v-data-table id="imprimirRelatorioTabela" class="elevation-1 relatorioBody"
+								:items="relatorioRef" :items-per-page="30" :headers="relatorioHeaders" :search="search"
+								density="compact">
 								<template #bottom></template>
 							</v-data-table>
 						</div>
@@ -196,13 +240,12 @@ const headers = ref([
 ]);
 
 const relatorioHeaders = ref([
-	{ align: 'center', width: '1%', title: 'Data', key: 'dia', width: '1%' },
-	{ align: 'center', width: '1%', title: 'Primeiro Horario', key: 'primeiro_ponto', width: '1%' },
-	{ align: 'center', width: '1%', title: 'Segundo Horario', key: 'segundo_ponto', width: '1%' },
-	{ align: 'center', width: '1%', title: 'Terceiro Horario', key: 'terceiro_ponto', width: '1%' },
-	{ align: 'center', width: '1%', title: 'Quarto Horario', key: 'quarto_ponto', width: '1%' },
-	// { align: 'center', width: '1%', title: 'Total Horas', key: 'horas_trabalhadas', },
-	{ align: 'center', width: '1%', title: 'Justificativa', key: 'justificativa', },
+	{ align: 'center', width: '0%', title: 'Data', key: 'dia' },
+	{ align: 'center', width: '1%', title: 'Primeiro Horario', key: 'primeiro_ponto' },
+	{ align: 'center', width: '1%', title: 'Segundo Horario', key: 'segundo_ponto' },
+	{ align: 'center', width: '1%', title: 'Terceiro Horario', key: 'terceiro_ponto' },
+	{ align: 'center', width: '1%', title: 'Quarto Horario', key: 'quarto_ponto' },
+	{ align: 'center', width: '1%', title: 'Justificativa', key: 'justificativa' },
 ])
 
 const registroHeaders = ref([
@@ -215,7 +258,7 @@ const registroHeaders = ref([
 	{ align: 'center', width: '1%', title: 'Atrasou', key: 'atrasou_terceiro_ponto', },
 	{ align: 'center', width: '1%', title: 'Quarto Horario', key: 'quarto_ponto', width: '1%' },
 	{ align: 'center', width: '1%', title: 'Atrasou', key: 'atrasou_quarto_ponto' },
-	{ align: 'center', width: '1%', title: 'Total Horas', key: 'horas_trabalhadas', },
+	// { align: 'center', width: '1%', title: 'Total Horas', key: 'horas_trabalhadas', },
 ])
 
 // const relatorioHeaders
@@ -246,14 +289,39 @@ function abrirRegistro(funcionario) {
 		}
 
 		axios.get('http://localhost:8000/api/horarios/' + funcionarioSelecionado.value.id_horario).then(response => {
-			horarioFuncionario.value = response.data.primeiro_horario + ' - ' + response.data.segundo_horario + ' - ' + response.data.terceiro_horario + ' - ' + response.data.quarto_horario;
+			if (response.data.terceiro_horario == null) {
+				horarioFuncionario.value = response.data.primeiro_horario + ' - ' + response.data.segundo_horario;
+			} else {
+				horarioFuncionario.value = response.data.primeiro_horario + ' - ' + response.data.segundo_horario + ' - ' + response.data.terceiro_horario + ' - ' + response.data.quarto_horario;
+			}
 
 		}).catch(error => {
 			console.log(error);
 		});
 
 		axios.post('http://localhost:8000/api/registroFuncionario', { id_funcionario: funcionario.id }).then(response => {
-			console.log(response.data);
+			for (var i = 0; i < response.data.length; i++) {
+				if (response.data[i].atrasou_primeiro_ponto == true) {
+					response.data[i].atrasou_primeiro_ponto = "x";
+				} else {
+					response.data[i].atrasou_primeiro_ponto = "";
+				}
+				if (response.data[i].atrasou_segundo_ponto == true) {
+					response.data[i].atrasou_segundo_ponto = "x";
+				} else {
+					response.data[i].atrasou_segundo_ponto = "";
+				}
+				if (response.data[i].atrasou_terceiro_ponto == true) {
+					response.data[i].atrasou_terceiro_ponto = "x";
+				} else {
+					response.data[i].atrasou_terceiro_ponto = "";
+				}
+				if (response.data[i].atrasou_quarto_ponto == true) {
+					response.data[i].atrasou_quarto_ponto = "x";
+				} else {
+					response.data[i].atrasou_quarto_ponto = "";
+				}
+			}
 			registroFuncionarioSelecionado.value = response.data;
 		})
 			.catch(error => {
@@ -306,61 +374,75 @@ function imprimirRelatorioMensal() {
 		const bearerToken = 'Bearer ' + authStore.userToken;
 		axios.defaults.headers.common = {
 			'Authorization': bearerToken
-	}
-
-	axios.post('http://localhost:8000/api/relatorio', { matricula: funcionarioSelecionado.value.matricula }).then(response => {
-		console.log(response.data)
-		var relatorio = [];
-		for (var i = 0; i < response.data.length; i++) {
-			var dia = response.data[i].dia;
-			var registroDoDia = response.data[i].registroDoDia;
-			if (Array.isArray(registroDoDia)) {
-				registroDoDia = registroDoDia[0];
-			}
-			var justificativa = response.data[i].justificativa;
-			if (registroDoDia == null) {
-				registroDoDia = {
-					primeiro_ponto: "Sem Registro",
-					segundo_ponto: "Sem Registro",
-					terceiro_ponto: "Sem Registro",
-					quarto_ponto: "Sem Registro"
-				}
-			}
-			if (registroDoDia != null && justificativa != null) {
-				relatorio[i] = {
-					dia: dia,
-					primeiro_ponto: registroDoDia.primeiro_ponto,
-					segundo_ponto: registroDoDia.segundo_ponto,
-					terceiro_ponto: registroDoDia.terceiro_ponto,
-					quarto_ponto: registroDoDia.quarto_ponto,
-					justificativa: justificativa
-				}
-			}
-			if (registroDoDia != null && justificativa == null) {
-				relatorio[i] = {
-					dia: dia,
-					primeiro_ponto: registroDoDia.primeiro_ponto,
-					segundo_ponto: registroDoDia.segundo_ponto,
-					terceiro_ponto: registroDoDia.terceiro_ponto,
-					quarto_ponto: registroDoDia.quarto_ponto,
-					justificativa: "-"
-				}
-			}
 		}
-		relatorioRef.value = relatorio;
-		console.log(relatorioRef.value)
-		setTimeout(() => {
-			const print = document.getElementById('imprimirRelatorio');
-			const printContent = print.innerHTML;
-			var win = window.open();
-			win.document.write(printContent);
-			win.print();
-		}, 500);
-		// gerar pagina de impressao do relatorio
-	})
-		.catch(error => {
-			console.log(error);
-		});
+
+		axios.post('http://localhost:8000/api/relatorio', { matricula: funcionarioSelecionado.value.matricula }).then(response => {
+			console.log(response.data)
+			var relatorio = [];
+			for (var i = 0; i < response.data.length; i++) {
+				var dia = response.data[i].dia;
+				var registroDoDia = response.data[i].registroDoDia;
+				if (Array.isArray(registroDoDia)) {
+					registroDoDia = registroDoDia[0];
+				}
+				var justificativa = response.data[i].justificativa;
+				if (registroDoDia == null) {
+					registroDoDia = {
+						primeiro_ponto: "Sem Registro",
+						segundo_ponto: "Sem Registro",
+						terceiro_ponto: "Sem Registro",
+						quarto_ponto: "Sem Registro"
+					}
+				}
+				if (registroDoDia != null && justificativa != null) {
+					relatorio[i] = {
+						dia: dia,
+						primeiro_ponto: registroDoDia.primeiro_ponto,
+						segundo_ponto: registroDoDia.segundo_ponto,
+						terceiro_ponto: registroDoDia.terceiro_ponto,
+						quarto_ponto: registroDoDia.quarto_ponto,
+						justificativa: justificativa
+					}
+				}
+				if (registroDoDia != null && justificativa == null) {
+					relatorio[i] = {
+						dia: dia,
+						primeiro_ponto: registroDoDia.primeiro_ponto,
+						segundo_ponto: registroDoDia.segundo_ponto,
+						terceiro_ponto: registroDoDia.terceiro_ponto,
+						quarto_ponto: registroDoDia.quarto_ponto,
+						justificativa: "-"
+					}
+				}
+			}
+			relatorioRef.value = relatorio;
+			console.log(relatorioRef.value)
+			setTimeout(() => {
+				const print = document.getElementById('imprimirRelatorio').innerHTML;
+
+				let stylesHtml = '';
+				for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+					stylesHtml += node.outerHTML;
+				}
+				var win = window.open();
+				win.document.write(`<!DOCTYPE html>
+			<html>
+				<head>
+					${stylesHtml}
+				</head>
+				<body>
+					${print}
+				</body>
+			</html>`);
+				win.document.close();
+				win.focus();
+				win.print();
+			}, 500);
+			// gerar pagina de impressao do relatorio
+		})
+			.catch(error => {
+				console.log(error);
+			});
 	} catch (error) {
 		console.log(error);
 	}
@@ -454,5 +536,62 @@ td {
 	border: 1px solid #ddd !important;
 	text-align: left;
 	padding: 8px;
+}
+
+/* .relatorioBody {
+		display: block;
+		color: black;
+		width: 700px;
+		margin-left: 46px
+	}
+	.relatorioHeader {
+		display: block;
+		color: black;
+		background-color: darkgray;
+		margin: 10px 10px 10px 10px;
+	} */
+
+
+@media print {
+
+	#imprimirRelatorio {
+		display: block;
+		color: black;
+
+	}
+
+	.relatorioBody {
+		display: block;
+		color: black;
+		padding-left: 30px;
+		padding-right: 30px;
+		font-size: 13px;
+	}
+
+	.relatorioHeader {
+		color: black;
+		background-color: darkgray;
+		padding-left: 30px;
+		padding-right: 30px;
+		padding-top: 40px;
+		font-size: 13px;
+	}
+
+	@page {
+		size: A4;
+		margin: 0;
+	}
+
+}
+
+.no-gutters {
+	margin-right: 0;
+	margin-left: 0;
+
+	>.col,
+	>[class*="col-"] {
+		padding-right: 0;
+		padding-left: 0;
+	}
 }
 </style>
