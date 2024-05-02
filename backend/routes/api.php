@@ -30,17 +30,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('/funcionarios', FuncionarioController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy'])->middleware('auth:sanctum');
 
-// Route::get('/funcionarios', [FuncionarioController::class, 'index'])->middleware('auth:sanctum');
-
 Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
 
 Route::resource('/justificativas', JustificativaController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
 
 Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy'])->middleware('auth:sanctum');
-
-// Route::get('/cargo', CargoController::class, 'index');
-// Route::post('/cargo', CargoController::class, 'create');
-// Route::get('/cargo/{$id}', CargoController::class, 'show');
 
 Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
 
@@ -55,10 +49,6 @@ Route::post('/registroDoDia', [RegistroController::class, 'retornaOUltimoRegistr
 Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
 
