@@ -489,25 +489,18 @@ class RegistroController extends Controller
         $funcionario = Funcionario::firstOrNew(['matricula' => $request->matricula]);
         if ($funcionario == null)
             return response()->json(['message' => 'Funcionário não encontrado'], 404);
-
-        $mesAtual = date('m');
+        if ($request->data) {
+            if ($request-> data != '10' || $request->data != '11' || $request->data != '12') {
+                $mesSelecionado = '0' . $request->data;
+            }
+        }
         $anoAtual = date('Y');
-        $diaAtual = date('d');
-        $totalDiasDoMesAtual = cal_days_in_month(CAL_GREGORIAN, $mesAtual, $anoAtual);
+        $totalDiasDoMesAtual = cal_days_in_month(CAL_GREGORIAN, $mesSelecionado, $anoAtual);
         $relatorio = array();
-        $justificativa = array();
-        // $relatorio = array(
-        //         // 'funcionario' => $funcionario,
-        //         array(
-        //             'dia' => null,
-        //             'registroDoDia' => null,
-        //             'justificativa' => null
-        //         )
-        // );
 
         for ($day = 1, $i = 0; $day <= $totalDiasDoMesAtual; $day++, $i++) {
-            $data = sprintf('%02d', $day) . '/' . $mesAtual . '/' . $anoAtual;
-            $dataDB = $anoAtual . '-' . $mesAtual . '-' . sprintf('%02d', $day);
+            $data = sprintf('%02d', $day) . '/' . $mesSelecionado . '/' . $anoAtual;
+            $dataDB = $anoAtual . '-' . $mesSelecionado . '-' . sprintf('%02d', $day);
             $relatorio[$i]['dia'] = $data;
             $registro = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB);
             if ($registro) {
@@ -528,14 +521,6 @@ class RegistroController extends Controller
         $relatorioTratado = $this->tratarDadosRelatorio($funcionario, $relatorio);
 
         return $relatorioTratado;
-    }
-
-    public function tratarRegistroRelatorio($registro, $justificativa) {
-
-    }
-
-    public function tratarJustificativaRelatorio($registro, $justificativa) {
-
     }
 
     public function tratarDadosRelatorio($funcionario, $relatorio) {

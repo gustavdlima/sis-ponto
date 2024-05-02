@@ -34,7 +34,7 @@
 							class="btn btn-light btn-sm">excel</v-btn>
 						<v-btn color="teal" @click="imprimirRegistro()" class="btn btn-light btn-sm">imprimir</v-btn>
 						<v-btn color="teal" class="btn btn-light btn-sm" text
-							@click="imprimirRelatorioMensal()">Relatório
+							@click="dataRelatorioModal = true">Relatório
 							Mensal</v-btn>
 					</div>
 					<template v-slot:text>
@@ -185,6 +185,21 @@
 				</v-card>
 			</v-dialog>
 
+			<v-dialog v-model="dataRelatorioModal" max-width="300">
+				<v-card>
+					<v-card-text class="text-center">
+						<!-- lista de opções de mês para o relatório-->
+						<v-select v-model="mesSelecionado" :items="meses" label="Mês" item-text="mes" item-value="id" item-title="mes"
+						variant="underlined">
+						</v-select>
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="primary" text @click="imprimirRelatorioMensal()">Gerar Relatório</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+
 			<v-dialog v-model="erroSistema" max-width="300">
 				<v-card>
 					<v-card-title class="headline font-weight-bold">Erro!</v-card-title>
@@ -231,6 +246,25 @@ var funcionarioSelecionado = ref(null);
 var registroFuncionarioSelecionado = ref([]);
 var horarioFuncionario = ref([]);
 var hidden = ref(true);
+var dataRelatorioModal = ref(false);
+
+const mesSelecionado = ref(null);
+const meses = ref([
+	{ id: 1, mes: 'Janeiro' },
+	{ id: 2, mes: 'Fevereiro' },
+	{ id: 3, mes: 'Março' },
+	{ id: 4, mes: 'Abril' },
+	{ id: 5, mes: 'Maio' },
+	{ id: 6, mes: 'Junho' },
+	{ id: 7, mes: 'Julho' },
+	{ id: 8, mes: 'Agosto' },
+	{ id: 9, mes: 'Setembro' },
+	{ id: 10, mes: 'Outubro' },
+	{ id: 11, mes: 'Novembro' },
+	{ id: 12, mes: 'Dezembro' },
+]);
+
+
 
 const headers = ref([
 	{ title: 'Nome', align: 'start', key: 'nome', align: 'center' },
@@ -370,13 +404,15 @@ function imprimirRegistro() {
 }
 
 function imprimirRelatorioMensal() {
+	console.log(mesSelecionado.value);
+	dataRelatorioModal.value = false;
 	try {
 		const bearerToken = 'Bearer ' + authStore.userToken;
 		axios.defaults.headers.common = {
 			'Authorization': bearerToken
 		}
 
-		axios.post('http://localhost:8000/api/relatorio', { matricula: funcionarioSelecionado.value.matricula }).then(response => {
+		axios.post('http://localhost:8000/api/relatorio', { matricula: funcionarioSelecionado.value.matricula, data: mesSelecionado.value }).then(response => {
 			console.log(response.data)
 			var relatorio = [];
 			for (var i = 0; i < response.data.length; i++) {
