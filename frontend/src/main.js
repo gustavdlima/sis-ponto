@@ -1,15 +1,18 @@
 
 import App from './App.vue'
+import "./style/style.css"
 import { createApp, markRaw } from 'vue'
 import router from './router/index.js'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { createPinia } from 'pinia'
-import { useAuthStore } from './stores/authStore';
+import { useAuthStore } from './stores/authStore'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import PrimeVue from 'primevue/config'
+import Lara from './presets/lara'
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
@@ -21,7 +24,6 @@ const vuetify = createVuetify({
 	directives
 })
 
-
 pinia.use(({ store }) => {
 	store.$router = markRaw(router);
 })
@@ -31,6 +33,10 @@ createApp(App)
 .use(VueAxios, axios)
 .use(pinia)
 .use(vuetify)
+.use(PrimeVue, {
+	unstyled: true,
+	pt: Lara
+})
 .mount('#app')
 
 const authStore = useAuthStore();
