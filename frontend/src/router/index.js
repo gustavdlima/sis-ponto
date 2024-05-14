@@ -4,14 +4,6 @@ const routes = [
 	{
 		path: '/',
 		name: 'Home',
-		component: () => import('../views/0Home.vue'),
-		meta: {
-			requiresAuth: false
-		}
-	},
-	{
-		path: '/oldhome',
-		name: '',
 		component: () => import('../views/Home.vue'),
 		meta: {
 			requiresAuth: false
