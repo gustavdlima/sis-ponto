@@ -387,10 +387,14 @@ class RegistroController extends Controller
         if ($funcionario->carga_horaria == "20h")
             if ($registroArray['primeiro_ponto'] != null && $registroArray['segundo_ponto'] != null)
                 return true;
-        else if ($registroArray['primeiro_ponto'] != null && $registroArray['segundo_ponto'] != null && $registroArray['terceiro_ponto'] != null && $registroArray['quarto_ponto'] != null )
-            return true;
-        else
-            return false;
+            else
+                return false;
+        else {
+            if ($registroArray['primeiro_ponto'] != null && $registroArray['segundo_ponto'] != null && $registroArray['terceiro_ponto'] != null && $registroArray['quarto_ponto'] != null )
+                return true;
+            else
+                return false;
+        }
     }
 
     public function store($funcionario) {
@@ -406,13 +410,10 @@ class RegistroController extends Controller
             $registroArray = $this->createRegistroArray($funcionario);
             $registroFuncionario = $this->create($registroArray);
         }
-
         if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registroFuncionario))
-            return "Todos os pontos já foram batidos";
+            return response()->json(['message' => 'Todos os pontos do dia já foram batidos', 'status' => '409'], 409);
 
         $registroFuncionario = $this->checaSeOFuncionarioEstaAtrasado($registroFuncionario, $funcionario, $data);
-
-        // return $registroFuncionario;
 
         $novoRegistro = $this->batePonto($funcionario, $registroFuncionario, $data);
 
@@ -464,11 +465,13 @@ class RegistroController extends Controller
     public function retornaOUltimoRegistroDoFuncionario(Request $request) {
         //
         $funcionario = Funcionario::where('matricula', $request->matricula)->get()->first();
+        if ($funcionario == null)
+            return response()->json(['message' => 'Funcionário não encontrado', 'status' => '404'], 404);
         $registro = Registro::where('id_funcionario', $funcionario->id)->orderBy('created_at', 'desc')->get()->first();
 
         if (!$registro)
-            return null;
-        return $registro;
+            return response()->json(['message'=> 'Não existe registro para o funcionário', 'status' => '404'], 404);
+        return $this->formatarDadosRegistroParaTabela($registro);
     }
 
     public function retornaORegistroDaDataEspecificada($funcionario, $data) {
@@ -596,6 +599,34 @@ class RegistroController extends Controller
         }
         $novoRelatorio = $this->inserirJustificativaNoRelatorio($relatorio);
         return $novoRelatorio;
+    }
+
+    public function formatarDadosRegistroParaTabela($registro) {
+        if ($registro['primeiro_ponto'] != null && $registro['primeiro_ponto'] != 'FALTA' && $registro['primeiro_ponto'] != 'JUSTIFICATIVA')
+            $registro['primeiro_ponto'] = date("H:i:s", strtotime($registro['primeiro_ponto']));
+        if ($registro['segundo_ponto'] != null && $registro['segundo_ponto'] != 'FALTA' && $registro['segundo_ponto'] != 'JUSTIFICATIVA')
+            $registro['segundo_ponto'] = date("H:i:s", strtotime($registro['segundo_ponto']));
+        if ($registro['terceiro_ponto'] != null && $registro['terceiro_ponto'] != 'FALTA' && $registro['terceiro_ponto'] != 'JUSTIFICATIVA')
+            $registro['terceiro_ponto'] = date("H:i:s", strtotime($registro['terceiro_ponto']));
+        if ($registro['quarto_ponto'] != null && $registro['quarto_ponto'] != 'FALTA' && $registro['quarto_ponto'] != 'JUSTIFICATIVA')
+            $registro['quarto_ponto'] = date("H:i:s", strtotime($registro['quarto_ponto']));
+        $registro['data'] = date("d/m/Y", strtotime($registro['created_at']));
+
+        unset($registro['created_at']);
+        unset($registro['updated_at']);
+        unset($registro['id']);
+        unset($registro['id_funcionario']);
+        unset($registro['id_horario']);
+        unset($registro['atrasou_primeiro_ponto']);
+        unset($registro['atrasou_segundo_ponto']);
+        unset($registro['atrasou_terceiro_ponto']);
+        unset($registro['atrasou_quarto_ponto']);
+        unset($registro['id_falta']);
+
+
+        // $array = json_decode(json_encode($registro), true);
+
+        return $registro;
     }
 
     public function inserirJustificativaNoRelatorio($relatorio) {
