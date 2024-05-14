@@ -4,7 +4,8 @@
 			<div class="row ">
 				<div class="row">
 					<div class="col d-flex justify-content-center">
-						<img src="../assets/logo-funad-sem-nome.png" class="img-fluid" style="max-width: 15vh;" alt="logo">
+						<img src="../assets/logo-funad-sem-nome.png" class="img-fluid" style="max-width: 15vh;"
+							alt="logo">
 					</div>
 				</div>
 				<div class="row">
@@ -24,13 +25,13 @@
 </template>
 
 <script>
-import RealTimeClock from "../components/RealTimeClock.vue"
+import HoraEData from "../components/HoraEData.vue"
 import Login from "../components/Login.vue"
 
 export default {
 	name: "AdminLogin",
 	components: {
-		RealTimeClock: RealTimeClock,
+		HoraEData: HoraEData,
 		Login: Login
 	},
 	setup() {
