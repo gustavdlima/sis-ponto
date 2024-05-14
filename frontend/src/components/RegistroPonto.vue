@@ -8,11 +8,6 @@
 						class="w-75 mt-2 text-white border-white form-control"
 						style="background-color: rgba(255, 255, 255, 0);" v-model="input.matricula" />
 				</div>
-				<!-- <div class="row-md-1 row-sm-12 d-flex justify-content-center">
-					<input type="date" id="dataNascimento" placeholder="Dt Nascimento Ex. 31/08/1994"
-						class="w-50 mt-3 text-white border-white form-control"
-						style="background-color: rgba(255, 255, 255, 0);" v-model="input.data_nascimento" />
-				</div> -->
 			</div>
 			<div class="row-md-1 row-sm-12 d-flex justify-content-center">
 				<button type="submit"
@@ -134,10 +129,7 @@ function registrarPonto() {
 		console.log(input);
 		console.log("############################")
 		axios.post("http://localhost:8000/api/ponto", input)
-			.then(async response => {
-				console.log("RESPONSE:")
-				console.log(response.data);
-				console.log("############################")
+			.then(async response => {nm
 				responseString = JSON.stringify(response.data);
 				if (responseString.indexOf("Funcionário") !== -1) {
 					errorMessage.value = "Matrícula incorreta"
@@ -250,4 +242,4 @@ input[type="text"]::-webkit-input-placeholder {
 button:hover {
 	background-color: rgb(0, 140, 255);
 }
-</style>./CameraComponente.vue
+</style>
