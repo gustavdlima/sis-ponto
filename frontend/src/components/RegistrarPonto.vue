@@ -9,7 +9,7 @@
 				<div class="grid justify-center content-end">
 					<div class="grid justify-center content-center overflow-hidden">
 						<div class="grid justify-center">
-							<label class="text-3xl lg:text-4xl">
+							<label class="text-3xl lg:text-5xl">
 								ePonto
 							</label>
 						</div>
@@ -20,6 +20,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="row-span-2 grid content-startoverflow-hidden">
 			<div class="grid-rows-4">
 				<div class="row-span-2 grid justify-center mt-2 text-white ">
@@ -187,6 +188,7 @@ function abrirDialogErro(message) {
 	dialogVisivel.value = true;
 	dialogMensagem.value = message;
 }
+
 
 </script>
 
