@@ -31,11 +31,13 @@ class LoginController extends Controller
                 'token' => $token->plainTextToken,
                 'authUser' => $authUser,
                 'message' => 'Login realizado com sucesso',
+                'status' => '200',
             ]);
         }
 
         return back()->withErrors([
             'email' => 'Erro: Email ou Senha Incorreta',
+            'status' => '401',
         ])->onlyInput('email');
     }
 

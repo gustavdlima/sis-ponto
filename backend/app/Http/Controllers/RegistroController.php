@@ -411,7 +411,7 @@ class RegistroController extends Controller
             $registroFuncionario = $this->create($registroArray);
         }
         if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registroFuncionario))
-            return response()->json(['message' => 'Todos os pontos do dia já foram batidos', 'status' => '409'], 409);
+            return response()->json(['message' => 'Todos os pontos do dia já foram batidos', 'status' => 409], 409);
 
         $registroFuncionario = $this->checaSeOFuncionarioEstaAtrasado($registroFuncionario, $funcionario, $data);
 
@@ -438,13 +438,6 @@ class RegistroController extends Controller
                 $registro[$i]['quarto_ponto'] = date("H:i:s", strtotime($registro[$i]['quarto_ponto']));
 
             $registro[$i]['data'] = date("d/m/Y", strtotime($registro[$i]['created_at']));
-
-            if ($horario != null) {
-                if ($funcionario->carga_horaria == '40h')
-                    $registro[$i]['horas_trabalhadas'] = $this->calculaHorasTrabalhadas40h($horario, $registro[$i]);
-                if ($funcionario->carga_horaria == '20h')
-                    $registro[$i]['horas_trabalhadas'] = $this->calculaHorasTrabalhadas20h($horario, $registro[$i]);
-            }
         }
         return $registro;
     }
@@ -466,11 +459,11 @@ class RegistroController extends Controller
         //
         $funcionario = Funcionario::where('matricula', $request->matricula)->get()->first();
         if ($funcionario == null)
-            return response()->json(['message' => 'Funcionário não encontrado', 'status' => '404'], 404);
+            return response()->json(['message' => 'Funcionário não encontrado', 'status' => 404], 404);
         $registro = Registro::where('id_funcionario', $funcionario->id)->orderBy('created_at', 'desc')->get()->first();
 
         if (!$registro)
-            return response()->json(['message'=> 'Não existe registro para o funcionário', 'status' => '404'], 404);
+            return response()->json(['message'=> 'Não existe registro para o funcionário', 'status' => 404], 404);
         return $this->formatarDadosRegistroParaTabela($registro);
     }
 

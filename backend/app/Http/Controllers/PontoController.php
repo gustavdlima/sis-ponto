@@ -24,7 +24,8 @@ class PontoController extends Controller
         $funcionario = $this->check($request);
 
         if (!$funcionario)
-           return response()->json(['message' => 'Funcionário não encontrado', 'status' => '404'], 404);
+           return response()->json(['message' => 'Funcionário não encontrado',
+            'status' => 404], 404);
 
         // criar registro de ponto e registrar o primeiro ponto
         $registro = new RegistroController();
