@@ -1,6 +1,5 @@
 <template>
 		<Dialog  v-model:visible="dialogBool"
-			modal
 			:pt="{
 				root: 'border-none',
 				mask: {
@@ -19,6 +18,11 @@
 						<Column field="segundo_ponto" header="Segundo Ponto"></Column>
 						<Column field="terceiro_ponto" header="Terceiro Ponto"></Column>
 						<Column field="quarto_ponto" header="Quarto Ponto"></Column>
+						<!-- <div class="grid justify-end bg-white">
+							<button class="font-medium text-black w-5 h-5 text-lg mr-1" @click="fecharDialog()">
+								X
+							</button>
+						</div> -->
 					</DataTable>
 					</div>
 				</div>
@@ -35,6 +39,11 @@ import Column from 'primevue/column';
 const props = defineProps({
 	registro: Object
 });
-
 const dialogBool = ref(true);
+
+function fecharDialog() {
+	dialogBool.value = false;
+}
+
+
 </script>

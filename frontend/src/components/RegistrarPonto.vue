@@ -1,17 +1,14 @@
 <template>
-	<div class="grid grid-rows-5 min-w-64 max-w-64 min-h-96 md:min-w-80 mt-20">
+	<div class="grid grid-rows-5 min-w-96 max-w-96 min-h-96  mt-20">
 		<div class="row-span-3 grid justify-center content-end ">
 			<div class="grid justify-center content-end">
 				<div class="grid justify-center overflow-hidden">
-					<img src="../assets/logo-funad-sem-nome.png" class="img-fluid col" style="max-width: 19vh;"
-						alt="logo">
+					<LogoFunadSemNome />
 				</div>
 				<div class="grid justify-center content-end">
 					<div class="grid justify-center content-center overflow-hidden">
 						<div class="grid justify-center">
-							<label class="text-3xl lg:text-5xl">
-								ePonto
-							</label>
+							<Eponto />
 						</div>
 						<div class="grid justify-center mt-2">
 							<HoraEData />
@@ -20,25 +17,23 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="row-span-2 grid content-startoverflow-hidden">
-			<div class="grid-rows-4">
-				<div class="row-span-2 grid justify-center mt-2 text-white ">
-					<InputText id="username"
-						class="w-60 h-8 md:w-68 lg:w-72 lg:h-10 bg-transparent .	placeholder-white matriculaInputText border-2 mt- text-sm md:text-lg lg:text-xl"
+		<div class="row-span-2 grid justify-center overflow-hidden">
+			<div class="grid grid-rows-4 justify-center w-96">
+				<div class="row-span-1 grid justify-center mt-2">
+					<InputText class="w-60 h-10 md:w-68 lg:w-72 lg:h-12 border-2 text-sm md:text-lg lg:text-xl"
 						v-model="matriculaObjeto.matricula" aria-describedby="matricula-input" placeholder="Matrícula"
 						size="small" />
 				</div>
-				<div class="grid row-span-2 justify-center mt-3">
-					<div class="grid grid-cols-2 gap-3">
+				<div class="grid row-span-3 justify-center mt-3 mr-1 min-w-96">
+					<div class="grid justify-start grid-cols-2 gap-7">
 						<div class="col-span-1">
 							<Button v-if="baterPontoBotaoVisivel"
-								class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg"
+								class="border-2 bg-transparent h-8 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg lg:text-xl"
 								label="Ver Registro" severity="info" raised @click="pegarRegistroDoDia()" />
 						</div>
 						<div class="col-span-1">
 							<Button v-if="baterPontoBotaoVisivel"
-								class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg"
+								class="border-2 bg-transparent h-8 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg lg:text-xl"
 								label="Bater Ponto" severity="info" raised @click="registrarPonto()" />
 						</div>
 					</div>
@@ -48,7 +43,7 @@
 	</div>
 
 	<!-- Matricula vazia Dialog -->
-	<Dialog v-model:visible="dialogVisivel" modal header=" " :style="{ width: '20rem', height: '10rem' }">
+	<Dialog v-model:visible="dialogVisivel" modal header=" " :style="{ width: '20rem', height: '10rem' } ">
 		<div class="grid justify-center text-xl">
 			{{ dialogMensagem }}
 		</div>
@@ -67,15 +62,16 @@
 </template>
 
 <script setup>
-import InputText from 'primevue/inputtext';
+import { ref } from 'vue';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext';
 import HoraEData from "../components/HoraEData.vue"
 import CameraDialog from '../components/CameraDialog.vue';
-
-import { ref } from 'vue';
-import PontoService from '../services/PontoService.js';
+import Eponto from '../components/Eponto.vue';
 import TabelaRegistroDialog from '../components/TabelaRegistroDialog.vue';
+import LogoFunadSemNome from "./LogoFunadSemNome.vue";
+import PontoService from '../services/PontoService.js';
 
 const usePontoService = PontoService;
 const dialogMensagem = ref('');
@@ -89,18 +85,18 @@ const baterPontoBotaoVisivel = ref(true);
 const tabelaRegistroVisivel = ref(false);
 const registroPonto = ref();
 
-const registrarPonto = async () =>{
+const registrarPonto = async () => {
 	baterPontoBotaoVisivel.value = false;
 	if (!matriculaObjeto.matricula)
 		return matriculaVaziaDialog();
 	try {
 		const response = await usePontoService.registrarPonto(matriculaObjeto);
-		if (response.status === '404') {
-			baterPontoBotaoVisivel.value = true;
-			return abrirDialogErro(response.message);
-		}
+		console.log(response);
 		await handleResponse(response);
+		await startCountdown();
+		tabelaRegistroVisivel.value = false;
 	} catch (error) {
+		limparInput();
 		baterPontoBotaoVisivel.value = true;
 		return abrirDialogErro(error.response);
 	}
@@ -109,23 +105,17 @@ const registrarPonto = async () =>{
 const handleResponse = async (response) => {
 	switch (response.status) {
 		case 200:
-			if (response.data.message === 'Ponto já batido')
-				return abrirDialogPontoJaBatido();
-			cameraDialogVisivel.value = true;
-			await startCountdown();
-			cameraDialogVisivel.value = false;
-			const pontoDoDiaResponse = await usePontoService.getPontoDoDia(matriculaObjeto);
-			if (pontoDoDiaResponse.status === 200) {
-				registroPonto.value = [
-					pontoDoDiaResponse.data
-				];
-				baterPontoBotaoVisivel.value = true;
-				tabelaRegistroVisivel.value = true;
-				return;
-			} else {
-				baterPontoBotaoVisivel.value = true;
-				return abrirDialogErro(pontoDoDiaResponse.message);
-			}
+			// cameraDialogVisivel.value = true;
+			// await startCountdown();
+			// cameraDialogVisivel.value = false;
+			pegarRegistroDoDia();
+			baterPontoBotaoVisivel.value = true;
+			tabelaRegistroVisivel.value = true;
+			return;
+			break;
+		case 404:
+			baterPontoBotaoVisivel.value = true;
+			return abrirDialogErro("Matrícula não encontrada");
 			break;
 		case 409:
 			baterPontoBotaoVisivel.value = true;
@@ -167,16 +157,16 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function limparInput() {
+	matriculaObjeto.matricula = '';
+}
+
 function matriculaVaziaDialog() {
 	dialogVisivel.value = true;
 	dialogMensagem.value = 'Digite sua matrícula';
 	baterPontoBotaoVisivel.value = true;
 }
 
-function abrirDialogMatriculaIncorreta() {
-	dialogVisivel.value = true;
-	dialogMensagem.value = 'Matrícula incorreta';
-}
 
 function abrirDialogPontoJaBatido() {
 	dialogVisivel.value = true;
@@ -198,17 +188,29 @@ function abrirDialogErro(message) {
 }
 
 ::placeholder {
-	color: white !important;
+	color: black !important;
 	opacity: 75% !important;
 }
 
 button {
 	background-color: transparent !important;
-	border: 2px solid rgb(228, 228, 228) !important;
 	color: aliceblue !important;
+	border-color: aliceblue !important;
 }
 
 .p-dialog {
 	background-color: #707070 !important;
+}
+
+input:hover {
+	border-color: #1F2937 !important;
+}
+
+input:focus {
+	border-color: #1F2937 !important;
+}
+
+button:hover {
+	border-color: #1F2937 !important;
 }
 </style>

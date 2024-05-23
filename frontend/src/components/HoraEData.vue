@@ -3,7 +3,7 @@
 		<div class="grid grid-cols-2 justify-between mr-3">
 			<div class="col-span-1">
 				<div class="grid justify-center">
-					<span class="text-xl lg:text-2xl">{{ currentTime.toLocaleTimeString('pt-BR') }}</span>
+					<span class="text-xl lg:text-2xl ">{{ currentTime.toLocaleTimeString('pt-BR') }}</span>
 				</div>
 			</div>
 			<div class="col-span-1">
