@@ -13,6 +13,8 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import PrimeVue from 'primevue/config'
 import Lara from './presets/lara'
+import 'primeicons/primeicons.css'
+
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
