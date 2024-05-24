@@ -1,7 +1,7 @@
 <template>
 	<div class="row h-100 w-100 d-flex" style="height: 100vh;">
 		<div class="col-md-2 h-100">
-			<SideBar></SideBar>
+			<AdminSideBar></AdminSideBar>
 		</div>
 		<div class="col-md-8 w-75 h-100 ml-15 d-flex justify-content-center align-items-center">
 			<div class="w-75">
@@ -189,8 +189,8 @@
 				<v-card>
 					<v-card-text class="text-center">
 						<!-- lista de opções de mês para o relatório-->
-						<v-select v-model="mesSelecionado" :items="meses" label="Mês" item-text="mes" item-value="id" item-title="mes"
-						variant="underlined">
+						<v-select v-model="mesSelecionado" :items="meses" label="Mês" item-text="mes" item-value="id"
+							item-title="mes" variant="underlined">
 						</v-select>
 					</v-card-text>
 					<v-card-actions>
@@ -217,7 +217,7 @@
 </template>
 
 <script setup>
-import SideBar from '../components/SideBar.vue';
+import AdminSideBar from '../components/AdminSideBar.vue';
 import { useAuthStore } from '../stores/authStore';
 import { ref } from 'vue';
 import axios from 'axios';

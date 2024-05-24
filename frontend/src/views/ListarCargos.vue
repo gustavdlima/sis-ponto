@@ -1,7 +1,7 @@
 <template>
 	<div class="row h-100 w-100">
 		<div class="col-md-2 h-100">
-			<SideBar></SideBar>
+			<AdminSideBar></AdminSideBar>
 		</div>
 		<div class="container w-75 p-5">
 			<div class="flex align-items-center justify-content-center">
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import SideBar from '../components/SideBar.vue';
+import AdminSideBar from '../components/AdminSideBar.vue';
 import { useAuthStore } from '../stores/authStore';
 import { ref } from 'vue';
 import axios from 'axios';
