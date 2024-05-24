@@ -36,6 +36,7 @@
     --primary-highlight-inverse: var(--primary-700);
     --primary-highlight-hover-opacity: 0.2;
 }
+
 .dark{
     --primary: var(--primary-400);
     --primary-inverse: var(--surface-900);
@@ -70,4 +71,10 @@
 
     }
 }
-
+/* 
+body {
+    margin: 0px;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+} */

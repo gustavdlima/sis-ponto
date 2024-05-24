@@ -129,17 +129,11 @@ const redirectToListarJustificativas = () => {
 
 <style>
 .gradientText {
-	background-image: linear-gradient(173deg, rgba(247, 190, 13, 1) 0%, rgba(7, 90, 167, 1) 93%);
-	;
-	background-size: 100%;
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	-moz-background-clip: text;
-	-moz-text-fill-color: transparent;
+	color: #1F2937 !important;
 }
 
 a {
 	text-decoration: none;
+	color : #1F2937 !important;
 }
 </style>

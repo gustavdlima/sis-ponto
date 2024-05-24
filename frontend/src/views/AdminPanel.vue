@@ -1,39 +1,22 @@
 <template>
-	<div class="row h-100 w-100">
-		<div class="">
-				<div class="col-md-2 h-100">
-						<SideBar></SideBar>
+	<div class="grid justify-center content-center h-full w-full">
+		<div class="w-[45vh] h-[70vh] md:w-[65vh] md:h-[75vh] lg:w-[90vh] lg:h-[80vh] xl:w-[130vh] xl:h-[90vh] bg-blue-200">
+			<div class="grid grid-rows-12">
+				<div class="row-span-2 bg-blue-400">
+					<AdminMenu />
 				</div>
-				<div class="col-md-8" >
+				<div class="row-span-10 bg-blue-700">
 
 				</div>
+			</div>
 		</div>
 	</div>
+
 </template>
 
-<script>
-import SideBar from '../components/SideBar.vue';
-
-export default {
-	name: "AdminPanel",
-	components: {
-		SideBar: SideBar,
-	},
-	data() {
-		return {
-
-		}
-	},
-	methods: {
-
-	},
-	mounted() {
-
-	}
-}
+<script setup>
+import AdminMenu from '../components/AdminMenu.vue';
 
 </script>
 
-<style>
-
-</style>
+<style></style>
