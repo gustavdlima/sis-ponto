@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import Dialog from 'primevue/dialog';
 
 const props = defineProps({
