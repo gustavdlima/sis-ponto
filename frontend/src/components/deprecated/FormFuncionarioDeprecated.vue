@@ -246,7 +246,7 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '../stores/authStore.js';
+import { useAuthStore } from '../../stores/authStore.js';
 import { ref } from 'vue';
 import axios from 'axios';
 
@@ -260,8 +260,8 @@ var cargos = ref([]);
 var horarios = ref([]);
 
 const formData = {
-	nome: "",
 	setor: "",
+	nome: "",
 	matricula: "",
 	data_nascimento: "",
 	rg: "",
@@ -407,4 +407,4 @@ function clearForm() {
 getCargos();
 getHorarios();
 
-</script>
+</script>../../stores/authStore.js
