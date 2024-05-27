@@ -6,12 +6,11 @@
 		<div class="container w-75 p-5">
 			<div class="flex align-items-center justify-content-center">
 				<div class="col-md-6 mt-8">
-					<label class="form-label text-black font-weight-bold">Horários Cadastrados</label>
-					<select name="id_horario" class="form-select border-white form-control mb-2">
+					<label class="form-label text-black font-weight-bold">Cargos Cadastrados</label>
+					<select name="cargo" class="form-select border-white form-control mb-2">
 						<option disabled value=""></option>
-						<option v-for="horario in horarios" v-bind:value="horario.id">
-							{{ horario.primeiro_horario }} - {{ horario.segundo_horario }} - {{
-							horario.terceiro_horario }} - {{ horario.quarto_horario }}</option>
+						<option v-for="cargo in cargos" v-bind:value="cargo.id">
+							{{ cargo.cargo }} </option>
 					</select><br>
 				</div>
 			</div>
@@ -26,20 +25,20 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 const authStore = useAuthStore();
-const horarios = ref([]);
+const cargos = ref([]);
 
-function getHorarios() {
+function getcargos() {
 	axios.defaults.headers.common = {
 		'Authorization': 'Bearer ' + authStore.userToken
 	}
-	axios.get("http://localhost:8000/api/horarios")
+	axios.get("http://localhost:8000/api/cargos")
 		.then(response => {
-			horarios.value = response.data;
+			cargos.value = response.data;
 		})
 		.catch(error => {
 			console.log(error);
 		});
 }
 
-getHorarios();
-</script>
+getcargos();
+</script>../../stores/authStore
