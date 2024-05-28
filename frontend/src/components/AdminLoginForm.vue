@@ -13,7 +13,7 @@
 				</div>
 				<div class="grid justify-center mt-1">
 					<Button
-						class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg button"
+						class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg button mt-2"
 						label="Entrar" severity="info" raised @click="efetuarLogin()" />
 				</div>
 			</div>

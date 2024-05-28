@@ -1,11 +1,11 @@
 <template>
-	<div class="grid justify-center grid-rows-2 w-64 h-20 md:w-72 md:h-24 lg:w-80 lg:h-28 ">
-		<div class="grid content-center row-span-1">
-			<InputText class="w-60 h-8 md:w-68 md:h-10 lg:w-72 lg:h-12 text-sm md:text-lg lg:text-xl grid"
+	<div class="grid justify-center grid-rows-2 w-64 h-20 md:w-72 md:h-24 lg:w-80 lg:h-28">
+		<div class="grid justify-center content-center row-span-1">
+			<InputText class=""
 				v-model="email" placeholder="Email" type="text" />
 		</div>
-		<div class="grid content-center row-span-1 mt-1">
-			<Password class="w-60 h-8 md:w-68 md:h-10 lg:w-72 lg:h-12 text-sm md:text-lg lg:text-xl" v-model="password"
+		<div class="grid justify-center content-center row-span-1">
+			<Password class="mt-3 md:mb-3 lg:mb-6" v-model="password"
 				:feedback="false" placeholder="password" />
 		</div>
 	</div>
