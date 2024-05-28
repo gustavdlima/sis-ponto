@@ -13,8 +13,8 @@
 </template>
 
 <script setup>
-import AdminNavBar from '../../components/AdminNavBar.vue';
-import FormCadastroFuncionario from '../../components/FormCadastroFuncionario.vue';
+import AdminNavBar from '../../../components/AdminNavBar.vue';
+import FormCadastroFuncionario from '../../../components/FormCadastroFuncionario.vue';
 import FormFuncionarioDeprecated from '../../components/deprecated/FormFuncionarioDeprecated.vue';
 
 </script>

@@ -12,7 +12,7 @@ const routes = [
 	{
 		path: '/admin/cadastroFuncionario',
 		name: 'Cadastro',
-		component: () => import('../views/AdminCadastrarViews/CadastroFuncionario.vue'),
+		component: () => import('../views/Admin/CadastrarViews/CadastroFuncionario.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -20,7 +20,7 @@ const routes = [
 	{
 		path: '/cadastroOperador',
 		name: 'CadastroOperador',
-		component: () => import('../views/AdminCadastrarViews/CadastroOperador.vue'),
+		component: () => import('../views/Admin/CadastrarViews/CadastroOperador.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -28,7 +28,7 @@ const routes = [
 	{
 		path: '/cadastroHorario',
 		name: 'CadastroHorario',
-		component: () => import('../views/AdminCadastrarViews/CadastroHorario.vue'),
+		component: () => import('../views/Admin/CadastrarViews/CadastroHorario.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -36,7 +36,7 @@ const routes = [
 	{
 		path: '/cadastroCargo',
 		name: 'CadastroCargo',
-		component: () => import('../views/AdminCadastrarViews/CadastroCargo.vue'),
+		component: () => import('../views/Admin/CadastrarViews/CadastroCargo.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -44,7 +44,7 @@ const routes = [
 	{
 		path: '/cadastroJustificativa',
 		name: 'CadastroJustificativa',
-		component: () => import('../views/AdminCadastrarViews/CadastroJustificativa.vue'),
+		component: () => import('../views/Admin/CadastrarViews/CadastroJustificativa.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -52,7 +52,7 @@ const routes = [
 	{
 		path: '/listarfuncionarios',
 		name: 'Funcionarios',
-		component: () => import('../views/AdminListarViews/ListarFuncionarios.vue'),
+		component: () => import('../views/Admin/ListarViews/ListarFuncionarios.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -60,7 +60,7 @@ const routes = [
 	{
 		path: '/listarOperadores',
 		name: 'Operadores',
-		component: () => import('../views/AdminListarViews/ListarOperadores.vue'),
+		component: () => import('../views/Admin/ListarViews/ListarOperadores.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -68,7 +68,7 @@ const routes = [
 	{
 		path: '/listarHorarios',
 		name: 'Horarios',
-		component: () => import('../views/AdminListarViews/ListarHorarios.vue'),
+		component: () => import('../views/Admin/ListarViews/ListarHorarios.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -76,7 +76,7 @@ const routes = [
 	{
 		path: '/listarCargos',
 		name: 'Cargos',
-		component: () => import('../views/AdminListarViews/ListarCargos.vue'),
+		component: () => import('../views/Admin/ListarViews/ListarCargos.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -84,7 +84,7 @@ const routes = [
 	{
 		path: '/listarJustificativas',
 		name: 'Justificativas',
-		component: () => import('../views/AdminListarViews/ListarJustificativas.vue'),
+		component: () => import('../views/Admin/ListarViews/ListarJustificativas.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -92,7 +92,7 @@ const routes = [
 	{
 		path: '/editarFuncionario/:id',
 		name: 'EditarFuncionario',
-		component: () => import('../views/AdminEditarViews/EditarFuncionario.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarFuncionario.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -100,7 +100,7 @@ const routes = [
 	{
 		path: '/editarOperador/:id',
 		name: 'EditarOperador',
-		component: () => import('../views/AdminEditarViews/EditarOperador.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarOperador.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -108,7 +108,7 @@ const routes = [
 	{
 		path: '/editarHorario/:id',
 		name: 'EditarHorario',
-		component: () => import('../views/AdminEditarViews/EditarHorario.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarHorario.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -116,7 +116,7 @@ const routes = [
 	{
 		path: '/editarCargo/:id',
 		name: 'EditarCargo',
-		component: () => import('../views/AdminEditarViews/EditarCargo.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarCargo.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -124,7 +124,7 @@ const routes = [
 	{
 		path: '/editarJustificativa/:id',
 		name: 'EditarJustificativa',
-		component: () => import('../views/AdminEditarViews/EditarJustificativa.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarJustificativa.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -132,7 +132,7 @@ const routes = [
 	{
 		path: '/editarFuncionario/:id',
 		name: 'EditarFuncionario',
-		component: () => import('../views/AdminEditarViews/EditarFuncionario.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarFuncionario.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -140,7 +140,7 @@ const routes = [
 	{
 		path: '/editarOperador/:id',
 		name: 'EditarOperador',
-		component: () => import('../views/AdminEditarViews/EditarOperador.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarOperador.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -148,7 +148,7 @@ const routes = [
 	{
 		path: '/editarHorario/:id',
 		name: 'EditarHorario',
-		component: () => import('../views/AdminEditarViews/EditarHorario.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarHorario.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -156,7 +156,7 @@ const routes = [
 	{
 		path: '/editarCargo/:id',
 		name: 'EditarCargo',
-		component: () => import('../views/AdminEditarViews/EditarCargo.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarCargo.vue'),
 		meta: {
 			requiresAuth: true
 		}
@@ -164,7 +164,7 @@ const routes = [
 	{
 		path: '/editarJustificativa/:id',
 		name: 'EditarJustificativa',
-		component: () => import('../views/AdminEditarViews/EditarJustificativa.vue'),
+		component: () => import('../views/Admin/EditarViews/EditarJustificativa.vue'),
 	},
 	{
 		path: '/admin',
