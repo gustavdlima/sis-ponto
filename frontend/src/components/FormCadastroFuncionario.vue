@@ -1,53 +1,68 @@
 <template>
-	<div class="grid h-full w-full bg-blue-200">
-
-		<form class="bg-red-200">
-			<div class="grid h-full w-full grid-rows-3">
-				<div class="row-span-1 bg-green-200">
+	<div class="grid h-full w-full">
+		<form class="">
+			<div class="grid h-full w-full grid-rows-4 lg:py-20 lg:px-3 justify-center">
+				<div class="row-span-1">
 					<div class="grid md:grid-cols-2 h-full w-full gap-1">
-						<div class="grid md:col-span-1 bg-red-200 ">
+						<div class="grid md:col-span-1">
 							<div class="grid lg:grid-cols-2">
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 bg-blue-200 p-1">
-											<Dropdown v-model="formData.setor" filter showClear :options="setores" optionLabel="name" placeholder="Setor" class="w-full lg:w-[14rem] h-[3rem]"/>
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="formData.setor" filter showClear :options="setores"
+												optionLabel="name" placeholder="Setor"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
 										</div>
-										<div class="row-span-1 bg-blue-400 p-1">
-											<InputText type="text" v-model="formData.matricula" class="w-full lg:w-[14rem] h-[3rem]" placeholder="Matrícula"/>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.matricula"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Matrícula" />
 										</div>
 									</div>
 								</div>
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 bg-green-200 p-1">
-											<Dropdown v-model="formData.carga_horaria" showClear :options="cargaHoraria" optionLabel="name" placeholder="Carga Horária" class="w-full lg:w-[14rem] h-[3rem]"/>
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="formData.carga_horaria" showClear :options="cargaHoraria"
+												optionLabel="name" placeholder="Carga Horária"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
 										</div>
-										<div class="row-span-1 bg-green-400 p-1">
-											<InputText type="text" v-model="formData.nome" class="w-full lg:w-[14rem] h-[3rem]" placeholder="Nome"/>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.nome"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Nome" />
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="grid md:col-span1 bg-red-400">
+						<div class="grid md:col-span-1">
 							<div class="grid lg:grid-cols-2">
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 bg-blue-200 p-1">
-											<InputText type="text" v-model="formData.cpf" class="w-full lg:w-[14rem] h-[3rem]" placeholder="CPF"/>
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="formData.id_horario" showClear :options="horario"
+												optionLabel="name" optionValue="code" placeholder="Horário"
+												panelClass="xl:w-[22rem]"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem] " />
 										</div>
-										<div class="row-span-1 bg-blue-400 p-1">
-											<InputText type="text" v-model="formData.rg" class="w-full lg:w-[14rem] h-[3rem]" placeholder="RG"/>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.rg"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" placeholder="RG" />
 										</div>
 									</div>
 								</div>
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 bg-green-200 p-1">
-											<InputText type="text" v-model="formData.pis_pasep" class="w-full lg:w-[14rem] h-[3rem]" placeholder="PIS/PASEP"/>
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="formData.id_cargo" showClear :options="cargos"
+												optionLabel="name" optionValue="code" placeholder="Cargo"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem] " />
 										</div>
-										<div class="row-span-1 bg-green-400 p-1">
-											<InputText type="text" v-model="formData.titulo_eleitor" class="w-full lg:w-[14rem] h-[3rem]" placeholder="Título Eleitor"/>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.titulo_eleitor"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Título Eleitor" />
 										</div>
 									</div>
 								</div>
@@ -55,59 +70,156 @@
 						</div>
 					</div>
 				</div>
-				<div class="row-span-1 bg-green-400">
-					<div class="grid md:grid-cols-2 h-full w-full">
-						<div class="md:col-span-1 bg-purple-400">
+				<div class="row-span-1">
+					<div class="grid md:grid-cols-2 h-full w-full gap-1">
+						<div class="grid md:col-span-1">
 							<div class="grid lg:grid-cols-2">
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 bg-blue-200 p-1 overflow-hidden">
-												<Calendar v-model="formData.data_nascimento" dateFormat="dd/mm/yy" class="w-full h-[3rem]" placeholder="Data de Nascimento" panel=""/>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.cpf"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" placeholder="CPF" />
 										</div>
-										<div class="row-span-1 bg-blue-400 p-1">
-											<InputText type="text" v-model="formData.cartao_sus" class="w-full lg:w-[14rem] h-[3rem]" placeholder="Cartão SUS"/>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.mae"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" placeholder="Mãe" />
 										</div>
 									</div>
 								</div>
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 bg-green-200 p-1 ">
-											<Dropdown v-model="formData.estado_civil" showClear :options="estadoCivil" optionLabel="name" placeholder="Estado Civil" class="w-full lg:w-[14rem] h-[3rem]"/>
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="formData.estado_civil" showClear :options="estadoCivil"
+												optionLabel="name" optionValue="code" placeholder="Estado Civil"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem] " />
 										</div>
-										<div class="row-span-1 bg-green-400 p-1">
-											<Dropdown v-model="formData.cargo" showClear :options="cargos" optionLabel="name" placeholder="Cargo" class="w-full lg:w-[14rem] h-[3rem]"/>
-
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.pai"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" placeholder="Pai" />
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="md:col-span1 bg-purple-200">
-
+						<div class="grid md:col-span-1">
+							<div class="grid lg:grid-cols-2">
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.email"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Email" />
+										</div>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.rua"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" placeholder="Rua" />
+										</div>
+									</div>
+								</div>
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.celular"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Celular" />
+										</div>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.bairro"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Bairro" />
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="row-span-1 bg-green-600">
-					<div class="grid lg:grid-cols-2 h-full w-full">
-						<div class="lg:col-span-1 bg-blue-200">
-
+				<div class="row-span-1">
+					<div class="grid md:grid-cols-2 h-full w-full gap-1">
+						<div class="grid md:col-span-1">
+							<div class="grid lg:grid-cols-2">
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.numero"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Número" />
+										</div>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.cartao_sus"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Cartão SUS" />
+										</div>
+									</div>
+								</div>
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.cep"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" placeholder="CEP" />
+										</div>
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.pis_pasep"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="PIS/PASEP" />
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="lg:col-span1 bg-blue-400">
-
+						<div class="grid md:col-span-1">
+							<div class="grid lg:grid-cols-2">
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.uf"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" placeholder="UF" />
+										</div>
+										<div class="row-span-1 p-1">
+											<Calendar v-model="formData.data_nascimento"
+												placeholder="Data de Nascimento" dateFormat="dd/mm/yy"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" modelValue="Date" />
+										</div>
+									</div>
+								</div>
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<InputText type="text" v-model="formData.cidade"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]"
+												placeholder="Cidade" />
+										</div>
+										<div class="row-span-1 p-1 overflow-hidden">
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
+				</div>
+				<div class="row-span-1 grid justify-center mt-4">
+					<Button
+						class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg button mt-2"
+						label="Cadastrar" severity="info" raised @click="enviarFormularioDeCadastroDeFuncionario()" />
 				</div>
 			</div>
 		</form>
 	</div>
+
+	<div>
+		<DialogAlerta :conteudoPropsDialog="{ dialogMensagem: dialogMensagem, dialogVisivel: dialogVisivel }" />
+	</div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import useUtils from '../services/Utils.js';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
 import Calendar from 'primevue/calendar';
-import useFormService from '../services/FormService.js';
+import useCadastroService from '../services/CadastroService.js';
+import DialogAlerta from './DialogAlerta.vue';
 
 const setores = ref([
 	{ name: 'AEE', code: 'AEE' },
@@ -144,7 +256,6 @@ const setores = ref([
 	{ name: 'SUS', code: 'SUS' },
 	{ name: 'USPLAN', code: 'USPLAN' }
 ])
-
 const formData = ref({
 	nome: "",
 	setor: "",
@@ -169,52 +280,95 @@ const formData = ref({
 	id_cargo: "",
 	id_horario: "",
 	carga_horaria: ""
-})
-
+});
 const cargaHoraria = ref([
 	{ name: '20h', code: '20h' },
 	{ name: '40h', code: '40h' }
 ])
-
 const estadoCivil = ref([
 	{ name: 'Solteiro(a)', code: 'Solteiro(a)' },
 	{ name: 'Casado(a)', code: 'Casado(a)' },
 ])
-
 const cargos = ref([]);
+const horario = ref([]);
+const dialogMensagem = ref('');
+const dialogVisivel = ref(false);
 
-//fazer tratamento para os cargos e horarios ficar do jeito do que o primevue dropdown pede
-const getCargos = async () => {
-	const response = await useFormService.getCargos();
-	cargo.value = response.data;
+const enviarFormularioDeCadastroDeFuncionario = async () => {
+	tratarFormData();
+	const response = await useCadastroService.cadastrarFuncionario(formData.value);
+	handleResponse(response);
 }
 
+const handleResponse = (response) => {
+	if (response.status == 201) {
+		dialogMensagem.value = 'Funcionário cadastrado com sucesso!';
+		dialogVisivel.value = true;
+	} else {
+		dialogMensagem.value = 'Funcionário já cadastrado!';
+		dialogVisivel.value = true;
+	}
+}
 
+const tratarFormData = () => {
+	formData.value.data_nascimento = useUtils.formatarData(formData.value.data_nascimento);
+	formData.value.carga_horaria = formData.value.carga_horaria.code;
+	formData.value.setor = formData.value.setor.code;
+}
+
+const getCargos = async () => {
+	const response = await useCadastroService.getCargos();
+	for (let i = 0; i < response.data.length; i++) {
+		cargos.value.push({
+			name: response.data[i].cargo,
+			code: response.data[i].id
+		})
+	}
+}
+
+const getHorarios = async () => {
+	const response = await useCadastroService.getHorarios();
+	for (let i = 0; i < response.data.length; i++) {
+		if (response.data[i].terceiro_horario == null) {
+			var horarioString = response.data[i].primeiro_horario + " - " + response.data[i].segundo_horario;
+		} else {
+			var horarioString = response.data[i].primeiro_horario + " - " + response.data[i].segundo_horario + " - " + response.data[i].terceiro_horario + " - " + response.data[i].quarto_horario;
+		}
+		horario.value.push({
+			name: horarioString,
+			code: response.data[i].id
+		})
+	}
+}
+
+function fillFormData() {
+	formData.value.nome = "b"
+	formData.value.setor = "b"
+	formData.value.matricula = "b"
+	formData.value.data_nascimento = "05-21-1994"
+	formData.value.rg = "b"
+	formData.value.cpf = "b"
+	formData.value.pis_pasep = "b"
+	formData.value.titulo_eleitor = "b"
+	formData.value.cartao_sus = "b"
+	formData.value.mae = "b"
+	formData.value.pai = "b"
+	formData.value.celular = "b"
+	formData.value.email = "b@gmail.com"
+	formData.value.estado_civil = "b"
+	formData.value.rua = "b"
+	formData.value.bairro = "b"
+	formData.value.cep = "b"
+	formData.value.numero = "b"
+	formData.value.cidade = "b"
+	formData.value.uf = "b"
+	formData.value.id_cargo = "1"
+	formData.value.id_horario = "2"
+	formData.value.carga_horaria = "20h"
+}
+
+onMounted(() => {
+	getCargos();
+	getHorarios();
+})
 </script>
-
-
-<!--
-	SETOR - OPTION
-	MATRICULA
-	CARGA HORARIA - OPTION
-	NOME
-	CPF
-	RG
-	DATA DE NASCIMENTO - CALENDAR
-	PIS/PASEP
-	TITULO DE ELEITOR
-	SUS
-	ESTADO CIVIL - OPTION
-	MÃE
-	PAI
-	EMAIL
-	CELULAR
-	RUA
-	BAIRRO
-	NUMERO
-	CEP
-	CIDADE
-	UF
-	HORÁRIO - OPTION
-	CARGO - OPTION
- -->
