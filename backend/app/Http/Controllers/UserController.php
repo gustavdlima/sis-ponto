@@ -45,9 +45,13 @@ class UserController extends Controller
             'level' => $request->level
         ]);
         if ($user->wasRecentlyCreated === true) {
-            return "User criado com sucesso.";
+            return response()->json([
+                'message' => 'Operador cadastrado com sucesso!',
+            ], 201);
         } else {
-            return "User existente.";
+            return response()->json([
+                'message' => 'Operador já cadastrado!',
+            ], 200);
         }
     }
 
