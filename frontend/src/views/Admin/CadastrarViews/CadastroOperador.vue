@@ -5,8 +5,8 @@
 				<AdminNavBar />
 			</div>
 			<div class="row-span-11 md:row-span-10 p-1">
-				<FormCadastroFuncionario />
-				<!-- <FormFuncionarioDeprecated /> -->
+				<FormCadastroOperador />
+				<!-- <FormOperador /> -->
 			</div>
 		</div>
 	</div>
@@ -14,7 +14,6 @@
 
 <script setup>
 import AdminNavBar from '../../../components/AdminNavBar.vue';
-import FormCadastroFuncionario from '../../../components/FormCadastroFuncionario.vue';
-import FormFuncionarioDeprecated from '../../components/deprecated/FormFuncionarioDeprecated.vue';
-
+import FormCadastroOperador from '../../../components/FormCadastroOperador.vue';
+// import FormOperador from '../../../components/FormOperador.vue';
 </script>
