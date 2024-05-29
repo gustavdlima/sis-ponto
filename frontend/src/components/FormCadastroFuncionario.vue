@@ -300,13 +300,17 @@ const enviarFormularioDeCadastroDeFuncionario = async () => {
 	handleResponse(response);
 }
 
-const handleResponse = (response) => {
+const handleResponse = async (response) => {
 	if (response.status == 201) {
 		dialogMensagem.value = 'Funcionário cadastrado com sucesso!';
 		dialogVisivel.value = true;
+		await useUtils.sleep(500);
+		dialogVisivel.value = false;
 	} else {
 		dialogMensagem.value = 'Funcionário já cadastrado!';
 		dialogVisivel.value = true;
+		await useUtils.sleep(500);
+		dialogVisivel.value = false;
 	}
 }
 
