@@ -1,16 +1,18 @@
 <template>
-	<div class="row h-100 w-100 d-flex">
-		<div class="col-md-2 h-100">
-			<AdminSideBar></AdminSideBar>
-		</div>
-		<div class="col-md-8 w-75 h-100 ml-15 d-flex">
-			<CadastroJustificativa></CadastroJustificativa>
+	<div class="grid h-full w-full m-auto">
+		<div class="grid grid-rows-12 p-2">
+			<div class="row-span-1 md:row-span-2">
+				<AdminNavBar />
+			</div>
+			<div class="row-span-11 md:row-span-10 p-1">
+				<FormCadastroJustificativa />
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import AdminSideBar from '../components/AdminSideBar.vue';
-import CadastroJustificativa from '../components/FormJustificativa.vue';
+import AdminNavBar from '../../../components/AdminNavBar.vue';
+import FormCadastroJustificativa from '../../../components/Admin/FormCadastro/FormCadastroJustificativa.vue';
 
 </script>
