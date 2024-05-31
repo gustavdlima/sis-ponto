@@ -25,9 +25,9 @@ class JustificativaController extends Controller
             $justificativa = new Justificativa;
             $justificativa->justificativa = $request->justificativa;
             $justificativa->save();
-            return "Justificativa criada com sucesso.";
+            return response()->json(['message' => 'Justificativa criada.'], 201);
         } else {
-            return "Justificativa existente.";
+            return response()->json(['message'=> 'Erro ao criar justificativa'],200);
         }
     }
 

@@ -43,10 +43,10 @@ class HorarioController extends Controller
             'quarto_horario' => $request->quarto_horario]);
         if ($horario['id'] == null) {
             $horario = Horario::create($request->all());
-            return "Horário criado com sucesso.";
+            return response()->json(['message' => 'Horário criado com sucesso.'], 201);
         } else {
             $horario->update($request->all());
-            return "Horário existente.";
+            return response()->json(['message'=> 'Erro ao criar Horário'], 200);
         }
     }
 
