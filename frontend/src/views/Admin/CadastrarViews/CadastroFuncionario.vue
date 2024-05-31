@@ -13,6 +13,6 @@
 
 <script setup>
 import AdminNavBar from '../../../components/AdminNavBar.vue';
-import FormCadastroFuncionario from '../../../components/FormCadastroFuncionario.vue';
+import FormCadastroFuncionario from '../../../components/Admin/FormCadastro/FormCadastroFuncionario.vue';
 
 </script>
