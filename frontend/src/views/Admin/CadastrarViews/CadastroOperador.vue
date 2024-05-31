@@ -14,6 +14,5 @@
 
 <script setup>
 import AdminNavBar from '../../../components/AdminNavBar.vue';
-import FormCadastroOperador from '../../../components/FormCadastroOperador.vue';
-// import FormOperador from '../../../components/FormOperador.vue';
+import FormCadastroOperador from '../../../components/Admin/FormCadastro/FormCadastroOperador.vue';
 </script>
