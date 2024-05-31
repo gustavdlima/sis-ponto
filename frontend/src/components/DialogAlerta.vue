@@ -16,7 +16,7 @@ const props = defineProps({
 
 const dialogVisivel = ref(false);
 
-watch(props, (newValue) => {
-	dialogVisivel.value = newValue.conteudoPropsDialog.dialogVisivel;
+watch(props, async (newValue) => {
+	dialogVisivel.value = await newValue.conteudoPropsDialog.dialogVisivel;
 });
 </script>
