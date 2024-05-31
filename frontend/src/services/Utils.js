@@ -20,6 +20,16 @@ class Utils {
 		const dataFinal = `${mes}-${dia}-${ano}`;
 		return dataFinal;
 	}
+
+	formatarHorario(horario) {
+		if (horario == null) return null;
+		const horarioFormatado = new Date(horario);
+		const hora = horarioFormatado.getHours().toString().padStart(2, '0');
+		const minuto = horarioFormatado.getMinutes().toString().padStart(2, '0');
+		const segundos = horarioFormatado.getSeconds().toString().padStart(2, '0');
+		const horarioFinal = `${hora}:${minuto}:${segundos}`;
+		return horarioFinal;
+	}
 }
 
 export default new Utils();
