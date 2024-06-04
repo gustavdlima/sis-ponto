@@ -1,4 +1,4 @@
-import axios, { formToJSON } from "axios";
+import axios from "axios";
 import { useAuthStore } from "../stores/authStore";
 
 const authStore = useAuthStore();
