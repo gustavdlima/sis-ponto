@@ -50,7 +50,7 @@ const routes = [
 		}
 	},
 	{
-		path: '/admin/listarfuncionarios',
+		path: '/admin/listarFuncionarios',
 		name: 'Funcionarios',
 		component: () => import('../views/Admin/ListarViews/ListarFuncionarios.vue'),
 		meta: {
