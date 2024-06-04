@@ -3,28 +3,28 @@
 		<div>
 			<MegaMenu :model="items" :pt="{
 				label: {
-					class: ['text-blue-900']
+					class: ['text-blue-950']
 				},
 				icon: {
-					class: ['text-blue-900']
+					class: ['text-blue-950']
 				},
 				submenuIcon: {
-					class: ['text-blue-900']
+					class: ['text-blue-950']
 				},
 				submenuheader: {
-					class: ['text-blue-900']
+					class: ['text-blue-950']
 				},
 				submenulabel: {
-					class: ['text-blue-900']
+					class: ['text-blue-950']
 				}
 			}" style="font-size: 1.2rem">
 				<template #start>
-					<span class="text-3xl text-blue-900 p-2 font-semibold"> ePonto </span>
+					<span class="text-3xl text-blue-950 p-2 font-semibold"> ePonto </span>
 				</template>
 
 				<template #end>
 					<div class="mr-2 mt-2">
-						<span class="pi pi-fw pi-sign-out  text-blue-900" style="font-size: 1.5rem" />
+						<span class="pi pi-fw pi-sign-out  text-blue-950" style="font-size: 1.5rem" />
 					</div>
 				</template>
 			</MegaMenu>
@@ -42,14 +42,6 @@ import LogoFunadSemNome from '../components/LogoFunadSemNome.vue'
 
 const router = useRouter();
 const authStore = useAuthStore();
-
-const menuItems = ref([
-	{
-		label: 'Cadastro',
-		icon: 'pi pi-fw pi-user',
-		route: '/admin/CadastroFuncionario',
-	}
-])
 
 const items = ref([
 	{
@@ -240,7 +232,7 @@ const rotasDeEdicao = async (index) => {
 const rotasDeListagem = async (index) => {
 	switch (index) {
 		case 1:
-			router.push('/admin/ListarFuncionario');
+			router.push('/admin/ListarFuncionarios');
 			break;
 		case 2:
 			router.push('/admin/ListarOperador');
