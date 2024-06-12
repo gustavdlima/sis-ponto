@@ -67,6 +67,7 @@ const fecharDialogRelatorioMensal = () => {
 
 <style scoped>
 button {
-	border: none !important
+	border: none !important;
+	background-color: #1F2937 !important;
 }
 </style>
