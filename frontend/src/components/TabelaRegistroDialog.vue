@@ -5,8 +5,7 @@
 				mask: {
 					style: 'backdrop-filter: blur(2px)'
 				}
-			}"
-			class="bg-blue-200">
+			}">
 			<template #container>
 				<div class="grid justify-center">
 					<div class="grid justify-center">
