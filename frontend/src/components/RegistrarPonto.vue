@@ -43,7 +43,7 @@
 	</div>
 
 	<!-- Matricula vazia Dialog -->
-	<Dialog v-model:visible="dialogVisivel" modal header=" " :style="{ width: '20rem', height: '10rem' } ">
+	<Dialog v-model:visible="dialogVisivel" modal :style="{ width: '20rem', height: '10rem' } ">
 		<div class="grid justify-center text-xl">
 			{{ dialogMensagem }}
 		</div>
@@ -72,6 +72,7 @@ import Eponto from '../components/Eponto.vue';
 import TabelaRegistroDialog from '../components/TabelaRegistroDialog.vue';
 import LogoFunadSemNome from "./LogoFunadSemNome.vue";
 import PontoService from '../services/PontoService.js';
+import useUtils from '../services/Utils';
 
 const usePontoService = PontoService;
 const dialogMensagem = ref('');
@@ -91,7 +92,6 @@ const registrarPonto = async () => {
 		return matriculaVaziaDialog();
 	try {
 		const response = await usePontoService.registrarPonto(matriculaObjeto);
-		console.log(response);
 		await handleResponse(response);
 		await startCountdown();
 		tabelaRegistroVisivel.value = false;
@@ -111,18 +111,25 @@ const handleResponse = async (response) => {
 			pegarRegistroDoDia();
 			baterPontoBotaoVisivel.value = true;
 			tabelaRegistroVisivel.value = true;
+			useUtils.sleep(2000).then(() => {
+				tabelaRegistroVisivel.value = false;
+			});
+			limparInput();
 			return;
 			break;
 		case 404:
 			baterPontoBotaoVisivel.value = true;
+			limparInput();
 			return abrirDialogErro("Matrícula não encontrada");
 			break;
 		case 409:
 			baterPontoBotaoVisivel.value = true;
+			limparInput();
 			return abrirDialogErro(response.data.message);
 			break;
 		default:
 			baterPontoBotaoVisivel.value = true;
+			limparInput();
 			return abrirDialogErro(response.data.message);
 			break;
 	}
@@ -138,6 +145,9 @@ const pegarRegistroDoDia = async () => {
 				response.data
 			];
 			tabelaRegistroVisivel.value = true;
+			useUtils.sleep(2000).then(() => {
+				tabelaRegistroVisivel.value = false;
+			});
 		} else {
 			return abrirDialogErro(response.message);
 		}
