@@ -5,7 +5,6 @@
 		</div>
 		<div class="col-md-8 w-75 h-100 ml-15 d-flex justify-content-center align-items-center">
 			<div class="w-75">
-
 				<v-card flat title="Funcionários">
 					<div class="d-flex justify-content-center gap-3">
 						<v-btn color="teal" @click="converterFuncionariosJsonParaExcel(item)"
@@ -630,4 +629,4 @@ td {
 		padding-left: 0;
 	}
 }
-</style>../../stores/authStore
+</style>
