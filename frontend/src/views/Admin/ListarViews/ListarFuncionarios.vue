@@ -21,19 +21,8 @@ const funcionarios = ref();
 
 onMounted(async () => {
 	const response = await useListarService.listarFuncionarios();
+	console.log(response.data);
 	funcionarios.value = response.data
-	console.log(funcionarios.value)
 });
 
 </script>
-
-<style scoped>
-	p-datatable-header {
-		padding: 1rem;
-	}
-
-	button {
-		background-color: #1F2937 !important;
-		border: none !important
-	}
-</style>
