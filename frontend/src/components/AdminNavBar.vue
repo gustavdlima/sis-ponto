@@ -24,7 +24,7 @@
 
 				<template #end>
 					<div class="mr-2 mt-2">
-						<span class="pi pi-fw pi-sign-out  text-blue-950" style="font-size: 1.5rem" />
+						<span class="pi pi-fw pi-sign-out  text-blue-950 cursor-pointer" style="font-size: 1.5rem" @click="logout"/>
 					</div>
 				</template>
 			</MegaMenu>
@@ -38,6 +38,7 @@ import MegaMenu from 'primevue/megamenu';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
+import useAdminLoginService from '../services/AdminLoginService';
 import LogoFunadSemNome from '../components/LogoFunadSemNome.vue'
 
 const router = useRouter();
@@ -247,6 +248,11 @@ const rotasDeListagem = async (index) => {
 			router.push('/admin/ListarJustificativa');
 			break;
 	}
+}
+
+const logout = async () => {
+	authStore.logout();
+	router.push('/login');
 }
 
 </script>
