@@ -1,5 +1,5 @@
 <template>
-	<div class="grid">
+	<div class="grid p-2">
 		<div>
 			<MegaMenu :model="items" :pt="{
 				label: {
@@ -233,19 +233,19 @@ const rotasDeEdicao = async (index) => {
 const rotasDeListagem = async (index) => {
 	switch (index) {
 		case 1:
-			router.push('/admin/ListarFuncionarios');
+			router.push('/admin/listarFuncionarios');
 			break;
 		case 2:
-			router.push('/admin/ListarOperador');
+			router.push('/admin/listarOperadores');
 			break;
 		case 3:
-			router.push('/admin/ListarHorario');
+			router.push('/admin/listarHorarios');
 			break;
 		case 4:
-			router.push('/admin/ListarCargo');
+			router.push('/admin/listarCargos');
 			break;
 		case 5:
-			router.push('/admin/ListarJustificativa');
+			router.push('/admin/listarJustificativas');
 			break;
 	}
 }
