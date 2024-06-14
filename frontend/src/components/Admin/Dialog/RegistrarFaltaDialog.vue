@@ -59,7 +59,6 @@ const formData = ref({
 });
 
 const registrarFalta = () => {
-	console.log("teste")
 	if (formData.value.id_justificativa === "" || formData.value.data === "" || formData.value.data2 === "") {
 		dialogMensagem.value = "Preencha todos os campos!";
 		dialogVisivel.value = true;
@@ -69,6 +68,7 @@ const registrarFalta = () => {
 		return;
 	}
 	tratarFormData();
+	console.log(formData.value);
 	useListarService.registrarFalta(formData.value).then(() => {
 		dialogMensagem.value = "Falta registrada com sucesso!";
 		dialogVisivel.value = true;
@@ -76,20 +76,16 @@ const registrarFalta = () => {
 			dialogVisivel.value = false;
 			dialogRegistrarFaltaIsVisible.value = false;
 			emit('atualizarDialogRegistrarFaltaBool', dialogRegistrarFaltaIsVisible.value);
+			limparCampos();
 		});
 	});
-	limparCampos();
 }
 
 const tratarFormData = () => {
 	formData.value.data = useUtils.formatarData(formData.value.data);
 	formData.value.data2 = useUtils.formatarData(formData.value.data2);
-	if (formData.value.id_justificativa === "" || formData.value.data === "" || formData.value.data2 === "") {
-		dialogMensagem.value = "Preencha todos os campos!";
-		dialogVisivel.value = true;
-		return;
-	}
 	formData.value.id_justificativa = parseInt(formData.value.id_justificativa.code);
+	formData.value.id_funcionario = parseInt(props.funcionario.id);
 }
 
 const limparCampos = () => {
