@@ -30,15 +30,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('/funcionarios', FuncionarioController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy'])->middleware('auth:sanctum');
 
-Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
+Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store', 'update'])->middleware('auth:sanctum');
 
-Route::resource('/justificativas', JustificativaController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
+Route::resource('/justificativas', JustificativaController::class)->only(['index', 'create', 'show', 'store', 'update'])->middleware('auth:sanctum');
 
 Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy'])->middleware('auth:sanctum');
 
-Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
+Route::resource('/faltas', FaltaController::class)->only(['index', 'create', 'show', 'store', 'update'])->middleware('auth:sanctum');
 
-Route::resource('/faltas', FaltaController::class)->only(['index', 'create', 'show', 'store'])->middleware('auth:sanctum');
+Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
 
 Route::get('/faltasFuncionario', [FaltaController::class, 'retornaFaltasDoFuncionario'])->middleware('auth:sanctum');
 
