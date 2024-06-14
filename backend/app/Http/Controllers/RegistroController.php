@@ -428,6 +428,7 @@ class RegistroController extends Controller
         $faltas = Falta::where('id_funcionario', $funcionario->id)->get();
 
         for ($i = 0; $i < count($registro); $i++) {
+
             if ($registro[$i]['primeiro_ponto'] != null && $registro[$i]['primeiro_ponto'] != 'FALTA' && $registro[$i]['primeiro_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['primeiro_ponto'] != 'JUSTIFICADO' && $registro[$i]['primeiro_ponto'] != 'ATRASADO')
                 $registro[$i]['primeiro_ponto'] = date("H:i:s", strtotime($registro[$i]['primeiro_ponto']));
             if ($registro[$i]['segundo_ponto'] != null && $registro[$i]['segundo_ponto'] != 'FALTA' && $registro[$i]['segundo_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['segundo_ponto'] != 'JUSTIFICADO' && $registro[$i]['segundo_ponto'] != 'ATRASADO')
@@ -438,7 +439,10 @@ class RegistroController extends Controller
                 $registro[$i]['quarto_ponto'] = date("H:i:s", strtotime($registro[$i]['quarto_ponto']));
 
             $registro[$i]['data'] = date("d/m/Y", strtotime($registro[$i]['created_at']));
+            $registro[$i]['justificativa'] = $this->cadastraFaltaNoRegistro($funcionario, date("Y-m-d", strtotime($registro[$i]
+            ['created_at'])));
         }
+        $registro = $this->inserirJustificativaNoRelatorio($registro);
         return $registro;
     }
 
