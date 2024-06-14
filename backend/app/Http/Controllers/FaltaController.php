@@ -87,9 +87,14 @@ class FaltaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $falta = Falta::find($request->id);
+        $falta->update($request->all());
+        $falta->save();
+        return response ()->json([
+            'message' => 'Falta atualizada com sucesso!',
+        ], 200);
     }
 
     /**

@@ -71,19 +71,15 @@ class HorarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $horario = Horario::findOrFail($id);
+        $horario = Horario::findOrFail($request->id);
+        $horario->update($request->all());
+        $horario->save();
 
-        $validated = $request->validate([
-            'primeiro_horario' => 'required|date_format:H:i:s',
-            'segundo_horario' => 'date_format:H:i:s',
-            'terceir_horario' => 'date_format:H:i:s',
-            'quarto_horario' => 'required|date_format:H:i:s',
-        ]);
-        $horario->update($validated);
-
-        return redirect()->route('horarios.index');
+        return response ()->json([
+            'message' => 'Horário atualizado com sucesso!',
+        ], 200);
     }
 
     /**

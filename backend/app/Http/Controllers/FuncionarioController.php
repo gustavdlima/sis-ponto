@@ -88,39 +88,14 @@ class FuncionarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($request, $id)
+    public function update(Request $request)
     {
-        $funcionario = Funcionario::findOrFail($id);
-
-        $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-            'setor' => 'required|string',
-            'nivel' => 'required|string',
-            'matricula' => 'required|string',
-            'data_nascimento' => 'required|date',
-            'rg' => 'required|string',
-            'cpf' => 'required|string',
-            'pis_pasep' => 'required|string',
-            'titulo_eleitor' => 'required|string',
-            'cartao_sus' => 'string',
-            'mae' => 'required|string|max:255',
-            'pai' => 'string|max:255',
-            'bairro' => 'required|string|max:255',
-            'rua' => 'required|string|max:255',
-            'numero' => 'required|string|max:255',
-            'cidade' => 'required|string|max:255',
-            'uf' => 'required|string|max:255',
-            'cep' => 'required|string|max:255',
-            'estado_civil' => 'required|string|max:255',
-            'celular' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'id_cargo' => 'string|max:255',
-            'id_horario' => 'string|max:255',
-        ]);
-
-        $funcionario->update($validated);
-
-        return redirect()->route('funcionarios.index');
+        $funcionario = Funcionario::findOrFail($request->id);
+        $funcionario->update($request->all());
+        $funcionario->save();
+        return response()->json([
+            'message' => 'Funcionário atualizado com sucesso!',
+        ], 200);
     }
     /**
      * Remove the specified resource from storage.

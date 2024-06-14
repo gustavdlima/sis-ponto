@@ -37,4 +37,12 @@ class JustificativaController extends Controller
         return $justificativa;
     }
 
+    public function update(Request $request)
+    {
+        $justificativa = Justificativa::findOrFail($request->id);
+        $justificativa->update($request->all());
+        $justificativa->save();
+        return response()->json(['message' => 'Justificativa atualizada.'], 200);
+    }
+
 }
