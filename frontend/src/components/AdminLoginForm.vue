@@ -26,6 +26,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/authStore';
 import Button from 'primevue/button';
 import LoginInputs from '../components/LoginInputs.vue';
 import Eponto from '../components/Eponto.vue';
@@ -38,6 +39,8 @@ const dialogMensagem = ref('');
 const dialogVisivel = ref(false);
 const useAdminLoginService = AdminLoginService;
 const router = useRouter();
+const authStore = useAuthStore();
+
 
 const credenciaisAtualizadas = async ({ email, password }) => {
 	credenciais.value.email = email;
@@ -57,6 +60,11 @@ const handleResponse = (response) => {
 	if (response.status == 200) {
 		dialogMensagem.value = 'Login efetuado com sucesso!';
 		dialogVisivel.value = true;
+		authStore.setAuthUser(response.data.authUser);
+        authStore.setUserToken(response.data.token);
+        authStore.setUserLogged(true);
+		console.log(authStore.authUser);
+		console.log(authStore.userToken);
 		router.push('/admin');
 	} else {
 		dialogMensagem.value = 'Credenciais inválidas';
