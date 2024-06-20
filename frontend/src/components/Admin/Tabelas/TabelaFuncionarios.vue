@@ -1,11 +1,10 @@
 <template>
 	<div class="grid h-full w-full m-auto p-2 border-blue-950 rounded-lg">
 		<div class=" bg-white rounded-lg border-3 p-4">
-			<DataTable v-model:selection="funcionarioSelecionado" :value="funcionarios" selectionMode="single" size="normal"
-				stripedRows :globalFilterFields="['nome', 'matricula']" sortMode="multiple" :filters="filters"
-				:reorderableColumns="true" tableStyle="padding: 1rem;" paginator :rows="3"
-				:rowsPerPageOptions="[5, 10, 20, 50]"
-				>
+			<DataTable v-model:selection="funcionarioSelecionado" :value="funcionarios" selectionMode="single"
+				size="normal" stripedRows :globalFilterFields="['nome', 'matricula']" sortMode="multiple"
+				:filters="filters" :reorderableColumns="true" tableStyle="padding: 1rem;" paginator :rows="3"
+				:rowsPerPageOptions="[5, 10, 20, 50]">
 				<template #header>
 					<div class="grid justify-end">
 						<IconField iconPosition="right">
@@ -20,17 +19,33 @@
 				<template #loading> Carregando os Funcionários</template>
 				<Column field="nome" sortable header="Nome" style="width: 30%" />
 				<Column field="matricula" sortable header="Matrícula" style="width: 25%" />
-				<Column field="" header="" style="width: 35%">
+				<Column field="" header="" style="width: 15%">
 					<template #body="slotProps">
-						<div class="grid lg:content-center grid-rows-2 xl:grid-cols-2 gap-2">
-							<div class="row-span-1 xl:col-span-1 grid justify-center">
-								<Button label="Registro de Ponto"
-									class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md"
-									@click="abrirRegistro(slotProps)" />
+						<div class="grid sm:gap-2 lg:grid-cols-3">
+							<div class="lg:col-span-1">
+								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
+									@click="abrirRegistro(slotProps)">
+									<i class="pi pi-w pi-bars mt-1" style="font-size: 1.8rem"></i>
+								</Button>
 							</div>
-							<div class="row-span-1 xl:col-span-1 grid justify-center">
-								<Button label="Registrar Falta"
-									class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md" @click="registrarFalta(slotProps)" />
+							<div class="lg:col-span-1">
+								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
+									@click="abrirRegistrarFalta(slotProps)">
+									<i class="pi pi-w pi-calendar-clock" style="font-size: 1.8rem"></i>
+								</Button>
+								<!-- <Button label="Registrar Falta"
+									class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md" @click="registrarFalta(slotProps)" /> -->
+								<!-- <i class="pi pi-calendar-times cursor-pointer" style="font-size: 1.8rem"></i> -->
+							</div>
+							<div class="lg:col-span-1">
+								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
+									@click="abrirEditarFuncionario(slotProps)">
+									<i class="pi pi-w pi-user-edit" style="font-size: 1.8rem"></i>
+								</Button>
+								<!-- <Button label="Registrar Falta"
+									class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md" @click="registrarFalta(slotProps)" /> -->
+								<!-- <i class="pi pi-user-edit cursor-pointer" style="font-size: 1.8rem" ></i> -->
+
 							</div>
 						</div>
 					</template>
@@ -39,10 +54,13 @@
 		</div>
 	</div>
 
-	<RegistroDialog @updateDialogRegistroBool="atualizarValorRegistroBool" :propsObject="{ dialogRegistroIsVisible: dialogRegistroIsVisible, funcionarioSelecionado: funcionarioSelecionado, registroFuncionarioSelecionado: registroFuncionarioSelecionado }"/>
+	<RegistroDialog @atualizarDialogRegistroBool="atualizarValorRegistroBool"
+		:propsObject="{ dialogRegistroIsVisible: dialogRegistroIsVisible, funcionarioSelecionado: funcionarioSelecionado, registroFuncionarioSelecionado: registroFuncionarioSelecionado }" />
 
-	<RegistrarFaltaDialog :is-visible="dialogRegistrarFaltaIsVisible" :funcionario="funcionarioSelecionado" @atualizarDialogRegistrarFaltaBool="atualizarValorRegistrarFaltaBool"/>
+	<RegistrarFaltaDialog :is-visible="dialogRegistrarFaltaIsVisible" :funcionario="funcionarioSelecionado"
+		@atualizarDialogRegistrarFaltaBool="atualizarValorRegistrarFaltaBool" />
 
+	<EditarFuncionarioDialog :is-visible="dialogEditarFuncionarioIsVisible" :funcionario="funcionarioSelecionado" />
 </template>
 
 <script setup>
@@ -58,6 +76,7 @@ import Dialog from 'primevue/dialog';
 import RegistroDialog from '../Dialog/RegistroDialog.vue';
 import RegistrarFaltaDialog from '../Dialog/RegistrarFaltaDialog.vue';
 import useListarService from '../../../services/ListarService';
+import EditarFuncionarioDialog from '../Dialog/EditarFuncionarioDialog.vue';
 
 const props = defineProps({
 	funcionarios: Array
@@ -65,8 +84,9 @@ const props = defineProps({
 
 const dialogRegistroIsVisible = ref(false);
 const dialogRegistrarFaltaIsVisible = ref(false);
+const dialogEditarFuncionarioIsVisible = ref(false);
 const funcionarioSelecionado = ref();
-var registroFuncionarioSelecionado = ref ();
+var registroFuncionarioSelecionado = ref();
 const filters = ref({
 	global: {
 		matchMode: FilterMatchMode.CONTAINS
@@ -88,13 +108,18 @@ const atualizarValorRegistroBool = (eventData) => {
 	dialogRegistroIsVisible.value = eventData.dialogRegistroIsVisible;
 }
 
-const registrarFalta = (slotProps) => {
+const abrirRegistrarFalta = (slotProps) => {
 	funcionarioSelecionado.value = slotProps.data;
 	dialogRegistrarFaltaIsVisible.value = true;
 }
 
 const atualizarValorRegistrarFaltaBool = (eventData) => {
 	dialogRegistrarFaltaIsVisible.value = eventData.dialogRegistrarFaltaIsVisible;
+}
+
+const abrirEditarFuncionario = (slotProps) => {
+	funcionarioSelecionado.value = slotProps.data;
+	dialogEditarFuncionarioIsVisible.value = true;
 }
 
 </script>
@@ -104,8 +129,20 @@ p-datatable-header {
 	padding: 1rem;
 }
 
-button {
+i {
+	color: #1F2937 !important;
+}
+
+i:hover {
+	color: aliceblue !important;
+}
+
+.botao-opcoes:hover {
 	background-color: #1F2937 !important;
-	border: none !important
+}
+
+button {
+	background-color: transparent !important;
+	border: none !important;
 }
 </style>
