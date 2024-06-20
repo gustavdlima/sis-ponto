@@ -1,17 +1,17 @@
 <template>
-	<Dialog v-model:visible="dialogRegistroIsVisible" modal :closable="true" :resizable="false" :baseZIndex="10000" @update:visible="fecharDialogRegistro"
-		:style="{ width: '88vw' }">
+	<Dialog v-model:visible="dialogRegistroIsVisible" modal :closable="true" :resizable="false" :baseZIndex="10000"
+		@update:visible="fecharDialogRegistro" :style="{ width: '88vw' }">
 		<template #header>
 			<div class="grid h-full w-full p-4">
-					<div class="grid w-full h-full">
-						<div class="row-span-1">
-							<div class="grid justify-start">
-								<Button label="Relatório Mensal"
-									class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md"
-									@click="abrirDialogRelatorioMensal()" />
-							</div>
+				<div class="grid w-full h-full">
+					<div class="row-span-1">
+						<div class="grid justify-start">
+							<Button label="Relatório Mensal"
+								class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md"
+								@click="abrirDialogRelatorioMensal()" />
 						</div>
 					</div>
+				</div>
 			</div>
 		</template>
 		<div class="grid p-4">
@@ -30,7 +30,7 @@
 			<div class="row-span-1 bg-blue-200">
 				<div class="grid grid-cols-5">
 					<div class="col-span-1 grid justify-center bg-red-200">
-								<LogoFunadComNome />
+						<LogoFunadComNome />
 					</div>
 					<div class="col-span-4 grid justify-start content-end">
 						<label class="text-black text-3xl md:text-4xl lg:text-5xl font-semibold">
@@ -64,7 +64,7 @@
 				</div>
 			</div>
 			<div class="row-span-3 bg-blue-600 p-2">
-				<TabelaImpressaoRegistro :is-visible="tabelaImpressaoisVisible" :registro="relatorioRef"/>
+				<TabelaImpressaoRegistro :is-visible="tabelaImpressaoisVisible" :registro="relatorioRef" />
 			</div>
 		</div>
 	</Dialog>
@@ -86,7 +86,7 @@ import TabelaImpressaoRegistro from '../Tabelas/TabelaImpressaoRegistro.vue';
 import useUtils from '../../../services/Utils';
 import LogoFunadComNome from '../../LogoFunadComNome.vue';
 
-const emit = defineEmits(['updateDialogRegistroBool']);
+const emit = defineEmits(['atualizarDialogRegistroBool']);
 const props = defineProps({
 	propsObject: Object
 });
@@ -98,7 +98,7 @@ const relatorioRef = ref();
 
 const fecharDialogRegistro = () => {
 	dialogRegistroIsVisible.value = false;
-	emit('updateDialogRegistroBool', dialogRegistroIsVisible.value);
+	emit('atualizarDialogRegistroBool', dialogRegistroIsVisible.value);
 }
 
 const fecharDialogRelatorioMensal = (value) => {
@@ -185,7 +185,7 @@ const handleData = async (response) => {
 }
 
 watch(props, (newValue) => {
-	dialogRegistroIsVisible.value =  newValue.propsObject.dialogRegistroIsVisible;
+	dialogRegistroIsVisible.value = newValue.propsObject.dialogRegistroIsVisible;
 	funcionario.value =
 		newValue.propsObject.funcionarioSelecionado
 });
@@ -200,16 +200,16 @@ button {
 
 @media print {
 
-#imprimirRelatorio {
-	display: block;
-	color: black;
+	#imprimirRelatorio {
+		display: block;
+		color: black;
 
-}
+	}
 
-@page {
-	size: A4;
-	margin: 0;
-}
+	@page {
+		size: A4;
+		margin: 0;
+	}
 
 }
 </style>
