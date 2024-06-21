@@ -17,7 +17,7 @@ import useListarService from '../../../services/ListarService';
 import TabelaOperadores from '../../../components/Admin/Tabelas/Listar/TabelaOperadores.vue';
 import { ref, onMounted } from 'vue';
 
-const operadores = ref();
+const operadores = ref([]);
 
 onMounted(async () => {
 	const response = await useListarService.listarOperadores();
