@@ -13,7 +13,7 @@
 		<template #footer>
 			<div class="grid justify-center h-full w-full">
 				<Button label="Gerar Relatório"
-					class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md"
+					class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg"
 					@click="gerarRelatorio()" />
 			</div>
 		</template>

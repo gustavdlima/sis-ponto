@@ -7,7 +7,7 @@
 					<div class="row-span-1">
 						<div class="grid justify-start">
 							<Button label="Relatório Mensal"
-								class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md"
+								class="p-button-info h-10 w-48 lg:h-10 text-md md:text-lg"
 								@click="abrirDialogRelatorioMensal()" />
 						</div>
 					</div>
@@ -20,7 +20,7 @@
 
 		<template #footer>
 			<div class="grid justify-center p-4">
-				<Button label="Fechar" class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md"
+				<Button label="Fechar" class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg"
 					@click="fecharDialogRegistro" />
 			</div>
 		</template>

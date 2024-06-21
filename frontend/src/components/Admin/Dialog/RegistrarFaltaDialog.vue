@@ -24,7 +24,7 @@
 		</div>
 		<template #footer>
 			<div class="grid justify-center">
-				<Button label="Enviar" class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md"
+				<Button label="Enviar" class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg"
 					@click="registrarFalta()" />
 			</div>
 		</template>
