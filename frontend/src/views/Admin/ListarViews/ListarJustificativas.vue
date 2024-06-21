@@ -5,7 +5,7 @@
 				<AdminNavBar />
 			</div>
 			<div class="row-span-11 md:row-span-10">
-						<TabelaJustificativa :justificativa="justificativas" />
+						<TabelaJustificativa :justificativa="justificativa" />
 			</div>
 		</div>
 	</div>
@@ -17,12 +17,11 @@ import useListarService from '../../../services/ListarService';
 import { ref, onMounted } from 'vue';
 import TabelaJustificativa from '../../../components/Admin/Tabelas/Listar/TabelaJustificativa.vue';
 
-const justificativas = ref([]);
+const justificativa = ref([]);
 
 onMounted(async () => {
 	const response = await useListarService.listarJustificativas();
-	justificativas.value = response.data;
-	console.log(justificativas.value);
+	justificativa.value = response.data;
 });
 
 </script>
