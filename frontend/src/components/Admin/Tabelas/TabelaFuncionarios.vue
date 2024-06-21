@@ -3,7 +3,7 @@
 		<div class=" bg-white rounded-lg border-3 p-4">
 			<DataTable v-model:selection="funcionarioSelecionado" :value="funcionarios" selectionMode="single"
 				size="normal" stripedRows :globalFilterFields="['nome', 'matricula']" sortMode="multiple"
-				:filters="filters" :reorderableColumns="true" tableStyle="padding: 1rem;" paginator :rows="3"
+				:filters="filters" :reorderableColumns="true" tableStyle="padding: 1rem;" paginator :rows="10"
 				:rowsPerPageOptions="[5, 10, 20, 50]">
 				<template #header>
 					<div class="grid justify-end">
