@@ -36,6 +36,17 @@ class CargoController extends Controller
         }
     }
 
+    public function update(Request $request)
+    {
+        $cargo = Cargo::findOrFail($request->id);
+        $cargo->update($request->all());
+        $cargo->save();
+
+        return response ()->json([
+            'message' => 'Cargo atualizado com sucesso!',
+        ], 200);
+    }
+
     public function show($id)
     {
         $cargo = DB::select('select * from cargos where id = ?', [$id]);
