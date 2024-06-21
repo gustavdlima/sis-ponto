@@ -57,10 +57,11 @@
 	<RegistroDialog @atualizarDialogRegistroBool="atualizarValorRegistroBool"
 		:propsObject="{ dialogRegistroIsVisible: dialogRegistroIsVisible, funcionarioSelecionado: funcionarioSelecionado, registroFuncionarioSelecionado: registroFuncionarioSelecionado }" />
 
-	<RegistrarFaltaDialog :is-visible="dialogRegistrarFaltaIsVisible" :funcionario="funcionarioSelecionado"
-		@atualizarDialogRegistrarFaltaBool="atualizarValorRegistrarFaltaBool" />
+	<RegistrarFaltaDialog @atualizarDialogRegistrarFaltaBool="atualizarValorRegistrarFaltaBool"
+		:is-visible="dialogRegistrarFaltaIsVisible" :funcionario="funcionarioSelecionado" />
 
-	<EditarFuncionarioDialog :is-visible="dialogEditarFuncionarioIsVisible" :funcionario="funcionarioSelecionado" />
+	<EditarFuncionarioDialog @atualizarDialogEditarFuncionarioBool="atualizarDialogEditarFuncionarioBool"
+	 :is-visible="dialogEditarFuncionarioIsVisible" :funcionario="funcionarioSelecionado" />
 </template>
 
 <script setup>
@@ -120,6 +121,10 @@ const atualizarValorRegistrarFaltaBool = (eventData) => {
 const abrirEditarFuncionario = (slotProps) => {
 	funcionarioSelecionado.value = slotProps.data;
 	dialogEditarFuncionarioIsVisible.value = true;
+}
+
+const atualizarDialogEditarFuncionarioBool = (eventData) => {
+	dialogEditarFuncionarioIsVisible.value = eventData.dialogEditarFuncionarioIsVisible;
 }
 
 </script>
