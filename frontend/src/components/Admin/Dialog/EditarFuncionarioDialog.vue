@@ -1,5 +1,5 @@
 <template>
-	<Dialog v-model:visible="dialogEditarFuncionarioIsVisible"  @update:visible="fecharEditarFuncionarioDialog" :modal="true" :closable="true" :style="{ width: '95vw' }">
+	<Dialog v-model:visible="dialogEditarFuncionarioIsVisible" header="Editar Dados do Funcionário" @update:visible="fecharEditarFuncionarioDialog" :modal="true" :closable="true" :style="{ width: '95vw' }">
 		<div class="grid h-full w-full">
 		<form class="">
 			<div class="grid h-full w-full grid-rows-4 xl:py-20 xl:px-3 justify-center">
@@ -271,8 +271,9 @@
 				</div>
 				<div class="row-span-1 grid justify-center mt-4">
 					<Button
-						class="border-2 bg-transparent h-8 w-32 md:w-36 xl:w-40 xl:h-10 text-xs md:text-sm xl:text-lg button mt-2"
-						label="Editar" severity="info" raised @click="enviarFormularioDeEdicaoDeFuncionario()" />
+						class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg"
+						label="Editar" severity="info" raised @click="enviarFormularioDeEdicaoDeFuncionario()"
+						/>
 				</div>
 			</div>
 		</form>
@@ -291,6 +292,7 @@ import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import useCadastroService from '../../../services/CadastroService'
 import useEditarService from '../../../services/EditarService'
+import useUtils from '../../../services/Utils'
 import DialogAlerta from '../../DialogAlerta.vue';
 
 const props = defineProps({
@@ -349,24 +351,35 @@ const dialogVisivel = ref();
 const emit = defineEmits(['atualizarDialogEditarFuncionarioBool']);
 
 const enviarFormularioDeEdicaoDeFuncionario = async () => {
-
 	const response = await useEditarService.editarFuncionario(funcionarioEditado.value)
-	handleResponse(response.data);
+	handleResponse(response);
 	fecharEditarFuncionarioDialog();
 };
 
 const handleResponse = (response) => {
 	switch (response.status) {
 		case 200:
-
+			dialogMensagem.value = response.data.message;
+			dialogVisivel.value = true;
+			useUtils.sleep(1500).then(() => {
+				dialogVisivel.value = false;
+			})
+			return ;
+			break ;
+		default:
+			dialogMensagem.value = response.data.message;
+			dialogVisivel.value = true;
+			useUtils.sleep(1500).then(() => {
+				dialogVisivel.value = false;
+			})
 			return ;
 			break ;
 	}
 }
 
-const tratarFormData = () => {
-	funcionarioEditado.value.data_nascimento = useUtils.formatarData(funcionarioEditado.value.data_nascimento)
-}
+// const tratarFormData = () => {
+// 	funcionarioEditado.value.data_nascimento = useUtils.formatarData(funcionarioEditado.value.data_nascimento)
+// }
 
 const fecharEditarFuncionarioDialog = () => {
 	dialogEditarFuncionarioIsVisible.value = false;
