@@ -38,6 +38,45 @@ class EditarService {
     }
   }
 
+  async editarHorario(data) {
+    try {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authStore.token}`;
+      const response = await axios.put(this.horarioURL + data.id, data);
+      return response;
+    } catch (error) {
+      const errorResponse = JSON.parse(JSON.stringify(error.response));
+      return errorResponse;
+    }
+  }
+
+  async editarCargo(data) {
+    try {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authStore.token}`;
+      const response = await axios.put(this.cargoURL + data.id, data);
+      return response;
+    } catch (error) {
+      const errorResponse = JSON.parse(JSON.stringify(error.response));
+      return errorResponse;
+    }
+  }
+
+  async editarJustificativa(data) {
+    try {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authStore.token}`;
+      const response = await axios.put(this.justificativaURL + data.id, data);
+      return response;
+    } catch (error) {
+      const errorResponse = JSON.parse(JSON.stringify(error.response));
+      return errorResponse;
+    }
+  }
+
 }
 
 export default new EditarService();
