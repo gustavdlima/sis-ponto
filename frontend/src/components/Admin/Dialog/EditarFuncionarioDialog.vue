@@ -377,10 +377,6 @@ const handleResponse = (response) => {
 	}
 }
 
-// const tratarFormData = () => {
-// 	funcionarioEditado.value.data_nascimento = useUtils.formatarData(funcionarioEditado.value.data_nascimento)
-// }
-
 const fecharEditarFuncionarioDialog = () => {
 	dialogEditarFuncionarioIsVisible.value = false;
 	emit('atualizarDialogEditarFuncionarioBool', false);
