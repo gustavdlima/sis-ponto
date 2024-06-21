@@ -269,7 +269,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row-span-1 grid justify-center mt-4">
+				<div class="row-span-1 grid justify-center mt-10">
 					<Button
 						class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg"
 						label="Editar" severity="info" raised @click="enviarFormularioDeEdicaoDeFuncionario()"

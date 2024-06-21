@@ -1,6 +1,6 @@
 <template>
 	<Dialog v-model:visible="dialogEditarJustificativaIsVisible" header="Editar Justificativa"
-		@update:visible="fecharEditarJustificativaDialog" :modal="true" :closable="true" :style="{ width: '95vw' }">
+		@update:visible="fecharEditarJustificativaDialog" :modal="true" :closable="true" :style="{ width: '25vw' }">
 		<div class="grid h-full w-full">
 			<form>
 			<div class="grid h-full w-full grid-rows-1 py-20 lg:px-3 justify-center">
@@ -13,7 +13,7 @@
 					</div>
 					<div class="grid grid-rows-1 justify-center mt-8">
 						<Button
-							class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg button mt-2"
+							class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg button mt-5"
 							label="Cadastrar" severity="info" raised
 							@click="enviarFormularioDeEdicaoDeJustificativa()" />
 					</div>
