@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useAuthStore } from "../stores/AuthStore";
+import { useAuthStore } from "../stores/authStore";
 
 const authStore = useAuthStore();
 
@@ -17,13 +17,27 @@ class EditarService {
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${authStore.token}`;
-      const response = await axios.get(this.listarFuncionarioURL + data.id);
+      const response = await axios.get(this.operadorURL + data.id);
       return response;
     } catch (error) {
       const errorResponse = JSON.parse(JSON.stringify(error.response));
       return errorResponse;
     }
   }
+
+  async editarFuncionario(data) {
+    try {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authStore.token}`;
+      const response = await axios.put(this.funcionarioURL + data.id, data);
+      return response;
+    } catch (error) {
+      const errorResponse = JSON.parse(JSON.stringify(error.response));
+      return errorResponse;
+    }
+  }
+
 }
 
 export default new EditarService();
