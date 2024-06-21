@@ -1,5 +1,6 @@
 <template>
-	<Dialog v-model:visible="dialogRegistrarFaltaIsVisible" modal :closable="true" :resizable="false"
+	<Dialog v-model:visible="dialogRegistrarFaltaIsVisible"
+	@update:visible="fecharRegistrarFaltaDialog" modal :closable="true" :resizable="false"
 		style="width: 25rem; height: 20rem">
 		<template #header>
 			<div class="grid justify-end w-full">
@@ -79,6 +80,12 @@ const registrarFalta = () => {
 			limparCampos();
 		});
 	});
+}
+
+const fecharRegistrarFaltaDialog = () => {
+	dialogRegistrarFaltaIsVisible.value = false;
+	emit('atualizarDialogRegistrarFaltaBool', dialogRegistrarFaltaIsVisible.value);
+	limparCampos();
 }
 
 const tratarFormData = () => {
