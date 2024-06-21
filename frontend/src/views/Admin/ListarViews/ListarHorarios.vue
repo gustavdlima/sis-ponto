@@ -17,12 +17,11 @@ import useListarService from '../../../services/ListarService';
 import TabelaHorarios from '../../../components/Admin/Tabelas/Listar/TabelaHorarios.vue';
 import { ref, onMounted } from 'vue';
 
-const horarios = ref();
+const horarios = ref([]);
 
 onMounted(async () => {
 	const response = await useListarService.listarHorarios();
 	horarios.value = response.data;
-	console.log(response.data);
 });
 
 </script>
