@@ -1,24 +1,33 @@
 <template>
-	<Dialog v-model:visible="dialogEditarCargoIsVisible" header="Editar Cargo"
-		@update:visible="fecharEditarCargoDialog" :modal="true" :closable="true" :style="{ width: '25vw' }">
-		<div class="grid h-full w-full">
-			<form>
-			<div class="grid h-full w-full grid-rows-1 py-20 lg:px-3 justify-center">
-				<div class="row-span-1">
-					<div class="grid content-center grid-cols-1">
-						<div class="col-span-1 p-1">
-							<InputText v-model="cargo.cargo" class="w-full lg:w-[16.6rem] h-[2.5rem]"
-								placeholder="Cargo / Função" />
-						</div>
-					</div>
-					<div class="grid grid-rows-1 justify-center mt-8">
-						<Button
-							class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg button mt-5"
-							label="Editar" severity="info" raised @click="enviarFormularioDeEdicaoDeCargo()" />
-					</div>
+	<Dialog v-model:visible="dialogEditarCargoIsVisible" header="Editar Cargo" @update:visible="fecharEditarCargoDialog"
+		:modal="true" :closable="true" :style="{ width: '25vw' }">
+		<template #header>
+			<div class="grid grid-cols-1 justify-center">
+				<div class="col-span-1">
+					<h2 class="text-2xl font-semibold text-center">Editar Cargo</h2>
 				</div>
 			</div>
-		</form>
+		</template>
+		<div class="grid h-full w-full p-2">
+			<form>
+				<div class="grid grid-rows-2 justify-center">
+					<div class="row-span-1 mt-2">
+						<div class="grid content-center grid-cols-1">
+							<div class="col-span-1 p-1">
+								<InputText v-model="cargo.cargo" class="w-full lg:w-[16.6rem] h-[2.5rem]"
+									placeholder="Cargo / Função" />
+							</div>
+						</div>
+					</div>
+					<div class="row-span-1 mt-4">
+						<div class="grid grid-rows-1 justify-center">
+							<Button
+								class="border-2 bg-transparent h-8 w-32 md:w-36 lg:w-40 lg:h-10 text-xs md:text-sm lg:text-lg button"
+								label="Editar" severity="info" raised @click="enviarFormularioDeEdicaoDeCargo()" />
+						</div>
+					</div>
+				</div>
+			</form>
 		</div>
 	</Dialog>
 
