@@ -28,13 +28,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/funcionarios', FuncionarioController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy'])->middleware('auth:sanctum');
+Route::resource('/funcionarios', FuncionarioController::class)->middleware('auth:sanctum');
 
-Route::resource('/cargos', CargoController::class)->only(['index', 'create', 'show', 'store', 'update'])->middleware('auth:sanctum');
+Route::resource('/cargos', CargoController::class)->middleware('auth:sanctum');
 
-Route::resource('/justificativas', JustificativaController::class)->only(['index', 'create', 'show', 'store', 'update'])->middleware('auth:sanctum');
+Route::resource('/justificativas', JustificativaController::class)->middleware('auth:sanctum');
 
-Route::resource('/horarios', HorarioController::class)->only(['index', 'create', 'show', 'store', 'update', 'destroy'])->middleware('auth:sanctum');
+Route::resource('/horarios', HorarioController::class)->middleware('auth:sanctum');
 
 Route::resource('/faltas', FaltaController::class)->only(['index', 'create', 'show', 'store', 'update'])->middleware('auth:sanctum');
 
