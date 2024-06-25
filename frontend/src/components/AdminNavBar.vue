@@ -140,54 +140,54 @@ const items = ref([
 			]
 		]
 	},
-	{
-		label: 'Editar',
-		icon: 'pi pi-fw pi-pencil',
-		items: [
-			[
-				{
-					items: [
-						{
-							label: 'Funcionário',
-							command: () => rotasDeEdicao(1),
-						},
-					],
-				},
-				{
-					items: [
-						{
-							label: 'Operador',
-							command: () => rotasDeEdicao(2),
-						},
-					],
-				},
-				{
-					items: [
-						{
-							label: 'Horário',
-							command: () => rotasDeEdicao(3),
-						},
-					],
-				},
-				{
-					items: [
-						{
-							label: 'Cargo',
-							command: () => rotasDeEdicao(4),
-						},
-					],
-				},
-				{
-					items: [
-						{
-							label: 'Justificativa',
-							command: () => rotasDeEdicao(5),
-						},
-					],
-				},
-			]
-		]
-	},
+	// {
+	// 	label: 'Editar',
+	// 	icon: 'pi pi-fw pi-pencil',
+	// 	items: [
+	// 		[
+	// 			{
+	// 				items: [
+	// 					{
+	// 						label: 'Funcionário',
+	// 						command: () => rotasDeEdicao(1),
+	// 					},
+	// 				],
+	// 			},
+	// 			{
+	// 				items: [
+	// 					{
+	// 						label: 'Operador',
+	// 						command: () => rotasDeEdicao(2),
+	// 					},
+	// 				],
+	// 			},
+	// 			{
+	// 				items: [
+	// 					{
+	// 						label: 'Horário',
+	// 						command: () => rotasDeEdicao(3),
+	// 					},
+	// 				],
+	// 			},
+	// 			{
+	// 				items: [
+	// 					{
+	// 						label: 'Cargo',
+	// 						command: () => rotasDeEdicao(4),
+	// 					},
+	// 				],
+	// 			},
+	// 			{
+	// 				items: [
+	// 					{
+	// 						label: 'Justificativa',
+	// 						command: () => rotasDeEdicao(5),
+	// 					},
+	// 				],
+	// 			},
+	// 		]
+	// 	]
+	// },
 ]);
 
 const rotasDeCadastro = async (index) => {
