@@ -52,4 +52,11 @@ class CargoController extends Controller
         $cargo = DB::select('select * from cargos where id = ?', [$id]);
         return $cargo;
     }
+
+    public function destroy(Request $request)
+    {
+        $cargo = Cargo::findOrFail($request->id);
+        $cargo->delete();
+        return response()->json(['message' => 'Cargo deletado.'], 200);
+    }
 }

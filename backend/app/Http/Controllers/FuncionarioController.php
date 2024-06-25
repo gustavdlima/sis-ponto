@@ -100,11 +100,12 @@ class FuncionarioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Funcionario $funcionario)
+    public function destroy(Request $request)
     {
-        $funcionario = Funcionario::findOrFail($funcionario->id);
+        $funcionario = Funcionario::findOrFail($request->id);
         $funcionario->delete();
-
-        return redirect()->route('funcionarios.index');
+        return response()->json([
+            'message' => 'Funcionário deletado com sucesso!',
+        ], 200);
     }
 }

@@ -45,4 +45,11 @@ class JustificativaController extends Controller
         return response()->json(['message' => 'Justificativa atualizada.'], 200);
     }
 
+    public function destroy(Request $request)
+    {
+        $justificativa = Justificativa::findOrFail($request->id);
+        $justificativa->delete();
+        return response()->json(['message' => 'Justificativa deletada.'], 200);
+    }
+
 }
