@@ -1,290 +1,306 @@
 <template>
-	<Dialog v-model:visible="dialogEditarFuncionarioIsVisible" header="Editar Dados do Funcionário" @update:visible="fecharEditarFuncionarioDialog" :modal="true" :closable="true" :style="{ width: '95vw' }">
+	<Dialog v-model:visible="dialogEditarFuncionarioIsVisible" @update:visible="fecharEditarFuncionarioDialog"
+		:modal="true" :closable="true" :style="{ width: '95vw' }">
+		<template #header>
+			<div class="grid justify-start w-full">
+				<span class="text-blue-950 text-2xl font-semibold">
+					Editar Funcionário
+				</span>
+			</div>
+		</template>
 		<div class="grid h-full w-full">
-		<form class="">
-			<div class="grid h-full w-full grid-rows-4 xl:py-20 xl:px-3 justify-center">
-				<div class="row-span-1">
-					<div class="grid md:grid-cols-2 h-full w-full gap-1">
-						<div class="grid md:col-span-1">
-							<div class="grid xl:grid-cols-2">
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div class="">
-												<span>Setor</span>
+			<form class="">
+				<div class="grid h-full w-full grid-rows-4 xl:py-20 xl:px-3 justify-center">
+					<div class="row-span-1">
+						<div class="grid md:grid-cols-2 h-full w-full gap-1">
+							<div class="grid md:col-span-1">
+								<div class="grid xl:grid-cols-2">
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Setor</span>
+												</div>
+												<div>
+													<Dropdown v-model="funcionario.setor" filter showClear
+														:options="setores" optionLabel="name" placeholder="Setor"
+														class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" />
+												</div>
 											</div>
-											<div>
-												<Dropdown v-model="funcionario.setor" filter showClear :options="setores"
-													optionLabel="name" placeholder="Setor"
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Matrícula</span>
+												</div>
+												<InputText type="text" v-model="funcionario.matricula"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Matrícula" />
+											</div>
+										</div>
+									</div>
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Carga Horária</span>
+												</div>
+												<Dropdown v-model="funcionario.carga_horaria" showClear
+													:options="cargaHoraria" optionLabel="name"
+													placeholder="Carga Horária"
 													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" />
 											</div>
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Matrícula</span>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Nome</span>
+												</div>
+												<InputText type="text" v-model="funcionario.nome"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Nome" />
 											</div>
-											<InputText type="text" v-model="funcionario.matricula"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Matrícula" />
-										</div>
-									</div>
-								</div>
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Carga Horária</span>
-											</div>
-											<Dropdown v-model="funcionario.carga_horaria" showClear :options="cargaHoraria"
-												optionLabel="name" placeholder="Carga Horária"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Nome</span>
-											</div>
-											<InputText type="text" v-model="funcionario.nome"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Nome" />
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="grid md:col-span-1">
-							<div class="grid xl:grid-cols-2">
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Horário</span>
+							<div class="grid md:col-span-1">
+								<div class="grid xl:grid-cols-2">
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Horário</span>
+												</div>
+												<Dropdown v-model="funcionario.id_horario" showClear :options="horario"
+													optionLabel="name" optionValue="code" placeholder="Horário"
+													panelClass="2xl:w-[22rem]"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem] " />
 											</div>
-											<Dropdown v-model="funcionario.id_horario" showClear :options="horario"
-												optionLabel="name" optionValue="code" placeholder="Horário"
-												panelClass="2xl:w-[22rem]"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem] " />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>RG</span>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>RG</span>
+												</div>
+												<InputText type="text" v-model="funcionario.rg"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="RG" />
 											</div>
-											<InputText type="text" v-model="funcionario.rg"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" placeholder="RG" />
 										</div>
 									</div>
-								</div>
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Cargo</span>
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Cargo</span>
+												</div>
+												<Dropdown v-model="funcionario.id_cargo" showClear :options="cargos"
+													optionLabel="name" optionValue="code" placeholder="Cargo"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem] " />
 											</div>
-											<Dropdown v-model="funcionario.id_cargo" showClear :options="cargos"
-												optionLabel="name" optionValue="code" placeholder="Cargo"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem] " />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Título de Eleitor</span>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Título de Eleitor</span>
+												</div>
+												<InputText type="text" v-model="funcionario.titulo_eleitor"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Título Eleitor" />
 											</div>
-											<InputText type="text" v-model="funcionario.titulo_eleitor"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Título Eleitor" />
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row-span-1">
-					<div class="grid md:grid-cols-2 h-full w-full gap-1">
-						<div class="grid md:col-span-1">
-							<div class="grid xl:grid-cols-2">
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>CPF</span>
+					<div class="row-span-1">
+						<div class="grid md:grid-cols-2 h-full w-full gap-1">
+							<div class="grid md:col-span-1">
+								<div class="grid xl:grid-cols-2">
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>CPF</span>
+												</div>
+												<InputText type="text" v-model="funcionario.cpf"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="CPF" />
 											</div>
-											<InputText type="text" v-model="funcionario.cpf"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" placeholder="CPF" />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Mãe</span>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Mãe</span>
+												</div>
+												<InputText type="text" v-model="funcionario.mae"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Mãe" />
 											</div>
-											<InputText type="text" v-model="funcionario.mae"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" placeholder="Mãe" />
-										</div>
-									</div>
-								</div>
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Estado Civil</span>
-											</div>
-											<Dropdown v-model="funcionario.estado_civil" showClear :options="estadoCivil"
-												optionLabel="name" optionValue="code" placeholder="Estado Civil"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem] " />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Pai</span>
-											</div>
-											<InputText type="text" v-model="funcionario.pai"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" placeholder="Pai" />
 										</div>
 									</div>
-								</div>
-							</div>
-						</div>
-						<div class="grid md:col-span-1">
-							<div class="grid xl:grid-cols-2">
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Email</span>
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Estado Civil</span>
+												</div>
+												<Dropdown v-model="funcionario.estado_civil" showClear
+													:options="estadoCivil" optionLabel="name" optionValue="code"
+													placeholder="Estado Civil"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem] " />
 											</div>
-											<InputText type="text" v-model="funcionario.email"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Email" />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Rua</span>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Pai</span>
+												</div>
+												<InputText type="text" v-model="funcionario.pai"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Pai" />
 											</div>
-											<InputText type="text" v-model="funcionario.rua"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" placeholder="Rua" />
-										</div>
-									</div>
-								</div>
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Celular</span>
-											</div>
-											<InputText type="text" v-model="funcionario.celular"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Celular" />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Bairro</span>
-											</div>
-											<InputText type="text" v-model="funcionario.bairro"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Bairro" />
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row-span-1">
-					<div class="grid md:grid-cols-2 h-full w-full gap-1">
-						<div class="grid md:col-span-1">
-							<div class="grid xl:grid-cols-2">
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Número</span>
+							<div class="grid md:col-span-1">
+								<div class="grid xl:grid-cols-2">
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Email</span>
+												</div>
+												<InputText type="text" v-model="funcionario.email"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Email" />
 											</div>
-											<InputText type="text" v-model="funcionario.numero"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Número" />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>SUS</span>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Rua</span>
+												</div>
+												<InputText type="text" v-model="funcionario.rua"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Rua" />
 											</div>
-											<InputText type="text" v-model="funcionario.cartao_sus"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Cartão SUS" />
 										</div>
 									</div>
-								</div>
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>CEP</span>
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Celular</span>
+												</div>
+												<InputText type="text" v-model="funcionario.celular"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Celular" />
 											</div>
-											<InputText type="text" v-model="funcionario.cep"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" placeholder="CEP" />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>PIS/PASEP</span>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Bairro</span>
+												</div>
+												<InputText type="text" v-model="funcionario.bairro"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Bairro" />
 											</div>
-											<InputText type="text" v-model="funcionario.pis_pasep"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="PIS/PASEP" />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="grid md:col-span-1">
-							<div class="grid xl:grid-cols-2">
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>UF</span>
-											</div>
-											<InputText type="text" v-model="funcionario.uf"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" placeholder="UF" />
-										</div>
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Data Nascimento</span>
-											</div>
-											<Calendar v-model="funcionario.data_nascimento"
-												placeholder="Data de Nascimento" dateFormat="dd/mm/yy"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" modelValue="Date" />
-										</div>
-									</div>
-								</div>
-								<div class="col-span-1">
-									<div class="grid grid-rows-2 h-full w-full">
-										<div class="row-span-1 p-1">
-											<div>
-												<span>Cidade</span>
-											</div>
-											<InputText type="text" v-model="funcionario.cidade"
-												class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-												placeholder="Cidade" />
-										</div>
-										<div class="row-span-1 p-1 overflow-hidden">
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+					<div class="row-span-1">
+						<div class="grid md:grid-cols-2 h-full w-full gap-1">
+							<div class="grid md:col-span-1">
+								<div class="grid xl:grid-cols-2">
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Número</span>
+												</div>
+												<InputText type="text" v-model="funcionario.numero"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Número" />
+											</div>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>SUS</span>
+												</div>
+												<InputText type="text" v-model="funcionario.cartao_sus"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Cartão SUS" />
+											</div>
+										</div>
+									</div>
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>CEP</span>
+												</div>
+												<InputText type="text" v-model="funcionario.cep"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="CEP" />
+											</div>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>PIS/PASEP</span>
+												</div>
+												<InputText type="text" v-model="funcionario.pis_pasep"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="PIS/PASEP" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="grid md:col-span-1">
+								<div class="grid xl:grid-cols-2">
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>UF</span>
+												</div>
+												<InputText type="text" v-model="funcionario.uf"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="UF" />
+											</div>
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Data Nascimento</span>
+												</div>
+												<Calendar v-model="funcionario.data_nascimento"
+													placeholder="Data de Nascimento" dateFormat="dd/mm/yy"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													modelValue="Date" />
+											</div>
+										</div>
+									</div>
+									<div class="col-span-1">
+										<div class="grid grid-rows-2 h-full w-full">
+											<div class="row-span-1 p-1">
+												<div class="font-semibold">
+													<span>Cidade</span>
+												</div>
+												<InputText type="text" v-model="funcionario.cidade"
+													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
+													placeholder="Cidade" />
+											</div>
+											<div class="row-span-1 p-1 overflow-hidden">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-span-1 grid justify-center mt-10">
+						<Button class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg"
+							label="Salvar" severity="info" raised @click="enviarFormularioDeEdicaoDeFuncionario()" />
+					</div>
 				</div>
-				<div class="row-span-1 grid justify-center mt-10">
-					<Button
-						class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg"
-						label="Editar" severity="info" raised @click="enviarFormularioDeEdicaoDeFuncionario()"
-						/>
-				</div>
-			</div>
-		</form>
-	</div>
+			</form>
+		</div>
 	</Dialog>
 
 	<DialogAlerta :conteudoPropsDialog="{ dialogMensagem: dialogMensagem, dialogVisivel: dialogVisivel }" />
 </template>
 
 <script setup>
-import { ref, watch, onMounted} from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Calendar from 'primevue/calendar';
@@ -364,16 +380,16 @@ const handleResponse = (response) => {
 			useUtils.sleep(1500).then(() => {
 				dialogVisivel.value = false;
 			})
-			return ;
-			break ;
+			return;
+			break;
 		default:
 			dialogMensagem.value = response.data.message;
 			dialogVisivel.value = true;
 			useUtils.sleep(1500).then(() => {
 				dialogVisivel.value = false;
 			})
-			return ;
-			break ;
+			return;
+			break;
 	}
 }
 

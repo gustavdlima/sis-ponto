@@ -21,7 +21,7 @@
 				<Column field="matricula" sortable header="Matrícula" style="width: 25%" />
 				<Column field="" header="" style="width: 15%">
 					<template #body="slotProps">
-						<div class="grid sm:gap-2 lg:grid-cols-3">
+						<div class="grid sm:gap-2 lg:grid-cols-4">
 							<div class="lg:col-span-1">
 								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
 									@click="abrirRegistro(slotProps)">
@@ -33,19 +33,18 @@
 									@click="abrirRegistrarFalta(slotProps)">
 									<i class="pi pi-w pi-calendar-clock" style="font-size: 1.8rem"></i>
 								</Button>
-								<!-- <Button label="Registrar Falta"
-									class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md" @click="registrarFalta(slotProps)" /> -->
-								<!-- <i class="pi pi-calendar-times cursor-pointer" style="font-size: 1.8rem"></i> -->
 							</div>
 							<div class="lg:col-span-1">
 								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
 									@click="abrirEditarFuncionario(slotProps)">
 									<i class="pi pi-w pi-user-edit" style="font-size: 1.8rem"></i>
 								</Button>
-								<!-- <Button label="Registrar Falta"
-									class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-sm md:text-md" @click="registrarFalta(slotProps)" /> -->
-								<!-- <i class="pi pi-user-edit cursor-pointer" style="font-size: 1.8rem" ></i> -->
-
+							</div>
+							<div class="lg:col-span-1">
+								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
+									@click="abrirRemoverFuncionario(slotProps)">
+									<i class="pi pi-w pi-times" style="font-size: 1.8rem"></i>
+								</Button>
 							</div>
 						</div>
 					</template>
@@ -62,6 +61,9 @@
 
 	<EditarFuncionarioDialog @atualizarDialogEditarFuncionarioBool="atualizarDialogEditarFuncionarioBool"
 	 :is-visible="dialogEditarFuncionarioIsVisible" :funcionario="funcionarioSelecionado" />
+
+	<RemoverFuncionarioDialog @atualizarDialogRemoverFuncionarioBool="atualizarDialogRemoverFuncionarioBool"
+	 :is-visible="dialogRemoverFuncionarioIsVisible" :funcionario="funcionarioSelecionado" />
 </template>
 
 <script setup>
@@ -72,12 +74,14 @@ import IconField from 'primevue/iconfield';
 import { FilterMatchMode } from 'primevue/api';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
+
+// componentizar esses botões e dialogos
 import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
 import RegistroDialog from '../Dialog/RegistroDialog.vue';
 import RegistrarFaltaDialog from '../Dialog/RegistrarFaltaDialog.vue';
 import useListarService from '../../../services/ListarService';
 import EditarFuncionarioDialog from '../Dialog/EditarFuncionarioDialog.vue';
+import RemoverFuncionarioDialog from '../Dialog/RemoverFuncionarioDialog.vue';
 
 const props = defineProps({
 	funcionarios: Array
@@ -86,6 +90,7 @@ const props = defineProps({
 const dialogRegistroIsVisible = ref(false);
 const dialogRegistrarFaltaIsVisible = ref(false);
 const dialogEditarFuncionarioIsVisible = ref(false);
+const dialogRemoverFuncionarioIsVisible = ref(false);
 const funcionarioSelecionado = ref();
 var registroFuncionarioSelecionado = ref();
 const filters = ref({
@@ -125,6 +130,15 @@ const abrirEditarFuncionario = (slotProps) => {
 
 const atualizarDialogEditarFuncionarioBool = (eventData) => {
 	dialogEditarFuncionarioIsVisible.value = eventData.dialogEditarFuncionarioIsVisible;
+}
+
+const abrirRemoverFuncionario = (slotProps) => {
+	funcionarioSelecionado.value = slotProps.data;
+	dialogRemoverFuncionarioIsVisible.value = true;
+}
+
+const atualizarDialogRemoverFuncionarioBool = (eventData) => {
+	dialogRemoverFuncionarioIsVisible.value = eventData.dialogRemoverFuncionarioIsVisible;
 }
 
 </script>
