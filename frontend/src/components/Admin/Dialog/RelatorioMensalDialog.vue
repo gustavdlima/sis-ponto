@@ -1,14 +1,16 @@
 <template>
-	<Dialog v-model:visible="dialogRelatorioMensalIsVisible" :closable="false" :modal="true" :draggable="false"
-		style="width: 32vh; height: 29vh">
+	<Dialog v-model:visible="dialogRelatorioMensalIsVisible" @update:visible="fecharDialogRelatorioMensal"
+		header:="Escolha o mês" :modal="true" closable="true" :resizable="false" :style="{ width: '53vh' }">
 		<template #header>
-			<div class="grid justify-end w-full">
-				<Button label="X" class="p-button-info h-8 w-8" @click="fecharDialogRelatorioMensal()" />
+			<div class="grid justify-start w-full">
+				<span class="text-blue-950 text-lg font-semibold">
+					Escolha o mês
+				</span>
 			</div>
 		</template>
 		<div class="grid justify-center h-full w-full p-2">
-			<Dropdown v-model="dataSelecionada" :options="meses" optionLabel="name" placeholder="Escolha o mês"
-				class="" />
+			<Dropdown v-model="dataSelecionada" :options="meses" optionLabel="name" placeholder=""
+				class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
 		</div>
 		<template #footer>
 			<div class="grid justify-center h-full w-full">
@@ -17,6 +19,8 @@
 					@click="gerarRelatorio()" />
 			</div>
 		</template>
+
+
 	</Dialog>
 </template>
 

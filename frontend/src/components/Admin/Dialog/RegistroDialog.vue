@@ -2,16 +2,20 @@
 	<Dialog v-model:visible="dialogRegistroIsVisible" modal :closable="true" :resizable="false" :baseZIndex="10000"
 		@update:visible="fecharDialogRegistro" :style="{ width: '88vw' }">
 		<template #header>
-			<div class="grid h-full w-full p-4">
-				<div class="grid w-full h-full">
+			<div class="grid h-full w-full overflow-hidden">
+				<div class="grid grid-rows-2 justify-start h-full w-full gap-2">
 					<div class="row-span-1">
-						<div class="grid justify-start">
-							<Button label="Relatório Mensal"
-								class="p-button-info h-10 w-48 lg:h-10 text-md md:text-lg"
-								@click="abrirDialogRelatorioMensal()" />
-						</div>
+						<span class="text-blue-950 text-2xl font-semibold">
+							Registro de Ponto
+						</span>
+					</div>
+					<div class="row-span-1">
+						<Button label="Gerar Relatório Mensal"
+							class="p-button-info h-10 w-60 lg:h-10 text-md md:text-lg"
+							@click="abrirDialogRelatorioMensal()" />
 					</div>
 				</div>
+
 			</div>
 		</template>
 		<div class="grid p-4">
@@ -19,7 +23,7 @@
 		</div>
 
 		<template #footer>
-			<div class="grid justify-center p-4">
+			<div class="grid h-full w-full justify-center">
 				<Button label="Fechar" class="p-button-info h-10 w-36 md:w-40 lg:w-44 lg:h-10 text-md md:text-lg"
 					@click="fecharDialogRegistro" />
 			</div>

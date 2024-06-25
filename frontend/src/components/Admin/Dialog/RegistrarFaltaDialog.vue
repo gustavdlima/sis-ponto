@@ -1,12 +1,14 @@
 <template>
-	<Dialog v-model:visible="dialogRegistrarFaltaIsVisible"
-	@update:visible="fecharRegistrarFaltaDialog" modal :closable="true" :resizable="false"
-		style="width: 25rem; height: 20rem">
+	<Dialog v-model:visible="dialogRegistrarFaltaIsVisible" @update:visible="fecharRegistrarFaltaDialog" modal
+		:closable="true" :resizable="false" :style="{ width: '58vh' }">
 		<template #header>
-			<div class="grid justify-end w-full">
+			<div class="grid justify-start w-full">
+				<span class="text-blue-950 text-2xl font-semibold">
+					Justificar Falta
+				</span>
 			</div>
 		</template>
-		<div class="grid">
+		<div class="grid p-2">
 			<div class="grid grid-rows-3 justify-center gap-3">
 				<div class="row-span-1">
 					<Calendar v-model="formData.data" placeholder="Início" dateFormat="dd/mm/yy"
@@ -28,7 +30,7 @@
 					@click="registrarFalta()" />
 			</div>
 		</template>
-		<DialogAlerta :conteudoPropsDialog="{ dialogMensagem: dialogMensagem, dialogVisivel: dialogVisivel }"/>
+		<DialogAlerta :conteudoPropsDialog="{ dialogMensagem: dialogMensagem, dialogVisivel: dialogVisivel }" />
 	</Dialog>
 
 </template>
@@ -106,8 +108,10 @@ const getJustificativas = async () => {
 	justificativas.value = response.data
 	for (let i = 0; i < response.data.length; i++) {
 		justificativas.value[i] =
-			{ name: response.data[i].justificativa,
-			code: response.data[i].id }
+		{
+			name: response.data[i].justificativa,
+			code: response.data[i].id
+		}
 	}
 }
 
