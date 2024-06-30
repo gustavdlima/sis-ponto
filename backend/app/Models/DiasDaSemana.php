@@ -9,6 +9,8 @@ class DiasDaSemana extends Model
 {
     use HasFactory;
 
+    protected $table = 'dias_da_semana';
+
     protected $fillable = [
         'segunda',
         'terca',
