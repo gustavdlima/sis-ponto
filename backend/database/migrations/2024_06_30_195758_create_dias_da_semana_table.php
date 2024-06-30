@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('horarios', function (Blueprint $table) {
+        Schema::create('dias_da_semana', function (Blueprint $table) {
+            $table->id();
             $table->string('segunda')->nullable();
             $table->string('terca')->nullable();
             $table->string('quarta')->nullable();
             $table->string('quinta')->nullable();
             $table->string('sexta')->nullable();
+            $table->string('sabado')->nullable();
+            $table->string('domingo')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,12 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('horarios', function (Blueprint $table) {
-            $table->dropColumn('segunda');
-            $table->dropColumn('terca');
-            $table->dropColumn('quarta');
-            $table->dropColumn('quinta');
-            $table->dropColumn('sexta');
-        });
+        Schema::dropIfExists('dias_da_semana');
     }
 };

@@ -12,6 +12,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\JustificativaController;
 use App\Http\Controllers\FaltaController;
+use App\Http\Controllers\DiasDaSemanaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,9 @@ Route::resource('/horarios', HorarioController::class)->middleware('auth:sanctum
 
 Route::resource('/faltas', FaltaController::class)->only(['index', 'create', 'show', 'store', 'update'])->middleware('auth:sanctum');
 
-Route::post('/ponto', [PontoController::class, 'criarTabelaRegistro']);
+Route::resource('/diaDaSemana', DiasDaSemanaController::class)->middleware('auth:sanctum');
+
+Route::post('/ponto', [PontoController::class, 'registrarPonto']);
 
 Route::get('/faltasFuncionario', [FaltaController::class, 'retornaFaltasDoFuncionario'])->middleware('auth:sanctum');
 
