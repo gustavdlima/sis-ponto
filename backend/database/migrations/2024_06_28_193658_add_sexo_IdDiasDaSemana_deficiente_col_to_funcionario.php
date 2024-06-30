@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('funcionarios', function (Blueprint $table) {
             $table->string('sexo')->nullable();
             $table->boolean('deficiente')->nullable();
+            $table->integer('id_dia_da_semana')->nullable();
         });
     }
 
