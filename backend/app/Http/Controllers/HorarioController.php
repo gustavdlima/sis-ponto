@@ -17,14 +17,6 @@ class HorarioController extends Controller
         $horarios = DB::select('select * from horarios');
         return $horarios;
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create($data)
-    {
-        $horario = Horario::create($data);
-        return $horario;
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -49,25 +41,6 @@ class HorarioController extends Controller
             return response()->json(['message'=> 'Erro ao criar Horário'], 200);
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $horario = Horario::findOrFail($id);
-        return $horario;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $horario = Horario::findOrFail($id);
-        return redirect()->route('horarios.index');
-    }
-
     /**
      * Update the specified resource in storage.
      */

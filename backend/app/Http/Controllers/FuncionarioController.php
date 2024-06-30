@@ -16,16 +16,7 @@ class FuncionarioController extends Controller
         $users = DB::select('select * from funcionarios');
         return $users;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create($data)
-    {
-        $funcionario = Funcionario::create($data);
-        return $funcionario;
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -74,15 +65,6 @@ class FuncionarioController extends Controller
     {
         $user = DB::select('select * from funcionarios where id = ?', [$id]);
         return $user;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $funcionario = Funcionario::findOrFail($id);
-        return redirect()->route('funcionarios.index');
     }
 
     /**

@@ -21,19 +21,6 @@ class FaltaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-        $falta = new Falta;
-        $falta->id_justificativa = $request->id_justificativa;
-        $falta->id_funcionario = $request->id_funcionario;
-        $falta->data = $request->data;
-        $falta->data2 = $request->data2;
-        $falta->save();
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -52,7 +39,7 @@ class FaltaController extends Controller
                 ->get();
 
         if ($falta->count() <= 0) {
-            $falta = $this->create($request);
+            $falta = Falta::create($request);
             return "Falta registrada com sucesso";
         } else {
             return "Falta ja registrada";
@@ -62,26 +49,12 @@ class FaltaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource from Funcionario.
      */
-    public function show(string $id)
-    {
-        $falta = DB::select('select * from faltas where id = ?', [$id]);
-        return $falta;
-    }
-
     public function retornaFaltasDoFuncionario(string $id_funcionario)
     {
         $falta = DB::select('select * from faltas where id_funcionario = ?', [$id_funcionario]);
         return $falta;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -100,8 +73,12 @@ class FaltaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $falta = Falta::find($request->id);
+        $falta->delete();
+        return response()->json([
+            'message' => 'Falta deletada com sucesso!',
+        ], 200);
     }
 }
