@@ -8,6 +8,7 @@ use App\Models\Funcionario;
 use App\Models\Registro;
 use App\Models\Horario;
 use App\Models\DiasDaSemana;
+use Exception;
 use DateTime;
 use DateInterval;
 
@@ -15,6 +16,76 @@ date_default_timezone_set('America/Sao_Paulo');
 
 class PontoController extends Controller
 {
+    public function adicionarHoraNoPonto($registro, $indice, $horaAtual)
+    {
+        switch ($indice) {
+            case 0:
+                $registro->primeiro_ponto = $horaAtual;
+                Db::table('registros')
+                    ->where('id', $registro->id)
+                    ->update([
+                        'primeiro_ponto' => $horaAtual,
+                    ]);
+                return $registro;
+            case 1:
+                $registro->segundo_ponto = $horaAtual;
+                Db::table('registros')
+                    ->where('id', $registro->id)
+                    ->update([
+                        'segundo_ponto' => $horaAtual,
+                    ]);
+                return $registro;
+            case 2:
+                $registro->terceiro_ponto = $horaAtual;
+                Db::table('registros')
+                    ->where('id', $registro->id)
+                    ->update([
+                        'terceiro_ponto' => $horaAtual,
+                    ]);
+                return $registro;
+            case 3:
+                $registro->quarto_ponto = $horaAtual;
+                Db::table('registros')
+                    ->where('id', $registro->id)
+                    ->update([
+                        'quarto_ponto' => $horaAtual,
+                    ]);
+                return $registro;
+            default:
+                return;
+        }
+    }
+
+    public function checaSeOFuncionarioEsta15MinutosAdiantado($horarioPonto, $horaAtual)
+    {
+        // checa se o funcionário está 15 minutos adiantado
+        $diferenca = strtotime($horaAtual) - strtotime($horarioPonto);
+        if ($diferenca < 900)
+            return true;
+        return false;
+    }
+
+    public function registrarHoraNoPonto($registro, $funcionario, $diaAtual, $horaAtual)
+    {
+        $horariosDiaAtual = $this->retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual);
+        $pontosRegistro = $this->transformarRegistroEmArrayDePontos($registro);
+
+        for ($i = 0; $i < count($horariosDiaAtual); $i++) {
+            $horarioPonto = $horariosDiaAtual[$i];
+            $pontoRegistro = $pontosRegistro[$i];
+
+            // verificar se o funcionaro está adiantado (15min)
+            if ($pontoRegistro == null) {
+                if ($i <= 2 && $this->checaSeOFuncionarioEsta15MinutosAdiantado($horarioPonto, $horaAtual))
+                    return $registro;
+
+                $registro = $this->adicionarHoraNoPonto($registro, $i, $horaAtual);
+            }
+            return $registro;
+        }
+        return $registro;
+    }
+
     public function adicionarAtrasoAoRegistro($registro, $indice) {
         switch ($indice) {
             case 0:
@@ -121,17 +192,20 @@ class PontoController extends Controller
     public function checaSeOFuncionarioEstaAtrasado($funcionario, $registro, $diaAtual, $horaAtual)
     {
         // Pegar os horarios do dia do funcionario em forma de array
-        $arrayHorarioDiaAtual = $this->retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual);
+        $horariosDiaAtual  = $this->retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual);
 
         // Colocar os pontos do registros em array
-        $arrayPontos = $this->transformarRegistroEmArrayDePontos($registro);
+        $pontosRegistro = $this->transformarRegistroEmArrayDePontos($registro);
 
         // Loop para identificar os atrasos dos pontos não preenchidos e salvar no db
-        for($i = 0; $i < count($arrayHorarioDiaAtual); $i++) {
-            if ($arrayHorarioDiaAtual[$i] == null)
+        for($i = 0; $i < count($horariosDiaAtual ); $i++) {
+            $horarioPonto = $horariosDiaAtual[$i];
+            $pontoRegistro = $pontosRegistro[$i];
+
+            if ($horarioPonto == null)
                 continue;
-            if ($arrayPontos[$i] == null) {
-                $diferenca = strtotime($horaAtual) - strtotime($arrayHorarioDiaAtual[$i]);
+            if ($pontoRegistro == null) {
+                $diferenca = strtotime($horaAtual) - strtotime($horarioPonto);
 
                 // se a diferença for maior que 15 minutos, o funcionário está atrasado
                 if ($diferenca > 900)
@@ -247,45 +321,40 @@ class PontoController extends Controller
 
     public function registrarPonto(Request $request)
     {
-        $horaAtual = date('H:i:s');
-        $diaAtual = date('w');
+        try {
+            // Pega a hora atual e o dia atual
+            $horaAtual = date('H:i:s');
+            $diaAtual = date('w');
 
-        // Checa e valida o funcionário
-        $funcionario = $this->checaSeOFuncionarioExiste($request);
-        if (!$funcionario)
+            // Valida o funcionário
+            $funcionario = $this->checaSeOFuncionarioExiste($request);
+            if (!$funcionario)
+                throw new Exception('Funcionário não encontrado');
+
+            // Certifica se o funcionário já tem registro no dia e se bateu todos os pontos, se não tiver, cria um registro novo
+            $registro = $this->checaSeOFuncionarioTemRegistroESeBateuTodosOsPontos($funcionario);
+
+            // Se o funcionário já bateu todos os pontos do dia, retorna o registro
+            if ($registro->pontosBatidos)
+                return $registro;
+
+            // Checa se o funcionário tem pontos em atraso
+            $registro = $this->checaSeOFuncionarioEstaAtrasado($funcionario, $registro, $diaAtual, $horaAtual);
+
+            // Registra a hora no ponto
+            $registro = $this->registrarHoraNoPonto($registro, $funcionario, $diaAtual, $horaAtual);
+
             return response()->json([
-                'message' => 'Funcionário não encontrado',
-                'status' => 404
-            ], 404);
-
-        // Certifica se o funcionário já tem registro no dia e se bateu todos os pontos
-        $registro = $this->checaSeOFuncionarioTemRegistroESeBateuTodosOsPontos($funcionario);
-
-        // Se o funcionário já bateu todos os pontos do dia, retorna o registro
-        if ($registro->pontosBatidos)
-            return $registro;
-
-        // Checa se o funcionário tem pontos em atraso
-        $registro = $this->checaSeOFuncionarioEstaAtrasado($funcionario, $registro, $diaAtual, $horaAtual);
-
-        return $registro;
-        // Registra o ponto
-        return response()->json([
-            'message' => 'Registro criado com sucesso',
-            'status' => 201
-        ], 201);
+                'message' => 'Registro criado com sucesso',
+                'status' => 201,
+                'registro' => $registro
+            ], 201);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => 500
+            ], 500);
+        }
     }
 
-    // public function criarTabelaRegistro(Request $request) {
-    //     $funcionario = $this->checaSeOFuncionarioExiste($request);
-
-    //     if (!$funcionario)
-    //        return response()->json(['message' => 'Funcionário não encontrado',
-    //         'status' => 404], 404);
-
-
-    //     // criar registro de ponto e registrar o primeiro ponto
-    //     $registro = new RegistroController();
-    //     return $registro->store($funcionario);
-    // }
 }
