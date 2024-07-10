@@ -56,6 +56,15 @@ class PontoController extends Controller
         }
     }
 
+    public function checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual)
+    {
+        // checa se o funcionário está 1 hora adiantado
+        $diferenca = strtotime($horaAtual) - strtotime($horarioPonto);
+        if ($diferenca < 3600)
+            return true;
+        return false;
+    }
+
     public function checaSeOFuncionarioEsta15MinutosAdiantado($horarioPonto, $horaAtual)
     {
         // checa se o funcionário está 15 minutos adiantado
@@ -77,7 +86,9 @@ class PontoController extends Controller
             // verificar se o funcionaro está adiantado (15min)
             if ($pontoRegistro == null) {
                 if ($i <= 2 && $this->checaSeOFuncionarioEsta15MinutosAdiantado($horarioPonto, $horaAtual))
-                    throw new Exception('Funcionário está 15 minutos adiantado');
+                    return $registro;
+                else if ($i == 3 && $this->checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual))
+                    return $registro;
 
                 $registro = $this->adicionarHoraNoPonto($registro, $i, $horaAtual);
             }
