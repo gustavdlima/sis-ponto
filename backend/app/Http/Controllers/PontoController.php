@@ -77,11 +77,10 @@ class PontoController extends Controller
             // verificar se o funcionaro está adiantado (15min)
             if ($pontoRegistro == null) {
                 if ($i <= 2 && $this->checaSeOFuncionarioEsta15MinutosAdiantado($horarioPonto, $horaAtual))
-                    return $registro;
+                    throw new Exception('Funcionário está 15 minutos adiantado');
 
                 $registro = $this->adicionarHoraNoPonto($registro, $i, $horaAtual);
             }
-            return $registro;
         }
         return $registro;
     }
@@ -290,12 +289,7 @@ class PontoController extends Controller
             return $registro;
         }
         if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro))
-            return response()->json([
-                'message' => 'Funcionário já bateu todos os pontos do dia',
-                'status' => 400,
-                'registro' => $registro,
-                'pontosBatidos' => true,
-            ], 400);
+            throw new Exception('O funcionário já bateu todos os pontos do dia');
         return $registro;
     }
 
