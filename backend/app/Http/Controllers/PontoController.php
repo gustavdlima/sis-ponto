@@ -9,8 +9,6 @@ use App\Models\Registro;
 use App\Models\Horario;
 use App\Models\DiasDaSemana;
 use Exception;
-use DateTime;
-use DateInterval;
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -56,20 +54,21 @@ class PontoController extends Controller
         }
     }
 
+    // checa se o funcionario esta 1 hora ou menos de uma hora adiantado
     public function checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual)
     {
-        // checa se o funcionário está 1 hora adiantado
-        $diferenca = strtotime($horaAtual) - strtotime($horarioPonto);
-        if ($diferenca < 3600)
+        // checa se o funcionário está 1 hora ou menos adiantado
+        $diferenca = strtotime($horaAtual) - (strtotime($horarioPonto) - 3660);
+        if ($diferenca <= 0)
             return true;
         return false;
     }
 
-    public function checaSeOFuncionarioEsta15MinutosAdiantado($horarioPonto, $horaAtual)
+    public function checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual)
     {
-        // checa se o funcionário está 15 minutos adiantado
-        $diferenca = strtotime($horaAtual) - strtotime($horarioPonto);
-        if ($diferenca < 900)
+        // checa se o funcionário está mais de 15 minutos adiantado ou 15 minutos adiantado
+        $diferenca = strtotime($horaAtual) - (strtotime($horarioPonto) - 900);
+        if ($diferenca <= 0)
             return true;
         return false;
     }
@@ -83,9 +82,10 @@ class PontoController extends Controller
             $horarioPonto = $horariosDiaAtual[$i];
             $pontoRegistro = $pontosRegistro[$i];
 
-            // verificar se o funcionaro está adiantado (15min)
+            // verificar se o funcionaro está adiantado
             if ($pontoRegistro == null) {
-                if ($i <= 2 && $this->checaSeOFuncionarioEsta15MinutosAdiantado($horarioPonto, $horaAtual))
+                // return $this->checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual);
+                if ($i <= 2 && $this->checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual))
                     return $registro;
                 else if ($i == 3 && $this->checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual))
                     return $registro;
