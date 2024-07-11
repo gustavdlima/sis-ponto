@@ -84,7 +84,6 @@ class PontoController extends Controller
 
             // verificar se o funcionaro está adiantado
             if ($pontoRegistro == null) {
-                // return $this->checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual);
                 if ($i <= 2 && $this->checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual))
                     return $registro;
                 else if ($i == 3 && $this->checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual))
