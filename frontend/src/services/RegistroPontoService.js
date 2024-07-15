@@ -1,6 +1,6 @@
 import axios from "axios";
 
-class PontoService {
+class RegistroPonto {
   constructor() {
     this.registrarPontoURL = "http://localhost:8000/api/ponto";
     this.getPontoDoDiaURL = "http://localhost:8000/api/registroDoDia";
@@ -25,4 +25,4 @@ class PontoService {
   }
 }
 
-export default new PontoService();
+export default new RegistroPonto();
