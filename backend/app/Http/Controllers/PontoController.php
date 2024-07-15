@@ -14,6 +14,36 @@ date_default_timezone_set('America/Sao_Paulo');
 
 class PontoController extends Controller
 {
+    public function padronizarRegistroDoDia($registro, $funcionario)
+    {
+        // se o usuário estiver atrasado, adicionar atraso ao registro
+        if ($registro->atrasou_primeiro_ponto == true)
+            $registro->primeiro_ponto = "Atrasado";
+        if ($registro->atrasou_segundo_ponto == true)
+            $registro->segundo_ponto = "Atrasado";
+        if ($registro->atrasou_terceiro_ponto == true)
+            $registro->terceiro_ponto = "Atrasado";
+        if ($registro->atrasou_quarto_ponto == true)
+            $registro->quarto_ponto = "Atrasado";
+
+        return $registro;
+    }
+
+    public function retornaRegistroDoDia(Request $request)
+    {
+        $registro = new RegistroController();
+
+        // procura o funcionario a partir da matricula
+        $funcionario = Funcionario::where('matricula', $request->matricula)->first();
+
+        $registro = $registro->retornaOUltimoRegistroDoFuncionario($funcionario);
+
+        $registro = $this->padronizarRegistroDoDia($registro, $funcionario);
+
+        return $registro;
+    }
+
+    // Adiciona a hora no ponto
     public function adicionarHoraNoPonto($registro, $indice, $horaAtual)
     {
         switch ($indice) {
@@ -299,7 +329,11 @@ class PontoController extends Controller
             return $registro;
         }
         if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro))
-            throw new Exception('O funcionário já bateu todos os pontos do dia');
+            return response()->json([
+                'message' => 'O funcionário já bateu todos os pontos do dia',
+                'status' => 200,
+                'pontosBatidos' => true,
+            ], 200);
         return $registro;
     }
 
@@ -323,6 +357,16 @@ class PontoController extends Controller
         return null;
     }
 
+    public function adicionarDataAoRegistro($registro)
+    {
+        Db::table('registros')
+            ->where('id', $registro->id)
+            ->update([
+                'data' => date('d/m/Y'),
+            ]);
+        return $registro;
+    }
+
     public function registrarPonto(Request $request)
     {
         try {
@@ -333,7 +377,7 @@ class PontoController extends Controller
             // Valida o funcionário
             $funcionario = $this->checaSeOFuncionarioExiste($request);
             if (!$funcionario)
-                throw new Exception('Funcionário não encontrado');
+                throw new Exception('Funcionário não encontrado', 404);
 
             // Certifica se o funcionário já tem registro no dia e se bateu todos os pontos, se não tiver, cria um registro novo
             $registro = $this->checaSeOFuncionarioTemRegistroESeBateuTodosOsPontos($funcionario);
@@ -347,6 +391,9 @@ class PontoController extends Controller
 
             // Registra a hora no ponto
             $registro = $this->registrarHoraNoPonto($registro, $funcionario, $diaAtual, $horaAtual);
+
+            if ($registro->data == null)
+                $registro = $this->adicionarDataAoRegistro($registro);
 
             return response()->json([
                 'message' => 'Registro criado com sucesso',

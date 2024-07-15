@@ -17,7 +17,7 @@ use App\Http\Controllers\DiasDaSemanaController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
-|--------------------------------------------------------------------------
+|-------------------------------------4-------------------------------------
 |
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
@@ -47,7 +47,7 @@ Route::get('/faltasFuncionario', [FaltaController::class, 'retornaFaltasDoFuncio
 
 Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario'])->middleware('auth:sanctum');
 
-Route::post('/registroDoDia', [RegistroController::class, 'retornaOUltimoRegistroDoFuncionario']);
+Route::post('/registroDoDia', [PontoController::class, 'retornaRegistroDoDia']);
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 

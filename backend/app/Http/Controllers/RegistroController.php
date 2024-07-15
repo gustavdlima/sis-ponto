@@ -4,9 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Registro;
+use App\Models\Funcionario;
 
 class RegistroController extends Controller
 {
+    /**
+     * Retorna o último registro do funcionário.
+     */
+    public function retornaOUltimoRegistroDoFuncionario($funcionario) {
+        $registro = Registro::where('id_funcionario', $funcionario->id)->latest()->first();
+
+        return $registro;
+    }
+
+    /**
+     * Retorna todo o registro do funcionário.
+     */
+    public function retornaTodoORegistroDoFuncionario(Request $request) {
+        $funcionario = Funcionario::findOrFail($request->id_funcionario);
+        $registro = Registro::where('id_funcionario', $funcionario->id)->get();
+    }
     /**
      * Lista o conteúdo de todos os registros.
      */
