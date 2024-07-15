@@ -43,7 +43,7 @@
 	</div>
 
 	<!-- Matricula vazia Dialog -->
-	<Dialog v-model:visible="dialogVisivel" modal :style="{ width: '20rem', height: '10rem' } ">
+	<Dialog v-model:visible="dialogVisivel" modal :style="{ width: '20rem', height: '10rem' }">
 		<div class="grid justify-center text-xl">
 			{{ dialogMensagem }}
 		</div>
@@ -71,10 +71,10 @@ import CameraDialog from '../components/CameraDialog.vue';
 import Eponto from '../components/Eponto.vue';
 import TabelaRegistroDialog from '../components/TabelaRegistroDialog.vue';
 import LogoFunadSemNome from "./LogoFunadSemNome.vue";
-import PontoService from '../services/PontoService.js';
+import RegistroPontoService from '../services/RegistroPontoService.js';
 import useUtils from '../services/Utils';
 
-const usePontoService = PontoService;
+const useRegistroPontoService = RegistroPontoService;
 const dialogMensagem = ref('');
 const dialogVisivel = ref(false);
 const cameraDialogVisivel = ref(false);
@@ -91,7 +91,7 @@ const registrarPonto = async () => {
 	if (!matriculaObjeto.matricula)
 		return matriculaVaziaDialog();
 	try {
-		const response = await usePontoService.registrarPonto(matriculaObjeto);
+		const response = await useRegistroPontoService.registrarPonto(matriculaObjeto);
 		await handleResponse(response);
 		await startCountdown();
 		tabelaRegistroVisivel.value = false;
@@ -104,10 +104,7 @@ const registrarPonto = async () => {
 
 const handleResponse = async (response) => {
 	switch (response.status) {
-		case 200:
-			// cameraDialogVisivel.value = true;
-			// await startCountdown();
-			// cameraDialogVisivel.value = false;
+		case 201:
 			pegarRegistroDoDia();
 			baterPontoBotaoVisivel.value = true;
 			tabelaRegistroVisivel.value = true;
@@ -117,20 +114,10 @@ const handleResponse = async (response) => {
 			limparInput();
 			return;
 			break;
-		case 404:
-			baterPontoBotaoVisivel.value = true;
-			limparInput();
-			return abrirDialogErro("Matrícula não encontrada");
-			break;
-		case 409:
-			baterPontoBotaoVisivel.value = true;
-			limparInput();
-			return abrirDialogErro(response.data.message);
-			break;
 		default:
 			baterPontoBotaoVisivel.value = true;
 			limparInput();
-			return abrirDialogErro(response.data.message);
+			return abrirDialogErro(response.message);
 			break;
 	}
 };
@@ -139,7 +126,7 @@ const pegarRegistroDoDia = async () => {
 	if (!matriculaObjeto.matricula)
 		return matriculaVaziaDialog();
 	try {
-		const response = await usePontoService.getPontoDoDia(matriculaObjeto);
+		const response = await useRegistroPontoService.getPontoDoDia(matriculaObjeto);
 		if (response.status === 200) {
 			registroPonto.value = [
 				response.data
@@ -180,7 +167,7 @@ function matriculaVaziaDialog() {
 
 function abrirDialogPontoJaBatido() {
 	dialogVisivel.value = true;
-	dialogMensagem.value = usePontoService.getPontoDoDia();
+	dialogMensagem.value = useRegistroPontoService.getPontoDoDia();
 
 }
 
