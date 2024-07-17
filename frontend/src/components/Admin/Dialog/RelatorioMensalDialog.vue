@@ -1,6 +1,6 @@
 <template>
 	<Dialog v-model:visible="dialogRelatorioMensalIsVisible" @update:visible="fecharDialogRelatorioMensal"
-		header:="Escolha o mês" :modal="true" closable="true" :resizable="false" :style="{ width: '53vh' }">
+		header:="Escolha o mês" :modal="true" :closable="true" :resizable="false" :style="{ width: '53vh' }">
 		<template #header>
 			<div class="grid justify-start w-full">
 				<span class="text-blue-950 text-lg font-semibold">
