@@ -12,6 +12,7 @@ class CadastroService {
     this.cadastroJustificativaURL = "http://localhost:8000/api/justificativas";
     this.horarioURL = "http://localhost:8000/api/horarios";
     this.cargoURL = "http://localhost:8000/api/cargos";
+    this.diasDaSemanaURL = "http://localhost:8000/api/diaDaSemana";
   }
 
   async cadastrarCargo(data) {
@@ -79,6 +80,19 @@ class CadastroService {
     }
   }
 
+  async cadastrarDiasDaSemana(data) {
+    try {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authStore.token}`;
+      const response = await axios.post(this.diasDaSemanaURL, data);
+      return response;
+    } catch (error) {
+      const errorResponse = JSON.parse(JSON.stringify(error.response));
+      return errorResponse;
+    }
+  }
+
   async getHorarios() {
     try {
       axios.defaults.headers.common[
@@ -104,6 +118,7 @@ class CadastroService {
       return errorResponse;
     }
   }
+
 }
 
 export default new CadastroService();
