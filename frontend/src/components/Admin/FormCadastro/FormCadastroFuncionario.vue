@@ -1,7 +1,7 @@
 <template>
 	<div class="grid h-full w-full">
 		<form class="">
-			<div class="grid h-full w-full grid-rows-4 lg:py-20 lg:px-3 justify-center">
+			<div class="grid h-full w-full grid-rows-5 lg:py-20 lg:px-3 justify-center">
 				<div class="row-span-1">
 					<div class="grid md:grid-cols-2 h-full w-full gap-1">
 						<div class="grid md:col-span-1">
@@ -9,9 +9,9 @@
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
 										<div class="row-span-1 p-1">
-											<Dropdown v-model="formData.setor" filter showClear :options="setores"
-												optionLabel="name" placeholder="Setor"
-												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
+											<Dropdown v-model="formData.id_cargo" showClear :options="cargos"
+												optionLabel="name" optionValue="code" placeholder="Cargo"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem] " />
 										</div>
 										<div class="row-span-1 p-1">
 											<InputText type="text" v-model="formData.matricula"
@@ -24,7 +24,7 @@
 									<div class="grid grid-rows-2 h-full w-full">
 										<div class="row-span-1 p-1">
 											<Dropdown v-model="formData.carga_horaria" showClear :options="cargaHoraria"
-												optionLabel="name" placeholder="Carga Horária"
+												optionLabel="name" optionValue="code" placeholder="Carga Horária"
 												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
 										</div>
 										<div class="row-span-1 p-1">
@@ -41,10 +41,9 @@
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
 										<div class="row-span-1 p-1">
-											<Dropdown v-model="formData.id_horario" showClear :options="horario"
-												optionLabel="name" optionValue="code" placeholder="Horário"
-												panelClass="xl:w-[22rem]"
-												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem] " />
+											<Dropdown v-model="formData.setor" filter showClear :options="setores"
+												optionLabel="name" optionValue="code" placeholder="Setor"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
 										</div>
 										<div class="row-span-1 p-1">
 											<InputText type="text" v-model="formData.rg"
@@ -55,9 +54,9 @@
 								<div class="col-span-1">
 									<div class="grid grid-rows-2 h-full w-full">
 										<div class="row-span-1 p-1">
-											<Dropdown v-model="formData.id_cargo" showClear :options="cargos"
-												optionLabel="name" optionValue="code" placeholder="Cargo"
-												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem] " />
+											<Calendar v-model="formData.data_nascimento"
+												placeholder="Data de Nascimento" dateFormat="dd/mm/yy"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" modelValue="Date" />
 										</div>
 										<div class="row-span-1 p-1">
 											<InputText type="text" v-model="formData.titulo_eleitor"
@@ -176,9 +175,9 @@
 												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" placeholder="UF" />
 										</div>
 										<div class="row-span-1 p-1">
-											<Calendar v-model="formData.data_nascimento"
-												placeholder="Data de Nascimento" dateFormat="dd/mm/yy"
-												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" modelValue="Date" />
+											<Dropdown v-model="formData.sexo" showClear :options="sexos"
+												optionLabel="name" optionValue="code" placeholder="Sexo"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
 										</div>
 									</div>
 								</div>
@@ -190,6 +189,70 @@
 												placeholder="Cidade" />
 										</div>
 										<div class="row-span-1 p-1 overflow-hidden">
+											<Dropdown v-model="formData.deficiente" showClear :options="deficiente"
+												optionLabel="name" optionValue="code" placeholder="Deficiente"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row-span-1 grid">
+					<div class="grid md:grid-cols-2 h-full w-full gap-1">
+						<div class="grid md:col-span-1">
+							<div class="grid lg:grid-cols-2">
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="diasDaSemana.segunda" showClear :options="horario"
+												optionLabel="name" optionValue="code" placeholder="Segunda-Feira"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
+										</div>
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="diasDaSemana.terca" showClear :options="horario"
+												optionLabel="name" optionValue="code" placeholder="Terça-Feira"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
+										</div>
+									</div>
+								</div>
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="diasDaSemana.quarta" showClear :options="horario"
+												optionLabel="name" optionValue="code" placeholder="Quarta-Feira"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
+										</div>
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="diasDaSemana.quinta" showClear :options="horario"
+												optionLabel="name" optionValue="code" placeholder="Quinta-Feira"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="grid md:col-span-1">
+							<div class="grid lg:grid-cols-2">
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+											<Dropdown v-model="diasDaSemana.sexta" showClear :options="horario"
+												optionLabel="name" optionValue="code" placeholder="Sexta-Feira"
+												class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
+										</div>
+										<div class="row-span-1 p-1">
+
+										</div>
+									</div>
+								</div>
+								<div class="col-span-1">
+									<div class="grid grid-rows-2 h-full w-full">
+										<div class="row-span-1 p-1">
+										</div>
+										<div class="row-span-1 p-1 overflow-hidden">
+
 										</div>
 									</div>
 								</div>
@@ -279,7 +342,10 @@ const formData = ref({
 	uf: "",
 	id_cargo: "",
 	id_horario: "",
-	carga_horaria: ""
+	id_dia_da_semana: 0,
+	carga_horaria: "",
+	sexo: "",
+	deficiente: "",
 });
 const cargaHoraria = ref([
 	{ name: '20h', code: '20h' },
@@ -289,35 +355,99 @@ const estadoCivil = ref([
 	{ name: 'Solteiro(a)', code: 'Solteiro(a)' },
 	{ name: 'Casado(a)', code: 'Casado(a)' },
 ])
+const sexos = ref([
+	{ name: 'Masculino', code: 'M' },
+	{ name: 'Feminino', code: 'F' },
+])
+const deficiente = ref([
+	{ name: 'Sim', code: 'True' },
+	{ name: 'Não', code: 'False' },
+])
 const cargos = ref([]);
 const horario = ref([]);
 const dialogMensagem = ref('');
 const dialogVisivel = ref(false);
+const diasDaSemana = ref({
+	segunda: "",
+	terca: "",
+	quarta: "",
+	quinta: "",
+	sexta: "",
+})
+
+const criarTabelaDiaDaSemana = async () => {
+	tratarDiasDaSemana();
+	const response = await useCadastroService.cadastrarDiasDaSemana(diasDaSemana.value);
+	return handleDiasDaSemanaResponse(response);
+}
 
 const enviarFormularioDeCadastroDeFuncionario = async () => {
+	formData.value.id_dia_da_semana = await criarTabelaDiaDaSemana();
 	tratarFormData();
+	console.log(formData.value);
 	const response = await useCadastroService.cadastrarFuncionario(formData.value);
+	console.log(response);
 	handleResponse(response);
 }
 
 const handleResponse = async (response) => {
-	if (response.status == 201) {
-		dialogMensagem.value = 'Funcionário cadastrado com sucesso!';
-		dialogVisivel.value = true;
-		await useUtils.sleep(1000);
-		dialogVisivel.value = false;
-	} else {
-		dialogMensagem.value = 'Funcionário já cadastrado!';
-		dialogVisivel.value = true;
-		await useUtils.sleep(1000);
-		dialogVisivel.value = false;
+	switch (response.status) {
+		case 201:
+			dialogMensagem.value = 'Funcionário cadastrado com sucesso!';
+			dialogVisivel.value = true;
+			await useUtils.sleep(1000);
+			dialogVisivel.value = false;
+			break;
+		case 200:
+			dialogMensagem.value = 'Funcionário já cadastrado!';
+			dialogVisivel.value = true;
+			await useUtils.sleep(1000);
+			dialogVisivel.value = false;
+			break;
+		default:
+			dialogMensagem.value = 'Erro ao cadastrar o funcionário! Entre em contato com o administrador';
+			dialogVisivel.value = true;
+			await useUtils.sleep(1000);
+			dialogVisivel.value = false;
+	}
+}
+
+const handleDiasDaSemanaResponse = async (response) => {
+	switch (response.status) {
+		case 201:
+			return response.data.diasDaSemana.id;
+			break;
+		case 200:
+			return response.data.diasDaSemana.id;
+			break;
+		default:
+			dialogMensagem.value = 'Erro ao cadastrar o horário semanal do funcionário! Entre em contato com o administrador';
+			dialogVisivel.value = true;
+			await useUtils.sleep(1000);
+			dialogVisivel.value = false;
 	}
 }
 
 const tratarFormData = () => {
 	formData.value.data_nascimento = useUtils.formatarData(formData.value.data_nascimento);
-	formData.value.carga_horaria = formData.value.carga_horaria.code;
-	formData.value.setor = formData.value.setor.code;
+}
+
+const tratarDiasDaSemana = () => {
+	if (diasDaSemana.value.segunda != "") {
+		diasDaSemana.value.segunda = diasDaSemana.value.segunda.code;
+	}
+	if (diasDaSemana.value.terca != "") {
+		diasDaSemana.value.terca = diasDaSemana.value.terca.code;
+	}
+	if (diasDaSemana.value.quarta != "") {
+		diasDaSemana.value.quarta = diasDaSemana.value.quarta.code;
+	}
+	if (diasDaSemana.value.quinta != "") {
+		diasDaSemana.value.quinta = diasDaSemana.value.quinta.code;
+	}
+	if (diasDaSemana.value.sexta != "") {
+		diasDaSemana.value.sexta = diasDaSemana.value.sexta.code;
+	}
 }
 
 const getCargos = async () => {
