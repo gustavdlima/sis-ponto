@@ -43,10 +43,12 @@ class DiasDaSemanaController extends Controller
         ]);
         if ($diasDaSemana['id'] == null) {
             $diasDaSemana = DiasDaSemana::create($request->all());
-            return response()->json(['message' => 'Dias da semana criados com sucesso.'], 201);
+            return response()->json(['message' => 'Dias da semana criados com sucesso.',
+            'diasDaSemana' => $diasDaSemana], 201);
         } else {
-            $diasDaSemana->update($request->all());
-            return response()->json(['message'=> 'Erro ao criar dias da semana'], 200);
+            // retorna os DiasDaSemana existente
+            return response()->json(['message' => 'Dias da semana já existem.',
+            'diasDaSemana' => $diasDaSemana], 200);
         }
     }
 
