@@ -39,6 +39,8 @@ const props = defineProps({
 const emit = defineEmits(['atualizarDialogRemoverFuncionarioBool']);
 const dialogRemoverFuncionarioIsVisible = ref();
 const funcionarioExcluido = ref();
+const dialogMensagem = ref();
+const dialogVisivel = ref();
 
 const fecharRemoverFuncionarioDialog = () => {
 	dialogRemoverFuncionarioIsVisible.value = false;
