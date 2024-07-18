@@ -41,6 +41,7 @@ class DiasDaSemanaController extends Controller
             'sabado' => $request->sabado,
             'domingo' => $request->domingo
         ]);
+        
         if ($diasDaSemana['id'] == null) {
             $diasDaSemana = DiasDaSemana::create($request->all());
             return response()->json(['message' => 'Dias da semana criados com sucesso.',
@@ -66,6 +67,10 @@ class DiasDaSemanaController extends Controller
      */
     public function update(Request $request)
     {
+        if ($request->segunda == null && $request->terca == null && $request->quarta == null && $request->quinta == null && $request->sexta == null && $request->sabado == null && $request->domingo == null) {
+            return response()->json(['message' => 'Pelo menos um dia da semana deve ser preenchido.'], 400);
+        }
+
         $diasDaSemana = DiasDaSemana::findOrFail($request->id);
         $diasDaSemana->update($request->all());
         $diasDaSemana->save();
