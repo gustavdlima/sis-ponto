@@ -10,6 +10,7 @@ class EditarService {
     this.cargoURL = "http://localhost:8000/api/cargos/";
     this.justificativaURL = "http://localhost:8000/api/justificativas/";
     this.operadorURL = "http://localhost:8000/api/users/";
+    this.diasDaSemana = "http://localhost:8000/api/diaDaSemana/";
   }
 
   async editarOperador(data) {
@@ -70,6 +71,19 @@ class EditarService {
         "Authorization"
       ] = `Bearer ${authStore.token}`;
       const response = await axios.put(this.justificativaURL + data.id, data);
+      return response;
+    } catch (error) {
+      const errorResponse = JSON.parse(JSON.stringify(error.response));
+      return errorResponse;
+    }
+  }
+
+  async editarDiaDaSemana(data) {
+    try {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authStore.token}`;
+      const response = await axios.put(this.diasDaSemana + data.id, data);
       return response;
     } catch (error) {
       const errorResponse = JSON.parse(JSON.stringify(error.response));
