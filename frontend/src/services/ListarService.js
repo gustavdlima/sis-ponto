@@ -16,6 +16,7 @@ class ListarService {
     this.horarioURL = "http://localhost:8000/api/horarios";
     this.cargoURL = "http://localhost:8000/api/cargos";
     this.justificarFaltaURL = "http://localhost:8000/api/faltas";
+    this.diasDaSemana = "http://localhost:8000/api/diaDaSemana";
   }
 
   async listarFuncionarios() {
@@ -76,6 +77,19 @@ class ListarService {
         "Authorization"
       ] = `Bearer ${authStore.token}`;
       const response = await axios.get(this.listarJustificativaURL);
+      return response;
+    } catch (error) {
+      const errorResponse = JSON.parse(JSON.stringify(error.response));
+      return errorResponse;
+    }
+  }
+
+  async getDiasDaSemana(data) {
+    try {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authStore.token}`;
+      const response = await axios.get(this.diasDaSemana + "/" + data.id_dia_da_semana, data);
       return response;
     } catch (error) {
       const errorResponse = JSON.parse(JSON.stringify(error.response));
