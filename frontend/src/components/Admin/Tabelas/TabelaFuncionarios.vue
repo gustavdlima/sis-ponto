@@ -21,7 +21,7 @@
 				<Column field="matricula" sortable header="Matrícula" style="width: 25%" />
 				<Column field="" header="" style="width: 15%">
 					<template #body="slotProps">
-						<div class="grid sm:gap-2 lg:grid-cols-4">
+						<div class="grid sm:gap-2 lg:grid-cols-5">
 							<div class="lg:col-span-1">
 								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
 									@click="abrirRegistro(slotProps)">
@@ -31,13 +31,19 @@
 							<div class="lg:col-span-1">
 								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
 									@click="abrirRegistrarFalta(slotProps)">
-									<i class="pi pi-w pi-calendar-clock" style="font-size: 1.8rem"></i>
+									<i class="pi pi-w pi-calendar-times" style="font-size: 1.8rem"></i>
 								</Button>
 							</div>
 							<div class="lg:col-span-1">
 								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
 									@click="abrirEditarFuncionario(slotProps)">
 									<i class="pi pi-w pi-user-edit" style="font-size: 1.8rem"></i>
+								</Button>
+							</div>
+							<div class="lg:col-span-1">
+								<Button class="botao-opcoes h-9 w-12 text-sm md:text-md"
+									@click="abrirEditarDiasDaSemana(slotProps)">
+									<i class="pi pi-w pi-calendar-clock" style="font-size: 1.8rem"></i>
 								</Button>
 							</div>
 							<div class="lg:col-span-1">
@@ -62,6 +68,10 @@
 	<EditarFuncionarioDialog @atualizarDialogEditarFuncionarioBool="atualizarDialogEditarFuncionarioBool"
 	 :is-visible="dialogEditarFuncionarioIsVisible" :funcionario="funcionarioSelecionado" />
 
+	 <EditarDiasDaSemanaDialog @atualizarDialogEditarDiasDaSemanaBool="atualizarDialogEditarDiasDaSemanaBool"
+	 :is-visible="dialogEditarDiasDaSemanaIsVisible" :funcionario="funcionarioSelecionado"
+	 :diasDaSemana="diasDaSemana"/>
+
 	<RemoverFuncionarioDialog @atualizarDialogRemoverFuncionarioBool="atualizarDialogRemoverFuncionarioBool"
 	 :is-visible="dialogRemoverFuncionarioIsVisible" :funcionario="funcionarioSelecionado" />
 </template>
@@ -82,16 +92,26 @@ import RegistrarFaltaDialog from '../Dialog/RegistrarFaltaDialog.vue';
 import useListarService from '../../../services/ListarService';
 import EditarFuncionarioDialog from '../Dialog/EditarFuncionarioDialog.vue';
 import RemoverFuncionarioDialog from '../Dialog/RemoverFuncionarioDialog.vue';
+import EditarDiasDaSemanaDialog from '../Dialog/EditarDiasDaSemanaDialog.vue';
 
 const props = defineProps({
-	funcionarios: Array
+	funcionarios: Array,
+	diasDaSemana: Object
 });
 
 const dialogRegistroIsVisible = ref(false);
 const dialogRegistrarFaltaIsVisible = ref(false);
 const dialogEditarFuncionarioIsVisible = ref(false);
 const dialogRemoverFuncionarioIsVisible = ref(false);
+const dialogEditarDiasDaSemanaIsVisible = ref(false);
 const funcionarioSelecionado = ref();
+const diasDaSemana = ref({
+	segunda: "",
+	terca: "",
+	quarta: "",
+	quinta: "",
+	sexta: "",
+})
 var registroFuncionarioSelecionado = ref();
 const filters = ref({
 	global: {
@@ -123,7 +143,7 @@ const atualizarValorRegistrarFaltaBool = (eventData) => {
 	dialogRegistrarFaltaIsVisible.value = eventData.dialogRegistrarFaltaIsVisible;
 }
 
-const abrirEditarFuncionario = (slotProps) => {
+const abrirEditarFuncionario = async (slotProps) => {
 	funcionarioSelecionado.value = slotProps.data;
 	dialogEditarFuncionarioIsVisible.value = true;
 }
@@ -139,6 +159,19 @@ const abrirRemoverFuncionario = (slotProps) => {
 
 const atualizarDialogRemoverFuncionarioBool = (eventData) => {
 	dialogRemoverFuncionarioIsVisible.value = eventData.dialogRemoverFuncionarioIsVisible;
+}
+
+const abrirEditarDiasDaSemana = async (slotProps) => {
+	funcionarioSelecionado.value = slotProps.data;
+	if (funcionarioSelecionado.value.id_dia_da_semana != null) {
+		const response = await useListarService.getDiasDaSemana(funcionarioSelecionado.value);
+		diasDaSemana.value = response.data;
+	}
+	dialogEditarDiasDaSemanaIsVisible.value = true;
+}
+
+const atualizarDialogEditarDiasDaSemanaBool = (eventData) => {
+	dialogEditarDiasDaSemanaIsVisible.value = eventData.dialogEditarDiasDaSemanaIsVisible;
 }
 
 </script>
