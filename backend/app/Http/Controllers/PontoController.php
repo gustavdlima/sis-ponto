@@ -9,6 +9,8 @@ use App\Models\Registro;
 use App\Models\Horario;
 use App\Models\DiasDaSemana;
 use Exception;
+use Psr\Log\NullLogger;
+use DateTime;
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -88,8 +90,12 @@ class PontoController extends Controller
     public function checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual)
     {
         // checa se o funcionário está 1 hora ou menos adiantado
-        $diferenca = strtotime($horaAtual) - (strtotime($horarioPonto) - 3660);
-        if ($diferenca <= 0)
+        $horarioPonto = new DateTime($horarioPonto);
+        $horaAtual = new DateTime($horaAtual);
+
+        $horarioPonto->modify('-1 hour');
+
+        if ($horaAtual < $horarioPonto)
             return true;
         return false;
     }
@@ -97,8 +103,12 @@ class PontoController extends Controller
     public function checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual)
     {
         // checa se o funcionário está mais de 15 minutos adiantado ou 15 minutos adiantado
-        $diferenca = strtotime($horaAtual) - (strtotime($horarioPonto) - 900);
-        if ($diferenca <= 0)
+        $horarioPonto = new DateTime($horarioPonto);
+        $horaAtual = new DateTime($horaAtual);
+
+        $horarioPonto->modify('-15 minutes');
+
+        if ($horaAtual < $horarioPonto)
             return true;
         return false;
     }
@@ -114,7 +124,7 @@ class PontoController extends Controller
 
             // verificar se o funcionaro está adiantado
             if ($pontoRegistro == null) {
-                if ($i <= 2 && $this->checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual))
+                if ($i <= 2 && $this->checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual) == true)
                     return $registro;
                 else if ($i == 3 && $this->checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual))
                     return $registro;
@@ -269,26 +279,20 @@ class PontoController extends Controller
         return false;
     }
 
-    public function checaSeORegistroFoiCriadoNoMesmoDia($registro): bool
+    public function checaSeORegistroFoiCriadoNoMesmoDia($registro)
     {
         $date = date('Y-m-d');
         $createdAt = $registro->created_at;
-        $rest = strpos($createdAt, $date);
-        if ($rest !== false) {
-            $split = explode('T', $createdAt);
-            $split = explode(' ', $createdAt);
-            $createdAt = $split[0];
-            if ($createdAt == $date) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        $split = explode('T', $createdAt);
+        $split = explode(' ', $createdAt);
+        $createdAt = $split[0];
+        $date2 = date('Y-m-d', strtotime($createdAt));
+        if ($date == $date2)
+            return true;
+        return false;
     }
 
-    public function criarRegistro($funcionario): ?Registro
+    public function criarRegistro($funcionario)
     {
         if ($this->validarFuncionario($funcionario) == false)
             return null;
@@ -309,21 +313,22 @@ class PontoController extends Controller
         return $registro;
     }
 
-    public function retornaUltimoRegistroDoFuncionario($funcionarioId): ?Registro
+    public function retornaUltimoRegistroDoFuncionario($funcionarioId)
     {
         if ($funcionarioId == null)
             return null;
         $registro = Registro::where('id_funcionario', $funcionarioId)->latest()->get()->first();
 
-        if (!$this->checaSeORegistroFoiCriadoNoMesmoDia($registro))
-            return null;
+        if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registro) == true)
+            return $registro;
 
-        return $registro ?? null;
+        return null;
     }
 
     public function checaSeOFuncionarioTemRegistroESeBateuTodosOsPontos($funcionario)
     {
         $registro = $this->retornaUltimoRegistroDoFuncionario($funcionario->id);
+
         if (!$registro) {
             $registro = $this->criarRegistro($funcionario);
             return $registro;
