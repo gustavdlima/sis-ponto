@@ -135,7 +135,8 @@ class PontoController extends Controller
         return $registro;
     }
 
-    public function adicionarAtrasoAoRegistro($registro, $indice) {
+    public function adicionarAtrasoAoRegistro($registro, $indice)
+    {
         switch ($indice) {
             case 0:
                 $registro->atrasou_primeiro_ponto = true;
@@ -174,7 +175,8 @@ class PontoController extends Controller
         }
     }
 
-    public function transformarRegistroEmArrayDePontos($registro) {
+    public function transformarRegistroEmArrayDePontos($registro)
+    {
         $pontos = array();
         $pontos[0] = $registro->primeiro_ponto;
         $pontos[1] = $registro->segundo_ponto;
@@ -203,11 +205,19 @@ class PontoController extends Controller
         return $horarioArray;
     }
 
+    public function retornaTabelaDoDiaDaSemana($funcionario)
+    {
+        $tabelaDiasDaSemana = DiasDaSemana::where('id', $funcionario->id_dia_da_semana)->get();
+        if ($tabelaDiasDaSemana == null || count($tabelaDiasDaSemana) == 0)
+            return null;
+        return $tabelaDiasDaSemana;
+    }
+
     public function retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual)
     {
         $tabelaDiasDaSemana = $this->retornaTabelaDoDiaDaSemana($funcionario);
         if ($tabelaDiasDaSemana == null)
-            return "null";
+            return null;
         switch ($diaAtual) {
             case 1:
                 $horarioId = $tabelaDiasDaSemana[0]->segunda;
@@ -227,15 +237,7 @@ class PontoController extends Controller
             default:
                 $horarioId = null;
                 return $horarioId;
-        }
-    }
-
-    public function retornaTabelaDoDiaDaSemana($funcionario)
-    {
-        $tabelaDiasDaSemana = DiasDaSemana::where('id', $funcionario->id_dia_da_semana)->get();
-        if ($tabelaDiasDaSemana == null)
-            return null;
-        return $tabelaDiasDaSemana;
+            }
     }
 
     public function checaSeOFuncionarioEstaAtrasado($funcionario, $registro, $diaAtual, $horaAtual)
@@ -243,11 +245,14 @@ class PontoController extends Controller
         // Pegar os horarios do dia do funcionario em forma de array
         $horariosDiaAtual  = $this->retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual);
 
+        if ($horariosDiaAtual == null)
+            throw new Exception('Horário Semanal do funcionário não encontrado', 404);
+
         // Colocar os pontos do registros em array
         $pontosRegistro = $this->transformarRegistroEmArrayDePontos($registro);
 
         // Loop para identificar os atrasos dos pontos não preenchidos e salvar no db
-        for($i = 0; $i < count($horariosDiaAtual ); $i++) {
+        for ($i = 0; $i < count($horariosDiaAtual); $i++) {
             $horarioPonto = $horariosDiaAtual[$i];
             $pontoRegistro = $pontosRegistro[$i];
 
@@ -319,7 +324,7 @@ class PontoController extends Controller
             return null;
         $registro = Registro::where('id_funcionario', $funcionarioId)->latest()->get()->first();
 
-        if ($this->checaSeORegistroFoiCriadoNoMesmoDia($registro) == true)
+        if ($registro && $this->checaSeORegistroFoiCriadoNoMesmoDia($registro) == true)
             return $registro;
 
         return null;
@@ -387,6 +392,7 @@ class PontoController extends Controller
             // Certifica se o funcionário já tem registro no dia e se bateu todos os pontos, se não tiver, cria um registro novo
             $registro = $this->checaSeOFuncionarioTemRegistroESeBateuTodosOsPontos($funcionario);
 
+
             // Se o funcionário já bateu todos os pontos do dia, retorna o registro
             if ($registro->pontosBatidos)
                 return $registro;
@@ -412,5 +418,4 @@ class PontoController extends Controller
             ], 500);
         }
     }
-
 }
