@@ -122,7 +122,6 @@ class PontoController extends Controller
             $horarioPonto = $horariosDiaAtual[$i];
             $pontoRegistro = $pontosRegistro[$i];
 
-            // verificar se o funcionaro está adiantado
             if ($pontoRegistro == null) {
                 if ($i <= 2 && $this->checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual) == true)
                     return $registro;
@@ -330,7 +329,7 @@ class PontoController extends Controller
         return null;
     }
 
-    public function checaSeOFuncionarioTemRegistroESeBateuTodosOsPontos($funcionario)
+    public function checaSeOFuncionarioTemRegistro($funcionario)
     {
         $registro = $this->retornaUltimoRegistroDoFuncionario($funcionario->id);
 
@@ -338,13 +337,8 @@ class PontoController extends Controller
             $registro = $this->criarRegistro($funcionario);
             return $registro;
         }
-        if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro))
-            return response()->json([
-                'message' => 'O funcionário já bateu todos os pontos do dia',
-                'status' => 200,
-                'pontosBatidos' => true,
-            ], 200);
-        return $registro;
+
+       return $registro;
     }
 
     public function validarFuncionario($funcionario): bool
@@ -390,13 +384,16 @@ class PontoController extends Controller
                 throw new Exception('Funcionário não encontrado', 404);
 
             // Certifica se o funcionário já tem registro no dia e se bateu todos os pontos, se não tiver, cria um registro novo
-            $registro = $this->checaSeOFuncionarioTemRegistroESeBateuTodosOsPontos($funcionario);
-
+            $registro = $this->checaSeOFuncionarioTemRegistro($funcionario);
 
             // Se o funcionário já bateu todos os pontos do dia, retorna o registro
-            if ($registro->pontosBatidos)
-                return $registro;
 
+            if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro)) {
+                return response()->json([
+                    'message' => 'O funcionário já bateu todos os pontos do dia',
+                    'status' => 200,
+                ], 200);
+            }
             // Checa se o funcionário tem pontos em atraso
             $registro = $this->checaSeOFuncionarioEstaAtrasado($funcionario, $registro, $diaAtual, $horaAtual);
 
