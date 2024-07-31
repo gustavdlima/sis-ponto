@@ -28,6 +28,7 @@ class RegistroController extends Controller
                     $relatorio[$i]['registroDoDia'][0]['quarto_ponto'] = 'JUSTIFICADO';
                 }
             }
+
             // se a data for um sábado ou domingo, o registro do dia é nulo
             $data = explode('/', $relatorio[$i]['dia']);
             $diaDaSemana = date('w', strtotime($data[2] . '-' . $data[1] . '-' . $data[0]));
@@ -103,11 +104,40 @@ class RegistroController extends Controller
         return $falta;
     }
 
-    public function retornaORegistroDaDataEspecificada($funcionario, $data) {
-        $registro = Registro::where('id_funcionario', $funcionario->id)->where('created_at', 'like', '%' . $data . '%')->get();
+    public function trataORegistroAntigoParaORelatorio($registro) {
+        if ($registro == null)
+            return null;
+
+        // Tratamento para os registros antigos que eram salvos como timestamp
+        if (strlen($registro[0]['primeiro_ponto']) == 19) {
+            $registro[0]['primeiro_ponto'] = explode(' ', $registro[0]['primeiro_ponto'])[1];
+        }
+        if (strlen($registro[0]['segundo_ponto']) == 19) {
+            $registro[0]['segundo_ponto'] = explode(' ', $registro[0]['segundo_ponto'])[1];
+        }
+        if (strlen($registro[0]['terceiro_ponto']) == 19) {
+            $registro[0]['terceiro_ponto'] = explode(' ', $registro[0]['terceiro_ponto'])[1];
+        }
+        if (strlen($registro[0]['quarto_ponto']) == 19) {
+            $registro[0]['quarto_ponto'] = explode(' ', $registro[0]['quarto_ponto'])[1];
+        }
+        return $registro;
+    }
+
+    public function retornaORegistroDaDataEspecificada($funcionario, $data, $day) {
+        // retornar o registro do dia especifico
+        $registro = Registro::where('id_funcionario', $funcionario->id)->whereMonth('created_at', date('m', strtotime($data)))->whereYear('created_at', date('Y', strtotime($data)))->whereDay('created_at', date('d', strtotime($data)))->get();
         if (count($registro) == 0)
             return null;
         return $registro;
+    }
+
+    public function tratarMesSelecionado($mesSelecionado) {
+        if ($mesSelecionado != '10' || $mesSelecionado != '11' || $mesSelecionado != '12') {
+            $mesSelecionado = '0' . $mesSelecionado;
+        }
+
+        return $mesSelecionado;
     }
 
     /**
@@ -115,36 +145,25 @@ class RegistroController extends Controller
      */
     public function gerarRelatorioDeRegistroDoPonto(Request $request) {
         $funcionario = Funcionario::firstOrNew(['matricula' => $request->matricula]);
-        $mesSelecionado = $request->data;
         if ($funcionario == null)
             return response()->json(['message' => 'Funcionário não encontrado'], 404);
-        if ($mesSelecionado) {
-            if ($request-> data != '10' || $mesSelecionado != '11' || $mesSelecionado != '12') {
-                $mesSelecionado = '0' . $mesSelecionado;
-            }
-        }
-        $anoAtual = date('Y');
+
+        $mesSelecionado = $request->data;
+        if ($mesSelecionado)
+            $mesDoRegistro = $this->tratarMesSelecionado($mesSelecionado);
+        else
+            return response()->json(['message' => 'Data não informada'], 404);
+
         $anoAtual = date('Y');
         $totalDiasDoMesAtual = cal_days_in_month(CAL_GREGORIAN, $mesSelecionado, $anoAtual);
+
         $relatorio = array();
-
         for ($day = 1, $i = 0; $day <= $totalDiasDoMesAtual; $day++, $i++) {
-            $data = sprintf('%02d', $day) . '/' . $mesSelecionado . '/' . $anoAtual;
-            $dataDB = $anoAtual . '-' . $mesSelecionado . '-' . sprintf('%02d', $day);
+            $data = sprintf('%02d', $day) . '/' . $mesDoRegistro . '/' . $anoAtual;
             $relatorio[$i]['dia'] = $data;
-            $registro = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB);
-            if ($registro) {
-                if ($registro[0]['primeiro_ponto'] != null && $registro[0]['primeiro_ponto'] != 'FALTA' && $registro[0]['primeiro_ponto'] != 'JUSTIFICATIVA')
-                    $registro[0]['primeiro_ponto'] = explode(' ', $registro[0]['primeiro_ponto'])[1];
-                if ($registro[0]['segundo_ponto'] != null && $registro[0]['segundo_ponto'] != 'FALTA' && $registro[0]['segundo_ponto'] != 'JUSTIFICATIVA')
-                    $registro[0]['segundo_ponto'] = explode(' ', $registro[0]['segundo_ponto'])[1];
-                if ($registro[0]['terceiro_ponto'] != null && $registro[0]['terceiro_ponto'] != 'FALTA' && $registro[0]['terceiro_ponto'] != 'JUSTIFICATIVA')
-                    $registro[0]['terceiro_ponto'] = explode(' ', $registro[0]['terceiro_ponto'])[1];
-                if ($registro[0]['quarto_ponto'] != null && $registro[0]['quarto_ponto'] != 'FALTA' && $registro[0]['quarto_ponto'] != 'JUSTIFICATIVA')
-                    $registro[0]['quarto_ponto'] = explode(' ', $registro[0]['quarto_ponto'])[1];
-            }
-
-            $relatorio[$i]['registroDoDia'] = $registro;
+            $dataDB = $anoAtual . '-' . $mesDoRegistro . '-' . sprintf('%02d', $day);
+            $registro = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB, $day);
+            $relatorio[$i]['registroDoDia'] = $this->trataORegistroAntigoParaORelatorio($registro);
             $relatorio[$i]['justificativa'] = $this->cadastraFaltaNoRegistro($funcionario, $dataDB);
         }
         $relatorioTratado = $this->tratarDadosRelatorio($funcionario, $relatorio);
