@@ -58,6 +58,19 @@ class ListarService {
     }
   }
 
+  async listarHorarioEspecifico(data) {
+    try {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authStore.token}`;
+      const response = await axios.get(this.horarioURL + "/" + data);
+      return response;
+    } catch (error) {
+      const errorResponse = JSON.parse(JSON.stringify(error.response));
+      return errorResponse;
+    }
+  }
+
   async listarCargos() {
     try {
       axios.defaults.headers.common[
