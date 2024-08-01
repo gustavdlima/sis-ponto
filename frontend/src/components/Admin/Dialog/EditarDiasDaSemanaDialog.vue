@@ -15,103 +15,201 @@
       </div>
     </template>
     <div class="grid justify-center p-1">
-      <div class="grid md:grid-cols-2 h-full w-full gap-1">
-        <div class="grid md:col-span-1">
-          <div class="grid xl:grid-cols-2">
-            <div class="col-span-1">
-              <div class="grid grid-rows-2 h-full w-full">
-                <div class="row-span-1 p-1">
-                  <div class="font-semibold">
-                    <span>Horário Segunda</span>
-                  </div>
-                  <Dropdown
-                    v-model="diasDaSemana.segunda"
-                    showClear
-                    :options="horario"
-                    optionLabel="name"
-                    optionValue="code"
-                    placeholder="Segunda-Feira"
-                    class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-                  />
+      <div class="grid grid-cols-2">
+        <div class="col-span-1">
+          <div class="grid grid-rows-1">
+            <div class="row-span-1">
+              <div class="grid grid-rows-2 ">
+                <div class="row-span-1">
+                  <label class="text-black text-lg font-semibold p-1">Tabela de horário semanal de {{ props.funcionario.nome }}</label>
                 </div>
-                <div class="row-span-1 p-1">
-                  <div class="font-semibold">
-                    <span>Horário Terça</span>
-                  </div>
-                  <Dropdown
-                    v-model="diasDaSemana.terca"
-                    showClear
-                    :options="horario"
-                    optionLabel="name"
-                    optionValue="code"
-                    placeholder="Terça-Feira"
-                    class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-                  />
+                <div class="row-span-1">
+                  <label class="text-black text-lg font-semibold p-1"> {{ props.funcionario.carga_horaria }} </label>
                 </div>
               </div>
             </div>
-            <div class="col-span-1">
-              <div class="grid grid-rows-2 h-full w-full">
-                <div class="row-span-1 p-1">
-                  <div class="font-semibold">
-                    <span>Horário Quarta</span>
-                  </div>
-                  <Dropdown
-                    v-model="diasDaSemana.quarta"
-                    showClear
-                    :options="horario"
-                    optionLabel="name"
-                    optionValue="code"
-                    placeholder="Quarta-Feira"
-                    class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-                  />
-                </div>
-                <div class="row-span-1 p-1">
-                  <div class="font-semibold">
-                    <span>Horário Quinta</span>
-                  </div>
-                  <Dropdown
-                    v-model="diasDaSemana.quinta"
-                    showClear
-                    :options="horario"
-                    optionLabel="name"
-                    optionValue="code"
-                    placeholder="Quinta-Feira"
-                    class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-                  />
-                </div>
-              </div>
+            <div class="row-span-1">
+              <TabelaHorarioSemanalFuncionario
+                :arrayHorarioSemanal="props.arrayHorarioSemanal"
+                :funcionario="props.funcionario"
+                />
             </div>
           </div>
         </div>
-        <div class="grid md:col-span-1">
-          <div class="grid xl:grid-cols-2">
-            <div class="col-span-1">
-              <div class="grid grid-rows-2 h-full w-full">
-                <div class="row-span-1 p-1">
-                  <div class="font-semibold">
-                    <span>Horário Sexta</span>
-                  </div>
-                  <Dropdown
-                    v-model="diasDaSemana.sexta"
-                    showClear
-                    :options="horario"
-                    optionLabel="name"
-                    optionValue="code"
-                    placeholder="Sexta-Feira"
-                    class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]"
-                  />
-                </div>
-                <div class="row-span-1 p-1"></div>
+        <div class="col-span-1">
+          <div class="grid justify-center h-full w-full">
+            <div class="grid grid-rows-6">
+              <div class="row-span-1 p-1">
+                <label class="text-black text-lg font-semibold">Editar Horários</label>
               </div>
-            </div>
-            <div class="col-span-1">
-              <div class="grid grid-rows-2 h-full w-full">
-                <div class="row-span-1 p-1"></div>
-                <div class="row-span-1 p-1 overflow-hidden"></div>
+              <div class="row-span-1 p-1">
+                <div class="grid justify-center">
+                  <Dropdown
+                        v-model="diasDaSemana.segunda"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Segunda-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                </div>
+              </div>
+              <div class="row-span-1 p-1">
+                <div class="grid justify-center">
+                  <Dropdown
+                        v-model="diasDaSemana.terca"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Terça-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                </div>
+              </div>
+              <div class="row-span-1 p-1">
+                <div class="grid justify-center">
+                  <Dropdown
+                        v-model="diasDaSemana.quarta"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Quarta-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                </div>
+              </div>
+              <div class="row-span-1 p-1">
+                <div class="grid justify-center">
+                  <Dropdown
+                        v-model="diasDaSemana.quinta"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Quinta-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                </div>
+              </div>
+              <div class="row-span-1 p-1">
+                <div class="grid justify-center">
+                  <Dropdown
+                        v-model="diasDaSemana.sexta"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Sexta-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                </div>
               </div>
             </div>
           </div>
+
+
+          <!-- <div class="grid md:grid-cols-2 h-full w-full gap-1">
+            <div class="grid md:col-span-1">
+              <div class="grid xl:grid-cols-2">
+                <div class="col-span-1">
+                  <div class="grid grid-rows-2 h-full w-full">
+                    <div class="row-span-1 p-1">
+                      <div class="font-semibold">
+                        <span>Horário Segunda</span>
+                      </div>
+                      <Dropdown
+                        v-model="diasDaSemana.segunda"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Segunda-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                    </div>
+                    <div class="row-span-1 p-1">
+                      <div class="font-semibold">
+                        <span>Horário Terça</span>
+                      </div>
+                      <Dropdown
+                        v-model="diasDaSemana.terca"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Terça-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-span-1">
+                  <div class="grid grid-rows-2 h-full w-full">
+                    <div class="row-span-1 p-1">
+                      <div class="font-semibold">
+                        <span>Horário Quarta</span>
+                      </div>
+                      <Dropdown
+                        v-model="diasDaSemana.quarta"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Quarta-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                    </div>
+                    <div class="row-span-1 p-1">
+                      <div class="font-semibold">
+                        <span>Horário Quinta</span>
+                      </div>
+                      <Dropdown
+                        v-model="diasDaSemana.quinta"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Quinta-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="grid md:col-span-1">
+              <div class="grid xl:grid-cols-2">
+                <div class="col-span-1">
+                  <div class="grid grid-rows-2 h-full w-full">
+                    <div class="row-span-1 p-1">
+                      <div class="font-semibold">
+                        <span>Horário Sexta</span>
+                      </div>
+                      <Dropdown
+                        v-model="diasDaSemana.sexta"
+                        showClear
+                        :options="horario"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Sexta-Feira"
+                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                      />
+                    </div>
+                    <div class="row-span-1 p-1"></div>
+                  </div>
+                </div>
+                <div class="col-span-1">
+                  <div class="grid grid-rows-2 h-full w-full">
+                    <div class="row-span-1 p-1"></div>
+                    <div class="row-span-1 p-1 overflow-hidden"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -144,12 +242,14 @@ import useCadastroService from "../../../services/CadastroService";
 import useEditarService from "../../../services/EditarService";
 import useUtils from "../../../services/Utils";
 import DialogAlerta from "../../DialogAlerta.vue";
+import TabelaHorarioSemanalFuncionario from "../Tabelas/Listar/TabelaHorarioSemanalFuncionario..vue";
 
 const emit = defineEmits(["atualizarDialogEditarDiasDaSemanaBool"]);
 const props = defineProps({
   isVisible: Boolean,
   funcionario: Object,
   diasDaSemana: Object,
+  arrayHorarioSemanal: Array,
 });
 const dialogEditarDiasDaSemanaIsVisible = ref(false);
 const dialogMensagem = ref("");
