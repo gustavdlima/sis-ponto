@@ -41,6 +41,16 @@ class HorarioController extends Controller
             return response()->json(['message'=> 'Erro ao criar Horário'], 200);
         }
     }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $horario = Horario::findOrFail($id);
+        return $horario;
+    }
+    
     /**
      * Update the specified resource in storage.
      */
