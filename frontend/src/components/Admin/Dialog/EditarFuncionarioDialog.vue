@@ -23,7 +23,9 @@
 												</div>
 												<div>
 													<Dropdown v-model="funcionario.setor" filter showClear
-														:options="setores" optionLabel="name" placeholder="Setor"
+														:options="setores" optionLabel="name"
+														optionValue="code"
+														placeholder="Setor"
 														class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" />
 												</div>
 											</div>
@@ -45,6 +47,7 @@
 												</div>
 												<Dropdown v-model="funcionario.carga_horaria" showClear
 													:options="cargaHoraria" optionLabel="name"
+													optionValue="code"
 													placeholder="Carga Horária"
 													class="w-full xl:w-[14rem] 2xl:w-[18rem] h-[2.5rem]" />
 											</div>
