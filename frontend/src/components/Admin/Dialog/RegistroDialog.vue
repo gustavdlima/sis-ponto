@@ -3,22 +3,33 @@
 		@update:visible="fecharDialogRegistro" :style="{ width: '88vw' }">
 		<template #header>
 			<div class="grid h-full w-full overflow-hidden">
-				<div class="grid grid-rows-2 justify-start h-full w-full gap-2">
-					<div class="row-span-1">
-						<span class="text-blue-950 text-2xl font-semibold">
-							Registro de Ponto
-						</span>
-					</div>
-					<div class="row-span-1">
-						<Button label="Gerar Relatório Mensal"
-							class="p-button-info h-10 w-60 lg:h-10 text-md md:text-lg"
-							@click="abrirDialogRelatorioMensal()" />
+				<div class="grid grid-cols-2">
+					<div class="col-span-1">
+						<div class="grid justify-start h-full w-full gap-2">
+							<div class="row-span-1">
+								<div class="grid grid-rows-2">
+									<div class="row-span-1">
+										<span class="text-blue-950 text-2xl font-semibold ">
+											Registro de Ponto
+										</span>
+									</div>
+									<div class="row-span-1">
+										<div class="mt-1">
+											<Button label="Gerar Relatório Mensal"
+												class="p-button-info h-10 w-60 lg:h-10 text-md md:text-lg"
+												@click="abrirDialogRelatorioMensal()" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 
 			</div>
 		</template>
 		<div class="grid p-4">
+
 			<TabelaRegistroGeral :registro="propsObject.registroFuncionarioSelecionado" />
 		</div>
 
@@ -80,15 +91,15 @@
 </template>
 
 <script setup>
-import { ref, watch, onUnmounted } from 'vue';
+import { ref, watch } from 'vue';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import TabelaRegistroGeral from '../Tabelas/TabelaRegistroGeral.vue';
 import RelatorioMensalDialog from './RelatorioMensalDialog.vue';
 import useListarService from '../../../services/ListarService';
 import TabelaImpressaoRegistro from '../Tabelas/TabelaImpressaoRegistro.vue';
-import useUtils from '../../../services/Utils';
 import LogoFunadComNome from '../../LogoFunadComNome.vue';
+import TabelaHorarioSemanalFuncionario from '../Tabelas/Listar/TabelaHorarioSemanalFuncionario..vue';
 
 const emit = defineEmits(['atualizarDialogRegistroBool']);
 const props = defineProps({
@@ -164,7 +175,6 @@ const handleData = async (response) => {
 	}
 	relatorioRef.value = relatorio;
 	tabelaImpressaoisVisible.value = true;
-	console.log(relatorioRef.value);
 	setTimeout(() => {
 		const print = document.getElementById('imprimirRelatorio').innerHTML;
 

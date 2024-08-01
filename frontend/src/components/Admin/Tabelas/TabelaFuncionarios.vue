@@ -60,7 +60,7 @@
 	</div>
 
 	<RegistroDialog @atualizarDialogRegistroBool="atualizarValorRegistroBool"
-		:propsObject="{ dialogRegistroIsVisible: dialogRegistroIsVisible, funcionarioSelecionado: funcionarioSelecionado, registroFuncionarioSelecionado: registroFuncionarioSelecionado }" />
+		:propsObject="{ dialogRegistroIsVisible: dialogRegistroIsVisible, funcionarioSelecionado: funcionarioSelecionado, registroFuncionarioSelecionado: registroFuncionarioSelecionado, }" />
 
 	<RegistrarFaltaDialog @atualizarDialogRegistrarFaltaBool="atualizarValorRegistrarFaltaBool"
 		:is-visible="dialogRegistrarFaltaIsVisible" :funcionario="funcionarioSelecionado" />
@@ -70,7 +70,8 @@
 
 	 <EditarDiasDaSemanaDialog @atualizarDialogEditarDiasDaSemanaBool="atualizarDialogEditarDiasDaSemanaBool"
 	 :is-visible="dialogEditarDiasDaSemanaIsVisible" :funcionario="funcionarioSelecionado"
-	 :diasDaSemana="diasDaSemana"/>
+	 :diasDaSemana="diasDaSemana"
+	 :arrayHorarioSemanal="arrayHorarioSemanal" />
 
 	<RemoverFuncionarioDialog @atualizarDialogRemoverFuncionarioBool="atualizarDialogRemoverFuncionarioBool"
 	 :is-visible="dialogRemoverFuncionarioIsVisible" :funcionario="funcionarioSelecionado" />
@@ -118,6 +119,66 @@ const filters = ref({
 		matchMode: FilterMatchMode.CONTAINS
 	}
 });
+const arrayHorarioSemanal = ref([]);
+
+
+const criarStringDoHorario = (horario) => {
+	if (horario == null)
+	return;
+	var string = "";
+
+	string = horario.data.primeiro_horario + " ";
+	string += horario.data.segundo_horario + " ";
+	if (horario.data.terceiro_horario == null)
+		return string;
+	string += horario.data.terceiro_horario + " ";
+	string += horario.data.quarto_horario + " ";
+
+	// transformar array em objeto
+	const object = {
+		horario: string
+	}
+
+	return object;
+}
+
+const gerarArrayDeHorarioSemanal = async () => {
+	const arrayHorario = [];
+	if (funcionarioSelecionado.value == null) {
+		return;
+	}
+	const response = await useListarService.getDiasDaSemana(funcionarioSelecionado.value);
+
+	if (response.data.length == 0)
+		return;
+	arrayHorario[0] = response.data.segunda;
+	arrayHorario[1] = response.data.terca;
+	arrayHorario[2] = response.data.quarta;
+	arrayHorario[3] = response.data.quinta;
+	arrayHorario[4] = response.data.sexta;
+
+	for (let i = 0; i <= 4; i++) {
+		var responseH;
+		if (arrayHorario[i] != null)
+			responseH = await useListarService.listarHorarioEspecifico	(arrayHorario[i])
+		if (responseH.data.length == 0)
+			i++;
+		arrayHorario[i] = criarStringDoHorario(responseH);
+	}
+
+	const objeto = {
+		segunda: arrayHorario[0],
+		terca: arrayHorario[1],
+		quarta: arrayHorario[2],
+		quinta: arrayHorario[3],
+		sexta: arrayHorario[4]
+	}
+
+	arrayHorario[0] = objeto;
+
+	return arrayHorario;
+}
+
 
 const abrirRegistro = async (slotProps) => {
 	funcionarioSelecionado.value = slotProps.data;
@@ -163,6 +224,7 @@ const atualizarDialogRemoverFuncionarioBool = (eventData) => {
 
 const abrirEditarDiasDaSemana = async (slotProps) => {
 	funcionarioSelecionado.value = slotProps.data;
+	arrayHorarioSemanal.value = await gerarArrayDeHorarioSemanal();
 	if (funcionarioSelecionado.value.id_dia_da_semana != null) {
 		const response = await useListarService.getDiasDaSemana(funcionarioSelecionado.value);
 		diasDaSemana.value = response.data;
