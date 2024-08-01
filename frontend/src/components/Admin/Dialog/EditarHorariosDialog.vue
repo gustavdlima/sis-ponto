@@ -178,9 +178,6 @@ watch(props, () => {
 	horarioEditado.value = props.horario;
 });
 
-onMounted(() => {
-
-})
 
 </script>
 
