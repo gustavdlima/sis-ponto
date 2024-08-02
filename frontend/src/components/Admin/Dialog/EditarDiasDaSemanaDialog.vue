@@ -43,7 +43,7 @@
                 <label class="text-black text-lg font-semibold">Editar Horários</label>
               </div>
               <div class="row-span-1 p-1">
-                <div class="grid justify-center">
+                <div class="grid justify-center w-full">
                   <Dropdown
                         v-model="diasDaSemana.segunda"
                         showClear
@@ -51,7 +51,7 @@
                         optionLabel="name"
                         optionValue="code"
                         placeholder="Segunda-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                        class="w-full lg:w-[12rem] 2xl:w-[13rem] h-[2.5rem]"
                       />
                 </div>
               </div>
@@ -64,7 +64,7 @@
                         optionLabel="name"
                         optionValue="code"
                         placeholder="Terça-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                        class="w-full lg:w-[12rem] 2xl:w-[13rem] h-[2.5rem]"
                       />
                 </div>
               </div>
@@ -77,7 +77,7 @@
                         optionLabel="name"
                         optionValue="code"
                         placeholder="Quarta-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                        class="w-full lg:w-[12rem] 2xl:w-[13rem] h-[2.5rem]"
                       />
                 </div>
               </div>
@@ -90,7 +90,7 @@
                         optionLabel="name"
                         optionValue="code"
                         placeholder="Quinta-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                        class="w-full lg:w-[12rem] 2xl:w-[13rem] h-[2.5rem]"
                       />
                 </div>
               </div>
@@ -103,7 +103,7 @@
                         optionLabel="name"
                         optionValue="code"
                         placeholder="Sexta-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                        class="w-full lg:w-[12rem] 2xl:w-[13rem] h-[2.5rem]"
                       />
                 </div>
               </div>
@@ -113,8 +113,8 @@
 
           <!-- <div class="grid md:grid-cols-2 h-full w-full gap-1">
             <div class="grid md:col-span-1">
-              <div class="grid xl:grid-cols-2">
-                <div class="col-span-1">
+              <div class="grid lg:grid-cols-2">
+    3           <div class="col-span-1">
                   <div class="grid grid-rows-2 h-full w-full">
                     <div class="row-span-1 p-1">
                       <div class="font-semibold">
@@ -127,7 +127,7 @@
                         optionLabel="name"
                         optionValue="code"
                         placeholder="Segunda-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
+                        class="w-full lg:w-[12rem] 2xl:w-[13rem] h-[2.5rem]"
                       />
                     </div>
                     <div class="row-span-1 p-1">
