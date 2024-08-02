@@ -144,8 +144,17 @@ const criarStringDoHorario = (horario) => {
 
 const gerarArrayDeHorarioSemanal = async () => {
 	const arrayHorario = [];
-	if (funcionarioSelecionado.value == null) {
-		return;
+	if (funcionarioSelecionado.value == null || funcionarioSelecionado.value.id_dia_da_semana == null) {
+		arrayHorario[0] =
+			{
+				segunda: "",
+				terca: "",
+				quarta: "",
+				quinta: "",
+				sexta: ""
+			}
+		
+		return arrayHorario;
 	}
 	const response = await useListarService.getDiasDaSemana(funcionarioSelecionado.value);
 
