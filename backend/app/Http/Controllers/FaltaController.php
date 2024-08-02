@@ -39,13 +39,14 @@ class FaltaController extends Controller
                 ->get();
 
         if ($falta->count() <= 0) {
-            $falta = Falta::create($request);
-            return "Falta registrada com sucesso";
+            $falta = Falta::create($request->all());
+            return response()->json([
+                'message' => 'Falta registrada com sucesso!',
+            ], 200);
         } else {
-            return "Falta ja registrada";
+            return "Problema ao adicionar falta, contate um administrador";
         }
 
-        return $falta;
     }
 
     /**
