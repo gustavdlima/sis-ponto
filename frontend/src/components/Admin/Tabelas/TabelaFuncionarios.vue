@@ -129,8 +129,12 @@ const criarStringDoHorario = (horario) => {
 
 	string = horario.data.primeiro_horario + " ";
 	string += horario.data.segundo_horario + " ";
-	if (horario.data.terceiro_horario == null)
-		return string;
+	if (horario.data.terceiro_horario == null) {
+		const object = {
+			horario: string
+		}
+		return object;
+	}
 	string += horario.data.terceiro_horario + " ";
 	string += horario.data.quarto_horario + " ";
 
@@ -153,7 +157,7 @@ const gerarArrayDeHorarioSemanal = async () => {
 				quinta: "",
 				sexta: ""
 			}
-		
+
 		return arrayHorario;
 	}
 	const response = await useListarService.getDiasDaSemana(funcionarioSelecionado.value);
