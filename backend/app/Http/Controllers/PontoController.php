@@ -38,6 +38,12 @@ class PontoController extends Controller
         // procura o funcionario a partir da matricula
         $funcionario = Funcionario::where('matricula', $request->matricula)->first();
 
+        if ($funcionario == null)
+            return response()->json([
+                'message' => 'Funcionário não encontrado',
+                'status' => 404
+            ], 404);
+
         $registro = $registro->retornaOUltimoRegistroDoFuncionario($funcionario);
 
         $registro = $this->padronizarRegistroDoDia($registro, $funcionario);
