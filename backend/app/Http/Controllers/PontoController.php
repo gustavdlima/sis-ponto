@@ -9,8 +9,8 @@ use App\Models\Registro;
 use App\Models\Horario;
 use App\Models\DiasDaSemana;
 use Exception;
-use Psr\Log\NullLogger;
 use DateTime;
+use Psr\Log\NullLogger;
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -108,11 +108,11 @@ class PontoController extends Controller
 
     public function checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual)
     {
-        // checa se o funcionário está mais de 15 minutos adiantado ou 15 minutos adiantado
+        // checa se o funcionário está mais de 30 minutos adiantado ou 30 minutos adiantado
         $horarioPonto = new DateTime($horarioPonto);
         $horaAtual = new DateTime($horaAtual);
 
-        $horarioPonto->modify('-15 minutes');
+        $horarioPonto->modify('-30 minutes');
 
         if ($horaAtual < $horarioPonto)
             return true;
@@ -190,7 +190,7 @@ class PontoController extends Controller
         return $pontos;
     }
 
-    public function retornaHorarioEmFormatoDeArray($horarioId, $funcionario)
+    public function retornaHorarioEmFormatoDeArray($horarioId)
     {
         $horarios = Horario::where('id', $horarioId)->get();
 
@@ -198,15 +198,12 @@ class PontoController extends Controller
             return null;
 
         $horarioArray = array();
-        if ($funcionario->carga_horaria == "20h") {
-            $horarioArray[0] = $horarios[0]->primeiro_horario;
-            $horarioArray[1] = $horarios[0]->segundo_horario;
-        } else if ($funcionario->carga_horaria == "40h") {
-            $horarioArray[0] = $horarios[0]->primeiro_horario;
-            $horarioArray[1] = $horarios[0]->segundo_horario;
+        $horarioArray[0] = $horarios[0]->primeiro_horario;
+        $horarioArray[1] = $horarios[0]->segundo_horario;
+        if ($horarios[0]->terceiro_horario != null)
             $horarioArray[2] = $horarios[0]->terceiro_horario;
+        if ($horarios[0]->quarto_horario != null)
             $horarioArray[3] = $horarios[0]->quarto_horario;
-        }
         return $horarioArray;
     }
 
@@ -226,19 +223,19 @@ class PontoController extends Controller
         switch ($diaAtual) {
             case 1:
                 $horarioId = $tabelaDiasDaSemana[0]->segunda;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId, $funcionario);
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
             case 2:
                 $horarioId = $tabelaDiasDaSemana[0]->terca;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId, $funcionario);
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
             case 3:
                 $horarioId = $tabelaDiasDaSemana[0]->quarta;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId, $funcionario);
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
             case 4:
                 $horarioId = $tabelaDiasDaSemana[0]->quinta;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId, $funcionario);
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
             case 5:
                 $horarioId = $tabelaDiasDaSemana[0]->sexta;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId, $funcionario);
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
             default:
                 $horarioId = null;
                 return $horarioId;
@@ -266,8 +263,8 @@ class PontoController extends Controller
             if ($pontoRegistro == null) {
                 $diferenca = strtotime($horaAtual) - strtotime($horarioPonto);
 
-                // se a diferença for maior que 15 minutos, o funcionário está atrasado
-                if ($diferenca > 900)
+                // se a diferença for maior que 30 minutos, o funcionário está atrasado
+                if ($diferenca > 1800)
                     $registro = $this->adicionarAtrasoAoRegistro($registro, $i);
             }
         }
@@ -275,14 +272,29 @@ class PontoController extends Controller
         return $registro;
     }
 
-    public function checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro): bool
+    public function checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro, $diaAtual)
     {
-        if ($funcionario->carga_horaria == "20h") {
+        $horario = $this->retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual);
+
+        // size of array
+        $quantidadeDeHorarios = count($horario);
+        if ($quantidadeDeHorarios == 1) {
+            if ($registro->primeiro_ponto != null)
+                return true;
+            return false;
+        }
+        if ($quantidadeDeHorarios == 2) {
             if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null)
                 return true;
             return false;
-        } else if ($funcionario->carga_horaria == "40h") {
-            if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null && $registro->terceiro_ponto != null && $registro->quarto_ponto != null)
+        }
+        if ($quantidadeDeHorarios == 3) {
+            if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null && $registro->terceiro_ponto != null)
+                return true;
+            return false;
+        }
+        if ($quantidadeDeHorarios == 4) {
+            if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null && $registro->terceiro_ponto != null)
                 return true;
             return false;
         }
@@ -338,20 +350,16 @@ class PontoController extends Controller
     public function checaSeOFuncionarioTemRegistro($funcionario)
     {
         $registro = $this->retornaUltimoRegistroDoFuncionario($funcionario->id);
-
         if (!$registro) {
             $registro = $this->criarRegistro($funcionario);
             return $registro;
         }
-
        return $registro;
     }
 
     public function validarFuncionario($funcionario): bool
     {
         if ($funcionario == null)
-            return false;
-        if ($funcionario->id_horario == null || $funcionario->id_horario == 0)
             return false;
         if ($funcionario->id == null || $funcionario->id < 1)
             return false;
@@ -394,7 +402,7 @@ class PontoController extends Controller
 
             // Se o funcionário já bateu todos os pontos do dia, retorna o registro
 
-            if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro)) {
+            if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro, $diaAtual)) {
                 return response()->json([
                     'message' => 'O funcionário já bateu todos os pontos do dia',
                     'status' => 200,
