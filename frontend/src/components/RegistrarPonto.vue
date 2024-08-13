@@ -92,7 +92,7 @@ const registrarPonto = async () => {
 		return matriculaVaziaDialog();
 	try {
 		const response = await useRegistroPontoService.registrarPonto(matriculaObjeto);
-		await handleResponse(response);
+		await handleResponse(response, matriculaObjeto.matricula);
 		await startCountdown();
 		tabelaRegistroVisivel.value = false;
 	} catch (error) {
@@ -102,7 +102,7 @@ const registrarPonto = async () => {
 	}
 }
 
-const handleResponse = async (response) => {
+const handleResponse = async (response, matricula) => {
 	switch (response.status) {
 		case 201:
 			pegarRegistroDoDia();
@@ -114,10 +114,20 @@ const handleResponse = async (response) => {
 			limparInput();
 			return;
 			break;
+		case 200:
+			baterPontoBotaoVisivel.value = true;
+			limparInput();
+			dialogVisivel.value = true;
+			dialogMensagem.value = response.data.message;
+			useUtils.sleep(2000).then(() => {
+				dialogVisivel.value = false;
+			});
+			return;
+			break;
 		default:
 			baterPontoBotaoVisivel.value = true;
 			limparInput();
-			return abrirDialogErro(response.message);
+			return abrirDialogErro(response.data.message);
 			break;
 	}
 };
@@ -165,10 +175,10 @@ function matriculaVaziaDialog() {
 }
 
 
-function abrirDialogPontoJaBatido() {
+async function abrirDialogPontoJaBatido(matricula) {
 	dialogVisivel.value = true;
-	dialogMensagem.value = useRegistroPontoService.getPontoDoDia();
-
+	dialogMensagem.value = await useRegistroPontoService.getPontoDoDia({matricula: matricula});
+	console.log(dialogMensagem.value);
 }
 
 function abrirDialogErro(message) {
