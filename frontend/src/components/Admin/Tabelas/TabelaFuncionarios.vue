@@ -124,7 +124,7 @@ const arrayHorarioSemanal = ref([]);
 
 const criarStringDoHorario = (horario) => {
 	if (horario == null)
-	return;
+	return "Não cadastrado";
 	var string = "";
 
 	string = horario.data.primeiro_horario + " ";
@@ -157,7 +157,6 @@ const gerarArrayDeHorarioSemanal = async () => {
 				quinta: "",
 				sexta: ""
 			}
-
 		return arrayHorario;
 	}
 	const response = await useListarService.getDiasDaSemana(funcionarioSelecionado.value);
@@ -172,11 +171,12 @@ const gerarArrayDeHorarioSemanal = async () => {
 
 	for (let i = 0; i <= 4; i++) {
 		var responseH;
-		if (arrayHorario[i] != null)
+		if (arrayHorario[i] != null) {
 			responseH = await useListarService.listarHorarioEspecifico	(arrayHorario[i])
-		if (responseH.data.length == 0)
-			i++;
-		arrayHorario[i] = criarStringDoHorario(responseH);
+			arrayHorario[i] = criarStringDoHorario(responseH);
+		}
+		else
+			arrayHorario[i] = {horario: "Não cadastrado"};
 	}
 
 	const objeto = {
