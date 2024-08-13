@@ -109,107 +109,6 @@
               </div>
             </div>
           </div>
-
-
-          <!-- <div class="grid md:grid-cols-2 h-full w-full gap-1">
-            <div class="grid md:col-span-1">
-              <div class="grid lg:grid-cols-2">
-    3           <div class="col-span-1">
-                  <div class="grid grid-rows-2 h-full w-full">
-                    <div class="row-span-1 p-1">
-                      <div class="font-semibold">
-                        <span>Horário Segunda</span>
-                      </div>
-                      <Dropdown
-                        v-model="diasDaSemana.segunda"
-                        showClear
-                        :options="horario"
-                        optionLabel="name"
-                        optionValue="code"
-                        placeholder="Segunda-Feira"
-                        class="w-full lg:w-[12rem] 2xl:w-[13rem] h-[2.5rem]"
-                      />
-                    </div>
-                    <div class="row-span-1 p-1">
-                      <div class="font-semibold">
-                        <span>Horário Terça</span>
-                      </div>
-                      <Dropdown
-                        v-model="diasDaSemana.terca"
-                        showClear
-                        :options="horario"
-                        optionLabel="name"
-                        optionValue="code"
-                        placeholder="Terça-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-span-1">
-                  <div class="grid grid-rows-2 h-full w-full">
-                    <div class="row-span-1 p-1">
-                      <div class="font-semibold">
-                        <span>Horário Quarta</span>
-                      </div>
-                      <Dropdown
-                        v-model="diasDaSemana.quarta"
-                        showClear
-                        :options="horario"
-                        optionLabel="name"
-                        optionValue="code"
-                        placeholder="Quarta-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
-                      />
-                    </div>
-                    <div class="row-span-1 p-1">
-                      <div class="font-semibold">
-                        <span>Horário Quinta</span>
-                      </div>
-                      <Dropdown
-                        v-model="diasDaSemana.quinta"
-                        showClear
-                        :options="horario"
-                        optionLabel="name"
-                        optionValue="code"
-                        placeholder="Quinta-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid md:col-span-1">
-              <div class="grid xl:grid-cols-2">
-                <div class="col-span-1">
-                  <div class="grid grid-rows-2 h-full w-full">
-                    <div class="row-span-1 p-1">
-                      <div class="font-semibold">
-                        <span>Horário Sexta</span>
-                      </div>
-                      <Dropdown
-                        v-model="diasDaSemana.sexta"
-                        showClear
-                        :options="horario"
-                        optionLabel="name"
-                        optionValue="code"
-                        placeholder="Sexta-Feira"
-                        class="w-full xl:w-[12rem] 2xl:w-[15rem] h-[2.5rem]"
-                      />
-                    </div>
-                    <div class="row-span-1 p-1"></div>
-                  </div>
-                </div>
-                <div class="col-span-1">
-                  <div class="grid grid-rows-2 h-full w-full">
-                    <div class="row-span-1 p-1"></div>
-                    <div class="row-span-1 p-1 overflow-hidden"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -259,6 +158,9 @@ const diasDaSemanaEditado = ref();
 const horario = ref([]);
 
 const editarDiasDaSemana = async () => {
+  diasDaSemanaEditado.value = substituirNenhumPorNull(
+    diasDaSemanaEditado.value
+  );
   const response = await useCadastroService.cadastrarDiasDaSemana(
     diasDaSemanaEditado.value
   );
@@ -272,6 +174,7 @@ const handleResponse = async (response, idDiasDaSemana) => {
     const responseEditarFuncionario = await useEditarService.editarFuncionario(
       funcionarioEditado.value
     );
+    console.log(responseEditarFuncionario);
     dialogMensagem.value = "Dias da semana editados com sucesso!";
     dialogVisivel.value = true;
     setTimeout(() => {
@@ -282,6 +185,25 @@ const handleResponse = async (response, idDiasDaSemana) => {
     dialogMensagem.value = "Erro ao editar dias da semana!";
     dialogVisivel.value = true;
   }
+};
+
+const substituirNenhumPorNull = (diasDaSemana) => {
+  if (diasDaSemana.segunda == "Nenhum") {
+    diasDaSemana.segunda = null;
+  }
+  if (diasDaSemana.terca == "Nenhum") {
+    diasDaSemana.terca = null;
+  }
+  if (diasDaSemana.quarta == "Nenhum") {
+    diasDaSemana.quarta = null;
+  }
+  if (diasDaSemana.quinta == "Nenhum") {
+    diasDaSemana.quinta = null;
+  }
+  if (diasDaSemana.sexta == "Nenhum") {
+    diasDaSemana.sexta = null;
+  }
+  return diasDaSemana;
 };
 
 const fecharEditarDiasDaSemanaDialog = () => {
@@ -315,6 +237,10 @@ const getHorarios = async () => {
       code: response.data[i].id,
     });
   }
+  horario.value.push({
+    name: "Nenhum",
+    code: "Nenhum",
+  });
 };
 
 watch(props, (newValue) => {
