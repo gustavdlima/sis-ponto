@@ -124,6 +124,16 @@ const handleResponse = async (response, matricula) => {
 			});
 			return;
 			break;
+		case 500:
+			baterPontoBotaoVisivel.value = true;
+			limparInput();
+			dialogVisivel.value = true;
+			console.log(response);
+			dialogMensagem.value = response.message;
+			useUtils.sleep(4000).then(() => {
+				dialogVisivel.value = false;
+			});
+			break;
 		default:
 			baterPontoBotaoVisivel.value = true;
 			limparInput();
@@ -173,7 +183,6 @@ function matriculaVaziaDialog() {
 	dialogMensagem.value = 'Digite sua matrícula';
 	baterPontoBotaoVisivel.value = true;
 }
-
 
 async function abrirDialogPontoJaBatido(matricula) {
 	dialogVisivel.value = true;
