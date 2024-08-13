@@ -276,7 +276,6 @@ class PontoController extends Controller
     {
         $horario = $this->retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual);
 
-        // size of array
         $quantidadeDeHorarios = count($horario);
         if ($quantidadeDeHorarios == 1) {
             if ($registro->primeiro_ponto != null)
@@ -294,7 +293,7 @@ class PontoController extends Controller
             return false;
         }
         if ($quantidadeDeHorarios == 4) {
-            if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null && $registro->terceiro_ponto != null)
+            if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null && $registro->terceiro_ponto != null && $registro->quarto_ponto != null)
                 return true;
             return false;
         }
@@ -401,7 +400,6 @@ class PontoController extends Controller
             $registro = $this->checaSeOFuncionarioTemRegistro($funcionario);
 
             // Se o funcionário já bateu todos os pontos do dia, retorna o registro
-
             if ($this->checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro, $diaAtual)) {
                 return response()->json([
                     'message' => 'O funcionário já bateu todos os pontos do dia',
