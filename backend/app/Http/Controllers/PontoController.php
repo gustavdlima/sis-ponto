@@ -215,32 +215,6 @@ class PontoController extends Controller
         return $tabelaDiasDaSemana;
     }
 
-    public function retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual)
-    {
-        $tabelaDiasDaSemana = $this->retornaTabelaDoDiaDaSemana($funcionario);
-        if ($tabelaDiasDaSemana == null)
-            return null;
-        switch ($diaAtual) {
-            case 1:
-                $horarioId = $tabelaDiasDaSemana[0]->segunda;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId);
-            case 2:
-                $horarioId = $tabelaDiasDaSemana[0]->terca;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId);
-            case 3:
-                $horarioId = $tabelaDiasDaSemana[0]->quarta;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId);
-            case 4:
-                $horarioId = $tabelaDiasDaSemana[0]->quinta;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId);
-            case 5:
-                $horarioId = $tabelaDiasDaSemana[0]->sexta;
-                return $this->retornaHorarioEmFormatoDeArray($horarioId);
-            default:
-                $horarioId = null;
-                return $horarioId;
-            }
-    }
 
     public function checaSeOFuncionarioEstaAtrasado($funcionario, $registro, $diaAtual, $horaAtual)
     {
@@ -272,9 +246,49 @@ class PontoController extends Controller
         return $registro;
     }
 
+    public function retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual)
+    {
+        $tabelaDiasDaSemana = $this->retornaTabelaDoDiaDaSemana($funcionario);
+        if ($tabelaDiasDaSemana == null)
+            return null;
+        switch ($diaAtual) {
+            case 1:
+                if ($tabelaDiasDaSemana[0]->segunda == null)
+                    return null;
+                $horarioId = $tabelaDiasDaSemana[0]->segunda;
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
+            case 2:
+                if ($tabelaDiasDaSemana[0]->terca == null)
+                    return null;
+                $horarioId = $tabelaDiasDaSemana[0]->terca;
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
+            case 3:
+                if ($tabelaDiasDaSemana[0]->quarta == null)
+                    return null;
+                $horarioId = $tabelaDiasDaSemana[0]->quarta;
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
+            case 4:
+                if ($tabelaDiasDaSemana[0]->quinta == null)
+                    return null;
+                $horarioId = $tabelaDiasDaSemana[0]->quinta;
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
+            case 5:
+                if ($tabelaDiasDaSemana[0]->sexta == null)
+                    return null;
+                $horarioId = $tabelaDiasDaSemana[0]->sexta;
+                return $this->retornaHorarioEmFormatoDeArray($horarioId);
+            default:
+                $horarioId = null;
+                return $horarioId;
+        }
+    }
+
     public function checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro, $diaAtual)
     {
         $horario = $this->retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual);
+
+        if ($horario == null)
+            throw new Exception('Você não tem horário cadastrado para o dia atual, contate o RH.', 404);
 
         $quantidadeDeHorarios = count($horario);
         if ($quantidadeDeHorarios == 1) {
@@ -353,7 +367,7 @@ class PontoController extends Controller
             $registro = $this->criarRegistro($funcionario);
             return $registro;
         }
-       return $registro;
+        return $registro;
     }
 
     public function validarFuncionario($funcionario): bool
