@@ -55,6 +55,6 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:san
 
 Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
 
-Route::post('/users', [UserController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/users', [UserController::class, 'store']);
 
 Route::post('/relatorio', [RegistroController::class, 'gerarRelatorioDeRegistroDoPonto'])->middleware('auth:sanctum');
