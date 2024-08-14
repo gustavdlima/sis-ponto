@@ -93,7 +93,7 @@ const items = ref([
 		],
 	},
 	{
-		label: 'Listar',
+		label: 'Listar e Editar',
 		icon: 'pi pi-fw pi-list',
 		items: [
 			[
