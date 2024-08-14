@@ -108,10 +108,10 @@ Após a instalação e execução da aplicação:
 Para criar o primeiro usuário, você vai enviar uma request para o endpoint ***/api/users***, contendo as seguintes informações:
 ```
 	{
-	"name": "admin",
-	"email": "admin@admin",
-	"password": "test",
-	"level": 3
+	    "name": "admin",
+	    "email": "admin@admin",
+	    "password": "test",
+	    "level": 3
 	}
 ```
 
