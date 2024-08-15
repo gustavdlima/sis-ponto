@@ -31,13 +31,12 @@ class FaltaController extends Controller
             'data' => 'required',
             'data2' => 'required',
         ]);
-
         $falta = DB::table('faltas')
                 ->select('data')
                 ->where('id_funcionario', $request->id_funcionario)
                 ->where('data', $request->data)
+                ->where('data2', $request->data2)
                 ->get();
-
         if ($falta->count() <= 0) {
             $falta = Falta::create($request->all());
             return response()->json([
