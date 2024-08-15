@@ -16,6 +16,19 @@ date_default_timezone_set('America/Sao_Paulo');
 
 class PontoController extends Controller
 {
+    public function verificarPontoSemRegistro($horaAtual, $horaPonto)
+    {
+        // verifica se a hora atual tem uma diferença acima de 30 minutos do horário do ponto
+        $horaAtual = new DateTime($horaAtual);
+        $horaPonto = new DateTime($horaPonto);
+
+        $diferenca = strtotime($horaAtual->format('H:i:s')) - strtotime($horaPonto->format('H:i:s'));
+
+        if ($diferenca > 1800)
+            return true;
+        return false;
+    }
+
     public function padronizarRegistroDoDia($registro, $funcionario)
     {
         // se o usuário estiver atrasado, adicionar atraso ao registro
@@ -51,11 +64,53 @@ class PontoController extends Controller
         return $registro;
     }
 
-    // Adiciona a hora no ponto
-    public function adicionarHoraNoPonto($registro, $indice, $horaAtual)
+    public function adicionarSemRegistroNoPonto($registro, $indice)
     {
         switch ($indice) {
             case 0:
+                $registro->primeiro_ponto = "Sem Registro";
+                Db::table('registros')
+                    ->where('id', $registro->id)
+                    ->update([
+                        'primeiro_ponto' => "Sem Registro",
+                    ]);
+                return $registro;
+            case 1:
+                $registro->segundo_ponto = "Sem Registro";
+                Db::table('registros')
+                    ->where('id', $registro->id)
+                    ->update([
+                        'segundo_ponto' => "Sem Registro",
+                    ]);
+                return $registro;
+            case 2:
+                $registro->terceiro_ponto = "Sem Registro";
+                Db::table('registros')
+                    ->where('id', $registro->id)
+                    ->update([
+                        'terceiro_ponto' => "Sem Registro",
+                    ]);
+                return $registro;
+            case 3:
+                $registro->quarto_ponto = "Sem Registro";
+                Db::table('registros')
+                    ->where('id', $registro->id)
+                    ->update([
+                        'quarto_ponto' => "Sem Registro",
+                    ]);
+                return $registro;
+            default:
+                return;
+        }
+    }
+
+    // Adiciona a hora no ponto
+    public function adicionarHoraNoPonto($registro, $indice, $horaAtual, $horarioPonto)
+    {
+        switch ($indice) {
+            case 0:
+                if ($this->verificarPontoSemRegistro($horaAtual, $horarioPonto) == true)
+                    return $this->adicionarSemRegistroNoPonto($registro, $indice);
                 $registro->primeiro_ponto = $horaAtual;
                 Db::table('registros')
                     ->where('id', $registro->id)
@@ -64,6 +119,8 @@ class PontoController extends Controller
                     ]);
                 return $registro;
             case 1:
+                if ($this->verificarPontoSemRegistro($horaAtual, $horarioPonto) == true)
+                    return $this->adicionarSemRegistroNoPonto($registro, $indice);
                 $registro->segundo_ponto = $horaAtual;
                 Db::table('registros')
                     ->where('id', $registro->id)
@@ -72,6 +129,8 @@ class PontoController extends Controller
                     ]);
                 return $registro;
             case 2:
+                if ($this->verificarPontoSemRegistro($horaAtual, $horarioPonto) == true)
+                    return $this->adicionarSemRegistroNoPonto($registro, $indice);
                 $registro->terceiro_ponto = $horaAtual;
                 Db::table('registros')
                     ->where('id', $registro->id)
@@ -80,6 +139,8 @@ class PontoController extends Controller
                     ]);
                 return $registro;
             case 3:
+                if ($this->verificarPontoSemRegistro($horaAtual, $horarioPonto) == true)
+                    return $this->adicionarSemRegistroNoPonto($registro, $indice);
                 $registro->quarto_ponto = $horaAtual;
                 Db::table('registros')
                     ->where('id', $registro->id)
@@ -134,7 +195,11 @@ class PontoController extends Controller
                 else if ($i == 3 && $this->checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual))
                     return $registro;
 
-                $registro = $this->adicionarHoraNoPonto($registro, $i, $horaAtual);
+                // verificar se o funcionario está tentando bater o ponto depois de 30minutos do horário
+
+
+
+                $registro = $this->adicionarHoraNoPonto($registro, $i, $horaAtual, $horarioPonto);
             }
         }
         return $registro;
@@ -425,6 +490,8 @@ class PontoController extends Controller
 
             // Registra a hora no ponto
             $registro = $this->registrarHoraNoPonto($registro, $funcionario, $diaAtual, $horaAtual);
+
+            return $registro;
 
             if ($registro->data == null)
                 $registro = $this->adicionarDataAoRegistro($registro);

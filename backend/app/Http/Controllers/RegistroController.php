@@ -14,6 +14,8 @@ class RegistroController extends Controller
     public function tratarDadosRelatorio($funcionario, $relatorio) {
 
         for ($i = 0; $i < sizeof($relatorio); $i++) {
+
+            // adiciona Justificado no campo do ponto no relatório
             if ($relatorio[$i]['justificativa'] && $relatorio[$i]['registroDoDia']) {
                 if (!isset($relatorio[$i]['registroDoDia'][0]['primeiro_ponto'])) {
                     $relatorio[$i]['registroDoDia'][0]['primeiro_ponto'] = 'JUSTIFICADO';
@@ -46,6 +48,9 @@ class RegistroController extends Controller
             }
 
             if ($relatorio[$i]['justificativa']) {
+                if (!$relatorio[$i]['justificativa'][0]['data2']) {
+                    $relatorio[$i]['justificativa'] = null;
+                }
                 $dataInicio = explode('-', $relatorio[$i]['justificativa'][0]['data']);
                 $dataFim = explode('-', $relatorio[$i]['justificativa'][0]['data2']);
                 if ($dataInicio[2] != $dataFim[2]) {
@@ -191,13 +196,13 @@ class RegistroController extends Controller
 
         for ($i = 0; $i < count($registro); $i++) {
 
-            if ($registro[$i]['primeiro_ponto'] != null && $registro[$i]['primeiro_ponto'] != 'FALTA' && $registro[$i]['primeiro_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['primeiro_ponto'] != 'JUSTIFICADO' && $registro[$i]['primeiro_ponto'] != 'ATRASADO')
+            if ($registro[$i]['primeiro_ponto'] != null && $registro[$i]['primeiro_ponto'] != 'FALTA' && $registro[$i]['primeiro_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['primeiro_ponto'] != 'JUSTIFICADO' && $registro[$i]['primeiro_ponto'] != 'ATRASADO' && $registro[$i]['primeiro_ponto'] != 'Sem Registro')
                 $registro[$i]['primeiro_ponto'] = date("H:i:s", strtotime($registro[$i]['primeiro_ponto']));
-            if ($registro[$i]['segundo_ponto'] != null && $registro[$i]['segundo_ponto'] != 'FALTA' && $registro[$i]['segundo_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['segundo_ponto'] != 'JUSTIFICADO' && $registro[$i]['segundo_ponto'] != 'ATRASADO')
+            if ($registro[$i]['segundo_ponto'] != null && $registro[$i]['segundo_ponto'] != 'FALTA' && $registro[$i]['segundo_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['segundo_ponto'] != 'JUSTIFICADO' && $registro[$i]['segundo_ponto'] != 'ATRASADO' && $registro[$i]['segundo_ponto'] != 'Sem Registro')
                 $registro[$i]['segundo_ponto'] = date("H:i:s", strtotime($registro[$i]['segundo_ponto']));
-            if ($registro[$i]['terceiro_ponto'] != null && $registro[$i]['terceiro_ponto'] != 'FALTA' && $registro[$i]['terceiro_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['terceiro_ponto'] != 'JUSTIFICADO' && $registro[$i]['terceiro_ponto'] != 'ATRASADO')
+            if ($registro[$i]['terceiro_ponto'] != null && $registro[$i]['terceiro_ponto'] != 'FALTA' && $registro[$i]['terceiro_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['terceiro_ponto'] != 'JUSTIFICADO' && $registro[$i]['terceiro_ponto'] != 'ATRASADO' && $registro[$i]['terceiro_ponto'] != 'Sem Registro')
                 $registro[$i]['terceiro_ponto'] = date("H:i:s", strtotime($registro[$i]['terceiro_ponto']));
-            if ($registro[$i]['quarto_ponto'] != null && $registro[$i]['quarto_ponto'] != 'FALTA' && $registro[$i]['quarto_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['quarto_ponto'] != 'JUSTIFICADO' && $registro[$i]['quarto_ponto'] != 'ATRASADO')
+            if ($registro[$i]['quarto_ponto'] != null && $registro[$i]['quarto_ponto'] != 'FALTA' && $registro[$i]['quarto_ponto'] != 'JUSTIFICATIVA' && $registro[$i]['quarto_ponto'] != 'JUSTIFICADO' && $registro[$i]['quarto_ponto'] != 'ATRASADO' && $registro[$i]['quarto_ponto'] != 'Sem Registro')
                 $registro[$i]['quarto_ponto'] = date("H:i:s", strtotime($registro[$i]['quarto_ponto']));
 
             $registro[$i]['data'] = date("d/m/Y", strtotime($registro[$i]['created_at']));
