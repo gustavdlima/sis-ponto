@@ -12,7 +12,8 @@ class Falta extends Model
     protected $fillable = [
         'id_funcionario',
         'id_justificativa',
-        'data'
+        'data',
+        'data2'
     ];
 
 }
