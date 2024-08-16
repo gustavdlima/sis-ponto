@@ -46,43 +46,39 @@ class RegistroController extends Controller
                     'atrasou_quarto_ponto' => false
                 );
             }
-
-            if ($relatorio[$i]['justificativa']) {
-                if (!$relatorio[$i]['justificativa'][0]['data2']) {
-                    $relatorio[$i]['justificativa'] = null;
-                }
+            if ($relatorio[$i]['justificativa'] !== null) {
+                if (!$relatorio[$i]['justificativa'][0]['data2'])
+                    $relatorio[$i]['justificativa'][0]['data2'] = $relatorio[$i]['justificativa'][0]['data'];
                 $dataInicio = explode('-', $relatorio[$i]['justificativa'][0]['data']);
                 $dataFim = explode('-', $relatorio[$i]['justificativa'][0]['data2']);
-                if ($dataInicio[2] != $dataFim[2]) {
-                    for ($j = $dataInicio[2]; $j <= $dataFim[2]; $j++) {
-                        // se a data for um fim de semana, o registro do dia é nulo
-                        $diaDaSemana = date('w', strtotime($dataInicio[0] . '-' . $dataInicio[1] . '-' . $j));
-                        if ($diaDaSemana == 0 || $diaDaSemana == 6) {
-                            $relatorio[$j - 1]['registroDoDia'] = array(
-                                'primeiro_ponto' => '-',
-                                'segundo_ponto' => '-',
-                                'terceiro_ponto' => '-',
-                                'quarto_ponto' => '-',
-                                'atrasou_primeiro_ponto' => false,
-                                'atrasou_segundo_ponto' => false,
-                                'atrasou_terceiro_ponto' => false,
-                                'atrasou_quarto_ponto' => false
-                            );
-                        } else {
-                            if (!isset($relatorio[$j - 1]['registroDoDia'][0]['primeiro_ponto'])) {
-                                $relatorio[$j - 1]['registroDoDia'][0]['primeiro_ponto'] = 'JUSTIFICADO';
-                            }
-                            if (!isset($relatorio[$j - 1]['registroDoDia'][0]['segundo_ponto'])) {
-                                $relatorio[$j - 1]['registroDoDia'][0]['segundo_ponto'] = 'JUSTIFICADO';
-                            }
-                            if (!isset($relatorio[$j - 1]['registroDoDia'][0]['terceiro_ponto']) && $funcionario->carga_horaria == '40h') {
-                                $relatorio[$j - 1]['registroDoDia'][0]['terceiro_ponto'] = 'JUSTIFICADO';
-                            }
-                            if (!isset($relatorio[$j - 1]['registroDoDia'][0]['quarto_ponto']) && $funcionario->carga_horaria == '40h') {
-                                $relatorio[$j - 1]['registroDoDia'][0]['quarto_ponto'] = 'JUSTIFICADO';
-                            }
-                            $relatorio[$j - 1]['justificativa'] = $relatorio[$i]['justificativa'];
+                for ($j = $dataInicio[2]; $j <= $dataFim[2]; $j++) {
+                    // se a data for um fim de semana, o registro do dia é nulo
+                    $diaDaSemana = date('w', strtotime($dataInicio[0] . '-' . $dataInicio[1] . '-' . $j));
+                    if ($diaDaSemana == 0 || $diaDaSemana == 6) {
+                        $relatorio[$j - 1]['registroDoDia'] = array(
+                            'primeiro_ponto' => '-',
+                            'segundo_ponto' => '-',
+                            'terceiro_ponto' => '-',
+                            'quarto_ponto' => '-',
+                            'atrasou_primeiro_ponto' => false,
+                            'atrasou_segundo_ponto' => false,
+                            'atrasou_terceiro_ponto' => false,
+                            'atrasou_quarto_ponto' => false
+                        );
+                    } else {
+                        if (!isset($relatorio[$j - 1]['registroDoDia'][0]['primeiro_ponto'])) {
+                            $relatorio[$j - 1]['registroDoDia'][0]['primeiro_ponto'] = 'JUSTIFICADO';
                         }
+                        if (!isset($relatorio[$j - 1]['registroDoDia'][0]['segundo_ponto'])) {
+                            $relatorio[$j - 1]['registroDoDia'][0]['segundo_ponto'] = 'JUSTIFICADO';
+                        }
+                        if (!isset($relatorio[$j - 1]['registroDoDia'][0]['terceiro_ponto']) && $funcionario->carga_horaria == '40h') {
+                            $relatorio[$j - 1]['registroDoDia'][0]['terceiro_ponto'] = 'JUSTIFICADO';
+                        }
+                        if (!isset($relatorio[$j - 1]['registroDoDia'][0]['quarto_ponto']) && $funcionario->carga_horaria == '40h') {
+                            $relatorio[$j - 1]['registroDoDia'][0]['quarto_ponto'] = 'JUSTIFICADO';
+                        }
+                        $relatorio[$j - 1]['justificativa'] = $relatorio[$i]['justificativa'];
                     }
                 }
             }
