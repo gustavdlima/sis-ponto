@@ -32,13 +32,13 @@ class PontoController extends Controller
     public function padronizarRegistroDoDia($registro, $funcionario)
     {
         // se o usuário estiver atrasado, adicionar atraso ao registro
-        if ($registro->atrasou_primeiro_ponto == true)
+        if ($registro->atrasou_primeiro_ponto == true && $registro->primeiro_ponto != "Sem Registro")
             $registro->primeiro_ponto = "Atrasado";
-        if ($registro->atrasou_segundo_ponto == true)
+        if ($registro->atrasou_segundo_ponto == true && $registro->segundo_ponto != "Sem Registro")
             $registro->segundo_ponto = "Atrasado";
-        if ($registro->atrasou_terceiro_ponto == true)
+        if ($registro->atrasou_terceiro_ponto == true && $registro->terceiro_ponto != "Sem Registro")
             $registro->terceiro_ponto = "Atrasado";
-        if ($registro->atrasou_quarto_ponto == true)
+        if ($registro->atrasou_quarto_ponto == true && $registro->quarto_ponto != "Sem Registro")
             $registro->quarto_ponto = "Atrasado";
 
         return $registro;
@@ -154,13 +154,13 @@ class PontoController extends Controller
     }
 
     // checa se o funcionario esta 1 hora ou menos de uma hora adiantado
-    public function checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual)
+    public function checaSeOFuncionarioEsta2HorasAdiantado($horarioPonto, $horaAtual)
     {
         // checa se o funcionário está 1 hora ou menos adiantado
         $horarioPonto = new DateTime($horarioPonto);
         $horaAtual = new DateTime($horaAtual);
 
-        $horarioPonto->modify('-1 hour');
+        $horarioPonto->modify('-2 hour');
 
         if ($horaAtual < $horarioPonto)
             return true;
@@ -192,12 +192,8 @@ class PontoController extends Controller
             if ($pontoRegistro == null) {
                 if ($i <= 2 && $this->checaSeOFuncionarioEstaAdiantado($horarioPonto, $horaAtual) == true)
                     return $registro;
-                else if ($i == 3 && $this->checaSeOFuncionarioEsta1HoraAdiantado($horarioPonto, $horaAtual))
+                else if ($i == 3 && $this->checaSeOFuncionarioEsta2HorasAdiantado($horarioPonto, $horaAtual))
                     return $registro;
-
-                // verificar se o funcionario está tentando bater o ponto depois de 30minutos do horário
-
-
 
                 $registro = $this->adicionarHoraNoPonto($registro, $i, $horaAtual, $horarioPonto);
             }
@@ -490,8 +486,6 @@ class PontoController extends Controller
 
             // Registra a hora no ponto
             $registro = $this->registrarHoraNoPonto($registro, $funcionario, $diaAtual, $horaAtual);
-
-            return $registro;
 
             if ($registro->data == null)
                 $registro = $this->adicionarDataAoRegistro($registro);
