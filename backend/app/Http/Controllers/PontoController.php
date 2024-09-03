@@ -464,6 +464,7 @@ class PontoController extends Controller
         try {
             // Pega a hora atual e o dia atual
             $horaAtual = date('H:i:s');
+            // $horaAtual = "08:30:00";
             $diaAtual = date('w');
 
             // Valida o funcionário

@@ -1,4 +1,5 @@
 <template>
+
 	<Dialog v-model:visible="dialogRegistrarFaltaIsVisible" @update:visible="fecharRegistrarFaltaDialog" modal
 		:closable="true" :resizable="false" :style="{ width: '58vh' }">
 		<template #header>
@@ -20,7 +21,7 @@
 				</div>
 				<div class="row-span-1">
 					<Dropdown v-model="formData.id_justificativa" :options="justificativas" optionLabel="name"
-						placeholder="Justificativa" class="w-[16.6rem] h-[2.5rem]" />
+						placeholder="Justificativa" class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]]" />
 				</div>
 			</div>
 		</div>
@@ -130,6 +131,6 @@ onMounted(() => {
 <style scoped>
 button {
 	background-color: #1F2937 !important;
-	border: none !important
+	border: none !important;
 }
 </style>

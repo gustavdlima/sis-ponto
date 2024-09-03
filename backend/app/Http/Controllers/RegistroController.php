@@ -11,13 +11,32 @@ use App\Models\Justificativa;
 class RegistroController extends Controller
 {
 
+    public function converterDiaDaSemanaParaPortugues($diaDaSemana) {
+        switch ($diaDaSemana) {
+            case 'Sunday':
+                return 'Domingo';
+            case 'Monday':
+                return 'Segunda-feira';
+            case 'Tuesday':
+                return 'Terça-feira';
+            case 'Wednesday':
+                return 'Quarta-feira';
+            case 'Thursday':
+                return 'Quinta-feira';
+            case 'Friday':
+                return 'Sexta-feira';
+            case 'Saturday':
+                return 'Sábado';
+        }
+    }
+
     public function tratarDadosRelatorio($funcionario, $relatorio) {
 
         for ($i = 0; $i < sizeof($relatorio); $i++) {
 
             // adiciona Justificado no campo do ponto no relatório
             if ($relatorio[$i]['justificativa'] && $relatorio[$i]['registroDoDia']) {
-                if (!isset($relatorio[$i]['registroDoDia'][0]['primeiro_ponto'])) {
+                if (!isset($relatorio[$i]['registroDoDia'][0]['primeiro_ponto']) || $relatorio[$i]['registroDoDia'][0]['primeiro_ponto'] == 'Sem Registro') {
                     $relatorio[$i]['registroDoDia'][0]['primeiro_ponto'] = 'JUSTIFICADO';
                 }
                 if (!isset($relatorio[$i]['registroDoDia'][0]['segundo_ponto'])) {
@@ -161,8 +180,13 @@ class RegistroController extends Controller
         $relatorio = array();
         for ($day = 1, $i = 0; $day <= $totalDiasDoMesAtual; $day++, $i++) {
             $data = sprintf('%02d', $day) . '/' . $mesDoRegistro . '/' . $anoAtual;
-            $relatorio[$i]['dia'] = $data;
             $dataDB = $anoAtual . '-' . $mesDoRegistro . '-' . sprintf('%02d', $day);
+
+            $diaSemana = date('l', strtotime($dataDB));
+            $diaSemana = $this->converterDiaDaSemanaParaPortugues($diaSemana);
+            $relatorio[$i]['dia'] = $data;
+            $relatorio[$i]['diaSemana'] = $diaSemana;
+
             $registro = $this->retornaORegistroDaDataEspecificada($funcionario, $dataDB, $day);
             $relatorio[$i]['registroDoDia'] = $this->trataORegistroAntigoParaORelatorio($registro);
             $relatorio[$i]['justificativa'] = $this->cadastraFaltaNoRegistro($funcionario, $dataDB);

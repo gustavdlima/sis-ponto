@@ -137,8 +137,10 @@ const gerarRelatorio = async (value) => {
 const handleData = async (response) => {
 	var relatorio = [];
 	response = response[0].data
+	console.log(response);
 	for (var i = 0; i < response.length; i++) {
 		var dia = response[i].dia;
+		var diaSemana = response[i].diaSemana;
 		var registroDoDia = response[i].registroDoDia;
 		if (Array.isArray(registroDoDia)) {
 			registroDoDia = registroDoDia[0];
@@ -155,6 +157,7 @@ const handleData = async (response) => {
 		if (registroDoDia != null && justificativa != null) {
 			relatorio[i] = {
 				dia: dia,
+				diaSemana: diaSemana,
 				primeiro_ponto: registroDoDia.primeiro_ponto,
 				segundo_ponto: registroDoDia.segundo_ponto,
 				terceiro_ponto: registroDoDia.terceiro_ponto,
@@ -165,6 +168,7 @@ const handleData = async (response) => {
 		if (registroDoDia != null && justificativa == null) {
 			relatorio[i] = {
 				dia: dia,
+				diaSemana: diaSemana,
 				primeiro_ponto: registroDoDia.primeiro_ponto,
 				segundo_ponto: registroDoDia.segundo_ponto,
 				terceiro_ponto: registroDoDia.terceiro_ponto,
@@ -175,6 +179,7 @@ const handleData = async (response) => {
 	}
 	relatorioRef.value = relatorio;
 	tabelaImpressaoisVisible.value = true;
+	console.log(relatorioRef.value);
 	setTimeout(() => {
 		const print = document.getElementById('imprimirRelatorio').innerHTML;
 
