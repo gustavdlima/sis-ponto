@@ -13,7 +13,11 @@ class Falta extends Model
         'id_funcionario',
         'id_justificativa',
         'data',
-        'data2'
+        'data2',
+        'primeiro_turno',
+        'segundo_turno',
+        'terceiro_turno',
+        'quarto_turno',
     ];
 
 }
