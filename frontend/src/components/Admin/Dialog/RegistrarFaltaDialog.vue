@@ -1,7 +1,7 @@
 <template>
 
 	<Dialog v-model:visible="dialogRegistrarFaltaIsVisible" @update:visible="fecharRegistrarFaltaDialog" modal
-		:closable="true" :resizable="false" :style="{ width: '58vh' }">
+		:closable="true" :resizable="false" :style="{ width: '50vh', height: '51vh' }">
 		<template #header>
 			<div class="grid justify-start w-full">
 				<span class="text-blue-950 text-2xl font-semibold">
@@ -9,19 +9,50 @@
 				</span>
 			</div>
 		</template>
-		<div class="grid p-2">
-			<div class="grid grid-rows-3 justify-center gap-3">
+		<div class="grid">
+			<div class="grid grid-rows-1 justify-center gap-2">
 				<div class="row-span-1">
-					<Calendar v-model="formData.data" placeholder="Início" dateFormat="dd/mm/yy"
-						class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" modelValue="Date" />
+					<div class="grid grid-rows-3 gap-3">
+						<div class="row-span-1">
+							<Calendar v-model="formData.data" placeholder="Início" dateFormat="dd/mm/yy"
+								class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" modelValue="Date" />
+						</div>
+						<div class="row-span-1">
+							<Calendar v-model="formData.data2" placeholder="Fim" dateFormat="dd/mm/yy"
+								class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" modelValue="Date" />
+						</div>
+						<div class="row-span-1">
+							<Dropdown v-model="formData.id_justificativa" :options="justificativas" optionLabel="name"
+								placeholder="Justificativa" class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" />
+						</div>
+					</div>
 				</div>
-				<div class="row-span-1">
-					<Calendar v-model="formData.data2" placeholder="Fim" dateFormat="dd/mm/yy"
-						class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]" modelValue="Date" />
-				</div>
-				<div class="row-span-1">
-					<Dropdown v-model="formData.id_justificativa" :options="justificativas" optionLabel="name"
-						placeholder="Justificativa" class="w-full lg:w-[14rem] xl:w-[18rem] h-[2.5rem]]" />
+				<div class="row-span-1 mt-2">
+					<div class="grid justify-start">
+						<span class="text-black text-md font-semibold">Quais pontos você quer justificar?</span>
+					</div>
+					<div class="grid grid-cols-3 gap-2 mt-2">
+						<div class="col-span-1">
+							<div>
+								<Checkbox v-model="formData.primeiro_turno" inputId="primeiro_turno" name="primeiro_turno" value="True" />
+								<label for="primeiro_turno" class="ml-2"> 1º </label>
+							</div>
+							<div>
+								<Checkbox v-model="formData.quarto_turno" inputId="quarto_turno" name="quarto_turno" value="True" />
+								<label for="quarto_turno" class="ml-2"> 4º </label>
+							</div>
+						</div>
+						<div class="col-span-1">
+							<div>
+								<Checkbox v-model="formData.segundo_turno" inputId="segundo_turno" name="segundo_turno" value="True" />
+								<label for="segundo_turno" class="ml-2"> 2º </label>
+							</div>
+						</div>
+						<div class="col-span-1">
+							<Checkbox v-model="formData.terceiro_turno" inputId="terceiro_turno" name="terceiro_turno" value="True" />
+								<label for="terceiro_turno" class="ml-2"> 3º </label>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -42,6 +73,7 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Calendar from 'primevue/calendar';
 import Dropdown from 'primevue/dropdown';
+import Checkbox from 'primevue/checkbox';
 import useListarService from '../../../services/ListarService';
 import useUtils from '../../../services/Utils';
 import DialogAlerta from '../../DialogAlerta.vue';
@@ -60,9 +92,14 @@ const formData = ref({
 	id_funcionario: "",
 	data: "",
 	data2: "",
+	primeiro_turno: "",
+	segundo_turno: "",
+	terceiro_turno: "",
+	quarto_turno: "",
 });
 
 const registrarFalta = () => {
+	console.log(formData.value);
 	if (formData.value.id_justificativa === "" || formData.value.data === "" || formData.value.data2 === "") {
 		dialogMensagem.value = "Preencha todos os campos!";
 		dialogVisivel.value = true;
@@ -96,6 +133,10 @@ const tratarFormData = () => {
 	formData.value.data2 = useUtils.formatarData(formData.value.data2);
 	formData.value.id_justificativa = parseInt(formData.value.id_justificativa.code);
 	formData.value.id_funcionario = parseInt(props.funcionario.id);
+	formData.value.primeiro_turno = (formData.value.primeiro_turno[0] === "True") ? true : false;
+	formData.value.segundo_turno = (formData.value.segundo_turno[0] === "True") ? true : false;
+	formData.value.terceiro_turno = (formData.value.terceiro_turno[0] === "True") ? true : false;
+	formData.value.quarto_turno = (formData.value.quarto_turno[0] === "True") ? true : false;
 }
 
 const limparCampos = () => {
