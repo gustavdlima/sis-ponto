@@ -26,7 +26,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('faltas', function (Blueprint $table) {
-            //
+            // Drop columns
+            $table->dropColumn('primeiro_turno');
+            $table->dropColumn('segundo_turno');
+            $table->dropColumn('terceiro_turno');
+            $table->dropColumn('quarto_turno'); 
         });
     }
 };
