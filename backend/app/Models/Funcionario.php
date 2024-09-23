@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Cargo;
+use App\Models\DiasDaSemana;
 
 class Funcionario extends Model
 {
@@ -37,4 +39,20 @@ class Funcionario extends Model
         'sexo',
         'deficiente',
     ];
+
+    public function cargo()
+    {
+        return $this->hasOne(Cargo::class, 'id_cargo');
+    }
+
+    public function diasDaSemana()
+    {
+        return $this->belongsTo(DiasDaSemana::class, 'id_dia_da_semana');
+    }
+
+    public function registros()
+    {
+        return $this->hasMany(Registro::class, 'id_funcionario');
+    }
+
 }
