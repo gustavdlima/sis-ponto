@@ -39,20 +39,4 @@ class Funcionario extends Model
         'sexo',
         'deficiente',
     ];
-
-    public function cargo()
-    {
-        return $this->hasOne(Cargo::class, 'id_cargo');
-    }
-
-    public function diasDaSemana()
-    {
-        return $this->belongsTo(DiasDaSemana::class, 'id_dia_da_semana');
-    }
-
-    public function registros()
-    {
-        return $this->hasMany(Registro::class, 'id_funcionario');
-    }
-
 }
