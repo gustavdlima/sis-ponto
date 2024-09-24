@@ -14,7 +14,7 @@ class FuncionarioService
 		$this->funcionarioRepository = $funcionarioRepository;
 	}
 
-	public function index()
+	public function listarFuncionarios()
 	{
 		return $this->funcionarioRepository->all();
 	}

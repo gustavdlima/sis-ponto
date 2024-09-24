@@ -20,7 +20,7 @@ class FuncionarioController extends Controller
 
     public function index()
     {
-        return $this->funcionarioService->index();
+        return $this->funcionarioService->listarFuncionarios();
     }
 
     public function store(FuncionarioRequest $request)
