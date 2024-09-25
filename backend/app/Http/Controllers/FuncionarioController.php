@@ -33,7 +33,7 @@ class FuncionarioController extends Controller
         return $this->funcionarioService->procurarFuncionarioPeloId($id);
     }
 
-    public function update(FuncionarioRequest $request, $id)
+    public function update(Request $request, $id)
     {
         return $this->funcionarioService->atualizarFuncionario($request->all(), $id);
     }
