@@ -32,7 +32,7 @@ class UserController extends Controller
         return $this->userService->procurarUsuarioPeloId($id);
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(Request $request, $id)
     {
         return $this->userService->atualizarUsuario($request->all(), $id);
     }
