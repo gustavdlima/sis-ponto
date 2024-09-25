@@ -37,13 +37,13 @@ Route::resource('/justificativas', JustificativaController::class)->middleware('
 
 Route::resource('/horarios', HorarioController::class)->middleware('auth:sanctum');
 
-Route::resource('/faltas', FaltaController::class)->only(['index', 'create', 'show', 'store', 'update'])->middleware('auth:sanctum');
+Route::resource('/faltas', FaltaController::class)->middleware('auth:sanctum');
 
 Route::resource('/diaDaSemana', DiasDaSemanaController::class)->middleware('auth:sanctum');
 
 Route::post('/ponto', [PontoController::class, 'registrarPonto']);
 
-Route::get('/faltasFuncionario', [FaltaController::class, 'retornaFaltasDoFuncionario'])->middleware('auth:sanctum');
+Route::get('/faltasFuncionario', [FaltaController::class, 'faltasFuncionario'])->middleware('auth:sanctum');
 
 Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario'])->middleware('auth:sanctum');
 
