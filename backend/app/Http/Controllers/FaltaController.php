@@ -7,78 +7,50 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Falta;
 use App\Models\Registro;
 use DateTime;
+use App\Repositories\FaltaRepository;
+use App\Services\FaltaService;
+use App\Http\Requests\FaltaRequest;
+
 date_default_timezone_set('America/Sao_Paulo');
 
 class FaltaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $faltaService;
+
+    public function __construct(FaltaService $faltaService)
+    {
+        $this->faltaService = $faltaService;
+    }
+
     public function index()
     {
-        $faltas = DB::select('select * from faltas');
-        return $faltas;
+        return $this->faltaService->listarFaltas();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(FaltaRequest $request)
     {
-        $validated = $request->validate([
-            'id_justificativa' => 'required',
-            'id_funcionario' => 'required',
-            'data' => 'required',
-            'data2' => 'required',
-        ]);
-        $falta = DB::table('faltas')
-                ->select('data')
-                ->where('id_funcionario', $request->id_funcionario)
-                ->where('data', $request->data)
-                ->where('data2', $request->data2)
-                ->get();
-        if ($falta->count() <= 0) {
-            $falta = Falta::create($request->all());
-            return response()->json([
-                'message' => 'Falta registrada com sucesso!',
-            ], 200);
-        } else {
-            return "Problema ao adicionar falta, contate um administrador";
-        }
-
+        return $this->faltaService->criarFalta($request->all());
     }
 
-    /**
-     * Display the specified resource from Funcionario.
-     */
-    public function retornaFaltasDoFuncionario(string $id_funcionario)
+    public function show($id)
     {
-        $falta = DB::select('select * from faltas where id_funcionario = ?', [$id_funcionario]);
-        return $falta;
+        return $this->faltaService->procurarFaltaPeloId($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $falta = Falta::find($request->id);
-        $falta->update($request->all());
-        $falta->save();
-        return response ()->json([
-            'message' => 'Falta atualizada com sucesso!',
-        ], 200);
+        return $this->faltaService->atualizarFalta($request->all(), $id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $falta = Falta::find($request->id);
-        $falta->delete();
-        return response()->json([
-            'message' => 'Falta deletada com sucesso!',
-        ], 200);
+        return $this->faltaService->excluirFalta($id);
     }
+
+    public function faltasFuncionario($id)
+    {
+        return $this->faltaService->faltasFuncionario($id);
+    }
+
+
 }
