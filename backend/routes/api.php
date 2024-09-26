@@ -2,57 +2,40 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PontoController;
-use App\Http\Controllers\CadastroFuncionarioController;
-use App\Http\Controllers\FuncionarioController;
-use App\Http\Controllers\CargoController;
-use App\Http\Controllers\HorarioController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegistroController;
-use App\Http\Controllers\JustificativaController;
-use App\Http\Controllers\FaltaController;
-use App\Http\Controllers\DiasDaSemanaController;
+use App\Http\Controllers\{
+    PontoController, CadastroFuncionarioController, FuncionarioController, CargoController,
+    HorarioController, UserController, LoginController, RegistroController,
+    JustificativaController, FaltaController, DiasDaSemanaController
+};
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|-------------------------------------4-------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+// Rotas protegidas pelo middleware 'auth:sanctum'
+Route::middleware('auth:sanctum')->group(function () {
+    // Rotas RESTful para CRUD
+    Route::resource('/funcionarios', FuncionarioController::class);
+    Route::resource('/cargos', CargoController::class);
+    Route::resource('/justificativas', JustificativaController::class);
+    Route::resource('/horarios', HorarioController::class);
+    Route::resource('/faltas', FaltaController::class);
+    Route::resource('/diaDaSemana', DiasDaSemanaController::class);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    // Rotas para funções específicas
+    Route::get('/faltasFuncionario', [FaltaController::class, 'faltasFuncionario']);
+    Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario']);
+    Route::post('/registroDoDia', [PontoController::class, 'retornaRegistroDoDia']);
+    Route::post('/relatorio', [RegistroController::class, 'gerarRelatorioDeRegistroDoPonto']);
+
+    // Rota para obter o usuário autenticado
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    // Logout
+    Route::post('/logout', [LoginController::class, 'logout']);
 });
 
-Route::resource('/funcionarios', FuncionarioController::class)->middleware('auth:sanctum');
-
-Route::resource('/cargos', CargoController::class)->middleware('auth:sanctum');
-
-Route::resource('/justificativas', JustificativaController::class)->middleware('auth:sanctum');
-
-Route::resource('/horarios', HorarioController::class)->middleware('auth:sanctum');
-
-Route::resource('/faltas', FaltaController::class)->middleware('auth:sanctum');
-
-Route::resource('/diaDaSemana', DiasDaSemanaController::class)->middleware('auth:sanctum');
-
+// Rotas públicas (login, ponto)
 Route::post('/ponto', [PontoController::class, 'registrarPonto']);
-
-Route::get('/faltasFuncionario', [FaltaController::class, 'faltasFuncionario'])->middleware('auth:sanctum');
-
-Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario'])->middleware('auth:sanctum');
-
-Route::post('/registroDoDia', [PontoController::class, 'retornaRegistroDoDia']);
-
 Route::post('/login', [LoginController::class, 'authenticate']);
 
-Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
-
+// Rotas de usuários (sem middleware para facilitar registro ou ações públicas)
 Route::resource('/users', UserController::class);
-
-Route::post('/relatorio', [RegistroController::class, 'gerarRelatorioDeRegistroDoPonto'])->middleware('auth:sanctum');
