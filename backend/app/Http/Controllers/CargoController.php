@@ -1,62 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Cargo;
-use Illuminate\Support\Facades\DB;
+
+use App\Http\Requests\CargoRequest;
+use App\Services\CargoService;
 use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
+    protected $cargoService;
+
+    public function __construct(CargoService $cargoService)
+    {
+        $this->cargoService = $cargoService;
+    }
 
     public function index()
     {
-        $cargos = DB::select('select * from cargos');
-        return $cargos;
+        return $this->cargoService->listarCargos();
     }
 
-    public function create(Request $request)
+    public function store(CargoRequest $request)
     {
-        $cargo = new Cargo;
-        $cargo->cargo = $request->cargo;
-        $cargo->save();
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'cargo' => 'required|string|max:255',
-        ]);
-
-        $cargo = Cargo::firstOrNew(['cargo' => $request->cargo]);
-        if ($cargo['id'] == null) {
-            $cargo = Cargo::create($request->all());
-            return response()->json(['message' => 'Cargo criado.'], 201);
-        } else {
-            return response()->json(['message' => 'Erro ao criar cargo.'], 400);
-        }
-    }
-
-    public function update(Request $request)
-    {
-        $cargo = Cargo::findOrFail($request->id);
-        $cargo->update($request->all());
-        $cargo->save();
-
-        return response ()->json([
-            'message' => 'Cargo atualizado com sucesso!',
-        ], 200);
+        return $this->cargoService->criarCargo($request->all());
     }
 
     public function show($id)
     {
-        $cargo = DB::select('select * from cargos where id = ?', [$id]);
-        return $cargo;
+        return $this->cargoService->procurarCargoPeloId($id);
     }
 
-    public function destroy(Request $request)
+    public function update(CargoRequest $request, $id)
     {
-        $cargo = Cargo::findOrFail($request->id);
-        $cargo->delete();
-        return response()->json(['message' => 'Cargo deletado.'], 200);
+        return $this->cargoService->atualizarCargo($request->all(), $id);
+    }
+
+    public function destroy($id)
+    {
+        return $this->cargoService->excluirCargo($id);
     }
 }
