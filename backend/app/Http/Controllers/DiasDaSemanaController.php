@@ -3,87 +3,41 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\DiasDaSemanaRequest;
 use App\Models\DiasDaSemana;
+use App\Services\DiasDaSemanaService;
 
 class DiasDaSemanaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $diasDaSemanaService;
+
+    public function __construct(DiasDaSemanaService $diasDaSemanaService)
+    {
+        $this->diasDaSemanaService = $diasDaSemanaService;
+    }
+
     public function index()
     {
-        $diasDaSemana = DiasDaSemana::all();
-        return $diasDaSemana;
+        return $this->diasDaSemanaService->listarDiasDaSemana();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(DiasDaSemanaRequest $request)
     {
-        //
-        $validated = $request->validate([
-            'segunda' => 'integer|nullable',
-            'terca' => 'integer|nullable',
-            'quarta' => 'integer|nullable',
-            'quinta' => 'integer|nullable',
-            'sexta' => 'integer|nullable',
-            'sabado' => 'integer|nullable',
-            'domingo' => 'integer|nullable',
-        ]);
-
-        $diasDaSemana = DiasDaSemana::firstOrNew([
-            'segunda' => $request->segunda,
-            'terca' => $request->terca,
-            'quarta' => $request->quarta,
-            'quinta' => $request->quinta,
-            'sexta' => $request->sexta,
-            'sabado' => $request->sabado,
-            'domingo' => $request->domingo
-        ]);
-        
-        if ($diasDaSemana['id'] == null) {
-            $diasDaSemana = DiasDaSemana::create($request->all());
-            return response()->json(['message' => 'Dias da semana criados com sucesso.',
-            'diasDaSemana' => $diasDaSemana], 201);
-        } else {
-            // retorna os DiasDaSemana existente
-            return response()->json(['message' => 'Dias da semana já existem.',
-            'diasDaSemana' => $diasDaSemana], 200);
-        }
+        return $this->diasDaSemanaService->criarDiasDaSemana($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        $diasDaSemana = DiasDaSemana::findOrFail($id);
-        return $diasDaSemana;
+        return $this->diasDaSemanaService->procurarDiasDaSemanaPeloId($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        if ($request->segunda == null && $request->terca == null && $request->quarta == null && $request->quinta == null && $request->sexta == null && $request->sabado == null && $request->domingo == null) {
-            return response()->json(['message' => 'Pelo menos um dia da semana deve ser preenchido.'], 400);
-        }
-
-        $diasDaSemana = DiasDaSemana::findOrFail($request->id);
-        $diasDaSemana->update($request->all());
-        $diasDaSemana->save();
-        return response()->json(['message' => 'Dias da semana atualizados com sucesso.'], 200);
+        return $this->diasDaSemanaService->atualizarDiasDaSemana($request->all(), $id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $diasDaSemana = DiasDaSemana::findOrFail($request->id);
-        $diasDaSemana->delete();
-        return response()->json(['message' => 'Dias da semana deletados com sucesso.'], 200);
+        return $this->diasDaSemanaService->excluirDiasDaSemana($id);
     }
 }
