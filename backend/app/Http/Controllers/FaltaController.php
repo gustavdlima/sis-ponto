@@ -52,5 +52,14 @@ class FaltaController extends Controller
         return $this->faltaService->faltasFuncionario($id);
     }
 
+    public function retornaAFaltaDoDiaDoFuncionario($funcionario, $data)
+    {
+        return $this->faltaService->retornaAFaltaDoDiaDoFuncionario($funcionario, $data);
+    }
+
+    public function cadastraFaltaNoRegistro($id_funcionario, $data)
+    {
+        return $this->faltaService->cadastraFaltaNoRegistro($id_funcionario, $data);
+    }
 
 }

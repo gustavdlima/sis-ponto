@@ -37,6 +37,7 @@ class FaltaRepository
 	{
 		$falta = $this->model->find($id);
 		$falta->update($data);
+
 		return $falta;
 	}
 
@@ -47,7 +48,19 @@ class FaltaRepository
 	public function faltasFuncionario($id)
     {
         $faltas = Falta::where('id_funcionario', $id)->get();
-		
-        return response()->json($faltas);
+
+        return $faltas;
     }
+	public function retornaAFaltaDoDiaDoFuncionario($funcionario, $data)
+    {
+		$falta = Falta::where('id_funcionario', $funcionario->id)->where('data', $data)->first();
+    	return $falta;
+    }
+
+	public function cadastraFaltaNoRegistro($funcionario, $data)
+	{
+		return Falta::where('id_funcionario', $funcionario->id)->where('data', 'like', '%' . $data . '%')->get();
+
+    }
+
 }

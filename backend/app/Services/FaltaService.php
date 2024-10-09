@@ -73,4 +73,34 @@ class FaltaService
 			throw new Exception('Faltas não encontradas!');
 		return $faltas;
 	}
+
+	public function retornaAFaltaDoDiaDoFuncionario($funcionario, $data)
+	{
+		if ($funcionario == null)
+			throw new Exception('Funcionário não informado!');
+		if ($data == null)
+			throw new Exception('Data não informada!');
+
+		$falta = $this->faltaRepository->retornaAFaltaDoDiaDoFuncionario($funcionario, $data);
+
+		if ($falta == null)
+				return null;
+
+		return $falta;
+	}
+
+	public function cadastraFaltaNoRegistro($funcionario, $data)
+	{
+		if ($funcionario == null)
+			throw new Exception('Funcionário não informado!');
+		if ($data == null)
+			throw new Exception('Data não informada!');
+
+		$falta = $this->faltaRepository->cadastraFaltaNoRegistro($funcionario, $data);
+
+		if ($falta == null)
+			throw new Exception('Falta não encontrada!');
+		return $falta;
+	}
+
 }
