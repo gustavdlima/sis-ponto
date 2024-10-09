@@ -5,51 +5,64 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Justificativa;
+use App\Http\Requests\JustificativaRequest;
+use App\Services\JustificativaService;
 
 class JustificativaController extends Controller
 {
-    public function index()
+
+    protected $justificativaService;
+
+    public function __construct(JustificativaService $justificativaService)
     {
-        $justificativa = DB::select('select * from justificativas');
-        return $justificativa;
+        $this->justificativaService = $justificativaService;
     }
 
-    public function store(Request $request)
+    public function index()
     {
-        $validated = $request->validate([
-            'justificativa' => 'required|string|max:255',
-        ]);
+        $justificativas = Justificativa::all();
 
-        $justificativa = Justificativa::firstOrNew(['justificativa' => $request->justificativa]);
-        if ($justificativa['id'] == null) {
-            $justificativa = new Justificativa;
-            $justificativa->justificativa = $request->justificativa;
-            $justificativa->save();
-            return response()->json(['message' => 'Justificativa criada.'], 201);
-        } else {
-            return response()->json(['message'=> 'Erro ao criar justificativa'],200);
-        }
+        return response()->json($justificativas);
+    }
+
+    public function store(JustificativaRequest $request)
+    {
+        $justificativa = Justificativa::create($request->all());
+
+        return response()->json($justificativa, 201);
     }
 
     public function show($id)
     {
-        $justificativa = DB::select('select * from justificativas where id = ?', [$id]);
-        return $justificativa;
+        $justificativa = Justificativa::find($id);
+
+        return response()->json($justificativa);
     }
 
-    public function update(Request $request)
+    public function update(JustificativaRequest $request, $id)
     {
-        $justificativa = Justificativa::findOrFail($request->id);
+        $justificativa = Justificativa::find($id);
         $justificativa->update($request->all());
-        $justificativa->save();
-        return response()->json(['message' => 'Justificativa atualizada.'], 200);
+
+        return response()->json($justificativa, 200);
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $justificativa = Justificativa::findOrFail($request->id);
-        $justificativa->delete();
-        return response()->json(['message' => 'Justificativa deletada.'], 200);
+        Justificativa::destroy($id);
+
+        return response()->json(null, 204);
     }
 
+    public function justificativaFuncionario($id)
+    {
+        $justificativas = Justificativa::where('id_funcionario', $id)->get();
+
+        return response()->json($justificativas);
+    }
+
+    public function retornaAJustificativaDoDiaDoFuncionario($funcionario, $data)
+    {
+        return $this->justificativaService->retornaAJustificativaDoDiaDoFuncionario($funcionario, $data);
+    }
 }
