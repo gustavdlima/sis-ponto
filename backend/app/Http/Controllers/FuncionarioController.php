@@ -43,4 +43,9 @@ class FuncionarioController extends Controller
         return $this->funcionarioService->excluirFuncionario($id);
     }
 
+    public function procurarFuncionarioPelaMatricula(Request $request)
+    {
+        return $this->funcionarioService->procurarFuncionarioPelaMatricula($request->matricula);
+    }
+
 }

@@ -38,6 +38,7 @@ class FuncionarioService
 			throw new Exception('ID não informado!');
 
 		$funcionario = $this->funcionarioRepository->find($id);
+
 		if ($funcionario == null)
 			throw new Exception('Funcionário não encontrado!');
 
@@ -62,5 +63,18 @@ class FuncionarioService
 		return response()->json([
 			'message' => 'Funcionário deletado com sucesso!',
 		], 200);
+	}
+
+	public function procurarFuncionarioPelaMatricula($matricula)
+	{
+		if ($matricula == null)
+			throw new Exception('Matrícula não informada!');
+
+		$funcionario = $this->funcionarioRepository->procurarFuncionarioPelaMatricula($matricula);
+
+		if ($funcionario == null)
+			throw new Exception('Funcionário não encontrado!');
+
+		return $funcionario;
 	}
 }

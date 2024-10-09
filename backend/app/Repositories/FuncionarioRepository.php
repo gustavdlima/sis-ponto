@@ -44,4 +44,9 @@ class FuncionarioRepository
 	{
 		return $this->model->destroy($id);
 	}
+
+	public function procurarFuncionarioPelaMatricula($matricula)
+	{
+		return $this->model->where('matricula', $matricula)->first();
+	}
 }
