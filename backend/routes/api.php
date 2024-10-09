@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     PontoController, FuncionarioController, CargoController,
     HorarioController, UserController, LoginController, RegistroController,
-    JustificativaController, FaltaController, DiasDaSemanaController
+    JustificativaController, FaltaController, DiasDaSemanaController, RelatorioController
 };
 
 // Rotas protegidas pelo middleware 'auth:sanctum'
@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/faltasFuncionario', [FaltaController::class, 'faltasFuncionario']);
     Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroDoFuncionario']);
     Route::post('/registroDoDia', [PontoController::class, 'retornaRegistroDoDia']);
-    Route::post('/relatorio', [RegistroController::class, 'gerarRelatorioDeRegistroDoPonto']);
+    Route::post('/relatorio', [RelatorioController::class, 'gerarRelatorioDeRegistroDoPonto']);
 
     // Rota para obter o usuário autenticado
     Route::get('/user', function (Request $request) {
