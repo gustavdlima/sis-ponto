@@ -125,59 +125,19 @@ const abrirDialogRelatorioMensal = async () => {
 }
 
 const gerarRelatorio = async (value) => {
+	console.log(value);
 	const response = [
 		await useListarService.relatorioMensal({
-			matricula: funcionario.value.matricula,
-			data: value.code
+			id_funcionario: funcionario.value.id,
+			mes: value.code
 		})
 	]
 	handleData(response);
 }
 
 const handleData = async (response) => {
-	var relatorio = [];
-	response = response[0].data
-	console.log(response);
-	for (var i = 0; i < response.length; i++) {
-		var dia = response[i].dia;
-		var diaSemana = response[i].diaSemana;
-		var registroDoDia = response[i].registroDoDia;
-		if (Array.isArray(registroDoDia)) {
-			registroDoDia = registroDoDia[0];
-		}
-		var justificativa = response[i].justificativa;
-		if (registroDoDia == null) {
-			registroDoDia = {
-				primeiro_ponto: "Sem Registro",
-				segundo_ponto: "Sem Registro",
-				terceiro_ponto: "Sem Registro",
-				quarto_ponto: "Sem Registro"
-			}
-		}
-		if (registroDoDia != null && justificativa != null) {
-			relatorio[i] = {
-				dia: dia,
-				diaSemana: diaSemana,
-				primeiro_ponto: registroDoDia.primeiro_ponto,
-				segundo_ponto: registroDoDia.segundo_ponto,
-				terceiro_ponto: registroDoDia.terceiro_ponto,
-				quarto_ponto: registroDoDia.quarto_ponto,
-				justificativa: justificativa
-			}
-		}
-		if (registroDoDia != null && justificativa == null) {
-			relatorio[i] = {
-				dia: dia,
-				diaSemana: diaSemana,
-				primeiro_ponto: registroDoDia.primeiro_ponto,
-				segundo_ponto: registroDoDia.segundo_ponto,
-				terceiro_ponto: registroDoDia.terceiro_ponto,
-				quarto_ponto: registroDoDia.quarto_ponto,
-				justificativa: "-"
-			}
-		}
-	}
-	relatorioRef.value = relatorio;
+
+	relatorioRef.value = response[0].data.relatorio;
 	tabelaImpressaoisVisible.value = true;
 	console.log(relatorioRef.value);
 	setTimeout(() => {

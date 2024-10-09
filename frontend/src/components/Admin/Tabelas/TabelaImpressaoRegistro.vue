@@ -1,7 +1,7 @@
 <template>
 	<div v-if="tabelaIsVisible" class="grid">
 			<DataTable :value="registro" stripedRows showGridLines="true" dataKey="id" size="small" tableStyle=" font-size: 12px;">
-				<Column field="dia" header="Data"></Column>
+				<Column field="data" header="Data"></Column>
 				<Column field="diaSemana" header="Dia da Semana"></Column>
 				<Column field="primeiro_ponto" header="Primeiro Horario"></Column>
 				<Column field="segundo_ponto" header="Segundo Horario"></Column>
