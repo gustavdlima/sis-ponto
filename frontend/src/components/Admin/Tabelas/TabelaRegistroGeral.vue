@@ -1,6 +1,6 @@
 <template>
 	<div class="grid h-full w-full m-auto">
-		<DataTable :value="registro" stripedRows showGridLines="true" dataKey="id" :paginator="true" :rows="10" :rowsPerPageOptions="[5, 15, 30]" size="small">
+		<DataTable :value="registro" stripedRows showGridLines="true" dataKey="id" :paginator="true" :rows="10" :rowsPerPageOptions="[5, 15, 30]" size="small" :sortField="'data'" :sortOrder="-1">
 			<Column field="data" header="Data"></Column>
 			<Column field="diaSemana" header="Dia da Semana"></Column>
 			<Column field="primeiro_ponto" header="Primeiro Horario"></Column>
