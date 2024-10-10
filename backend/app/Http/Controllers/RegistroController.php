@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\RegistroService;
 use App\Services\FuncionarioService;
+use App\Repositories\RegistroRepository;
 
 class RegistroController extends Controller
 {
     protected $registroService;
     protected $funcionarioService;
+    protected $registroRepository;
 
 
-    public function __construct(RegistroService $registroService, FuncionarioService $funcionarioService)
+    public function __construct(RegistroService $registroService, FuncionarioService $funcionarioService, RegistroRepository $registroRepository)
     {
         $this->registroService = $registroService;
         $this->funcionarioService = $funcionarioService;
+        $this->registroRepository = $registroRepository;
     }
 
     public function index()
@@ -43,25 +46,8 @@ class RegistroController extends Controller
         return $this->registroService->excluirRegistro($id);
     }
 
-    public function retornaTodoORegistroDoFuncionario(Request $request)
+    public function retornaTodoORegistroComJustificativa(Request $request)
     {
-       $funcionario = $this->funcionarioService->procurarFuncionarioPeloId($request->id_funcionario);
-        return $this->registroService->retornaTodoORegistroDoFuncionario($funcionario);
+        return $this->registroRepository->retornaTodoORegistroComJustificativa($request->id_funcionario);
     }
-
-    public function retornaOUltimoRegistroDoFuncionario(Request $request)
-    {
-        return $this->registroService->retornaOUltimoRegistroDoFuncionario($request);
-    }
-
-    public function retornaORegistroDaDataEspecificada($funcionario, $data)
-    {
-        return $this->registroService->retornaORegistroDaDataEspecificada($funcionario, $data);
-    }
-
-    public function inserirJustificativaNoRegistro($relatorio)
-    {
-        return $this->registroService->inserirJustificativaNoRegistro($relatorio);
-    }
-
 }
