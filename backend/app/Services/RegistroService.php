@@ -7,7 +7,7 @@ use App\Services\FaltaService;
 use App\Services\JustificativaService;
 use App\Repositories\RegistroRepository;
 use App\Helpers\DataHelper;
-use Illuminate\Http\Request;
+use DateTime;
 
 use Exception;
 
@@ -17,7 +17,6 @@ class RegistroService
 	protected $dataHelper;
 	protected $funcionarioService;
 	protected $faltaService;
-
 	protected $justificativaService;
 
 	public function __construct(RegistroRepository $registroRepository, DataHelper $dataHelper, FuncionarioService $funcionarioService, FaltaService $faltaService, JustificativaService $justificativaService)
@@ -81,6 +80,23 @@ class RegistroService
 		return response()->json([
 			'message' => 'Registro excluído com sucesso!',
 		]);
+	}
+
+	public function retornaTodoORegistroComJustificativa($idFuncionario)
+	{
+
+		$registros = $this->registroRepository->retornaTodoORegistroComJustificativa($idFuncionario);
+
+		foreach ($registros as $registro) {
+			if ($registro->data == null)
+				continue;
+			$data = DateTime::createFromFormat('d/m/Y', $registro->data);
+			$dataISO = ($data->format('Y-m-d'));
+
+			$registro->data = $dataISO;
+		}
+
+		return $registros;
 	}
 
 }

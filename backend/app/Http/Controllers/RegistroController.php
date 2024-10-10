@@ -11,14 +11,12 @@ class RegistroController extends Controller
 {
     protected $registroService;
     protected $funcionarioService;
-    protected $registroRepository;
 
 
     public function __construct(RegistroService $registroService, FuncionarioService $funcionarioService, RegistroRepository $registroRepository)
     {
         $this->registroService = $registroService;
         $this->funcionarioService = $funcionarioService;
-        $this->registroRepository = $registroRepository;
     }
 
     public function index()
@@ -48,6 +46,6 @@ class RegistroController extends Controller
 
     public function retornaTodoORegistroComJustificativa(Request $request)
     {
-        return $this->registroRepository->retornaTodoORegistroComJustificativa($request->id_funcionario);
+        return $this->registroService->retornaTodoORegistroComJustificativa($request->id_funcionario);
     }
 }
