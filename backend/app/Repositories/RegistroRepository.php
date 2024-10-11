@@ -46,6 +46,11 @@ class RegistroRepository
 		return $this->model->destroy($id);
 	}
 
+    public function retornaUltimoRegistroDoFuncionario($idFuncionario)
+    {
+        return Registro::where('id_funcionario', $idFuncionario)->latest()->get()->first();
+    }
+
 	public function retornaTodoORegistroComJustificativa($idFuncionario)
 	{
         return DB::select(<<<SQL

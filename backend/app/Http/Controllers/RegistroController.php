@@ -44,8 +44,33 @@ class RegistroController extends Controller
         return $this->registroService->excluirRegistro($id);
     }
 
+    public function criarEstruturaDeRegistro($funcionario)
+    {
+        return $this->registroService->criarEstruturaDeRegistro($funcionario);
+    }
+
+    public function retornaUltimoRegistroDoFuncionario(Request $request)
+    {
+        return $this->registroService->retornaUltimoRegistroDoFuncionario($request->id);
+    }
+
     public function retornaTodoORegistroComJustificativa(Request $request)
     {
         return $this->registroService->retornaTodoORegistroComJustificativa($request->id_funcionario);
+    }
+
+    public function adicionarAtrasoAoRegistro($registro, $index)
+    {
+        return $this->registroService->adicionarAtrasoAoRegistro($registro, $index);
+    }
+
+    public function adicionarSemRegistroNoPontoDoRegistro($registro, $index)
+    {
+        return $this->registroService->adicionarSemRegistroNoPontoDoRegistro($registro, $index);
+    }
+
+    public function retornaORegistroDoDia(Request $request)
+    {
+        return $this->registroService->retornaORegistroDoDia($request->matricula);
     }
 }
