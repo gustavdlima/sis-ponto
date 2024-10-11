@@ -40,4 +40,12 @@ class DiasDaSemanaController extends Controller
     {
         return $this->diasDaSemanaService->excluirDiasDaSemana($id);
     }
+
+    public function retornaTabelaDoDiaDaSemanaDoFuncionario($funcionario)
+    {
+        $tabelaDiasDaSemana = $this->diasDaSemanaService->retornaTabelaDoDiaDaSemanaDoFuncionario($funcionario);
+        if ($tabelaDiasDaSemana == null || count($tabelaDiasDaSemana) == 0)
+            return null;
+        return $tabelaDiasDaSemana;
+    }
 }

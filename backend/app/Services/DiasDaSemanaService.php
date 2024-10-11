@@ -73,6 +73,15 @@ class DiasDaSemanaService
 		], 200);
 	}
 
+	public function retornaTabelaDoDiaDaSemanaDoFuncionario($funcionario)
+	{
+		$tabelaDiasDaSemana = $this->diasDaSemanaRepository->retornaTabelaDoDiaDaSemanaDoFuncionario($funcionario);
+
+		if ($tabelaDiasDaSemana == null || count($tabelaDiasDaSemana) == 0)
+			return null;
+		return $tabelaDiasDaSemana;
+	}
+
 }
 
 

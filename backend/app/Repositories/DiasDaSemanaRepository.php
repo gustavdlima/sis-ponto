@@ -43,4 +43,9 @@ class DiasDaSemanaRepository {
 	{
 		return $this->model->destroy($id);
 	}
+
+	public function retornaTabelaDoDiaDaSemanaDoFuncionario($funcionario)
+	{
+		return DiasDaSemana::where('id', $funcionario->id_dia_da_semana)->get();
+	}
 }
