@@ -21,7 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Rotas para funções específicas
     Route::get('/faltasFuncionario', [FaltaController::class, 'faltasFuncionario']);
     Route::post('/registroFuncionario', [RegistroController::class, 'retornaTodoORegistroComJustificativa']);
-    Route::post('/registroDoDia', [PontoController::class, 'retornaRegistroDoDia']);
     Route::post('/relatorio', [RelatorioController::class, 'gerarRelatorioDeRegistroDoPonto']);
 
     // Rota para obter o usuário autenticado
@@ -34,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Rotas públicas (login, ponto)
+Route::post('/registroDoDia', [PontoController::class, 'retornaRegistroDoDia']);
 Route::post('/ponto', [PontoController::class, 'registrarPonto']);
 Route::post('/login', [LoginController::class, 'authenticate']);
 
