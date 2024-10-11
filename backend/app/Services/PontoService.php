@@ -14,11 +14,9 @@ use Exception;
 class PontoService
 {
 	protected $registroService;
-
 	protected $funcionarioService;
 	protected $DiasDaSemanaService;
 	protected $HorarioService;
-
 
 	public function __construct(RegistroService $registroService,
 	FuncionarioService $funcionarioService, DiasDaSemanaService $DiasDaSemanaService, HorarioService $HorarioService)
@@ -80,12 +78,14 @@ class PontoService
     {
 		$registro = $this->registroService->retornaUltimoRegistroDoFuncionario($funcionario->id);
 
-        if (!$registro) {
+        $dataRegistro = date('Y-m-d', strtotime($registro->created_at));
+		$dataAtual = date('Y-m-d');
+
+        if ($dataRegistro === $dataAtual)
+            return $registro;
+        else
             $registro = $this->registroService->criarEstruturaDeRegistro($funcionario);
             return $registro;
-        }
-
-        return $registro;
     }
 
 	private function checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro, $diaAtual)
