@@ -2,76 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Horario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\HorarioService;
 
 class HorarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $horarioService;
+
+    public function __construct(HorarioService $horarioService)
+    {
+        $this->horarioService = $horarioService;
+    }
 
     public function index()
     {
-        $horarios = DB::select('select * from horarios');
-        return $horarios;
+        return $this->horarioService->listarHorarios();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // Validar a request
-        $validated = $request->validate([
-            'primeiro_horario' => 'required|date_format:H:i:s',
-            'segundo_horario' => 'required|date_format:H:i:s',
-        ]);
-
-        $horario = Horario::firstOrNew(['primeiro_horario' => $request->primeiro_horario,
-            'segundo_horario' => $request->segundo_horario,
-            'terceiro_horario' => $request->terceir_horario,
-            'quarto_horario' => $request->quarto_horario]);
-        if ($horario['id'] == null) {
-            $horario = Horario::create($request->all());
-            return response()->json(['message' => 'Horário criado com sucesso.'], 201);
-        } else {
-            $horario->update($request->all());
-            return response()->json(['message'=> 'Erro ao criar Horário'], 200);
-        }
+        return $this->horarioService->criarHorario($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        $horario = Horario::findOrFail($id);
-        return $horario;
-    }
-    
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
-    {
-        $horario = Horario::findOrFail($request->id);
-        $horario->update($request->all());
-        $horario->save();
-
-        return response ()->json([
-            'message' => 'Horário atualizado com sucesso!',
-        ], 200);
+        return $this->horarioService->procurarHorarioPeloId($id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
+    public function update(Request $request, $id)
     {
-        $horario = Horario::findOrFail($request->id);
-        $horario->delete();
-        return response()->json(['message' => 'Horário deletado.'], 200);
+        return $this->horarioService->atualizarHorario($request->all(), $id);
     }
+
+    public function destroy($id)
+    {
+        return $this->horarioService->excluirHorario($id);
+    }
+
+    public function retornaHorarioEmFormatoDeArray($id)
+    {
+        return $this->horarioService->retornaHorarioEmFormatoDeArray($id);
+    }
+
 }
