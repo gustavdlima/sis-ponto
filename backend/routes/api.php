@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Rotas públicas (login, ponto)
-Route::post('/registroDoDia', [PontoController::class, 'retornaRegistroDoDia']);
+Route::post('/registroDoDia', [RegistroController::class, 'retornaORegistroDoDia']);
 Route::post('/ponto', [PontoController::class, 'registrarPonto']);
 Route::post('/login', [LoginController::class, 'authenticate']);
 
