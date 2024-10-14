@@ -52,4 +52,10 @@ class JustificativaRepository
 		return $justificativas;
 	}
 
+	public function retornaAJustificativaDoDiaDoFuncionario($funcionario, $data)
+	{
+		$justificativa = Justificativa::where('id_funcionario', $funcionario->id)->where('data', $data)->first();
+		return $justificativa;
+	}
+
 }

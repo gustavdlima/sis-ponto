@@ -40,4 +40,9 @@ class JustificativaService
 		return $this->justificativaRepository->delete($id);
 	}
 
+	public function retornaAJustificativaDoDiaDoFuncionario($funcionario, $data)
+	{
+		return $this->justificativaRepository->retornaAJustificativaDoDiaDoFuncionario($funcionario, $data);
+	}
+
 }
