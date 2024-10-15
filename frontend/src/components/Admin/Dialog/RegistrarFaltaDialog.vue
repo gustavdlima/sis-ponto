@@ -98,8 +98,7 @@ const formData = ref({
 	quarto_turno: "",
 });
 
-const registrarFalta = () => {
-	console.log(formData.value);
+const registrarFalta = async () => {
 	if (formData.value.id_justificativa === "" || formData.value.data === "" || formData.value.data2 === "") {
 		dialogMensagem.value = "Preencha todos os campos!";
 		dialogVisivel.value = true;
@@ -109,17 +108,28 @@ const registrarFalta = () => {
 		return;
 	}
 	tratarFormData();
-	console.log(formData.value);
-	useListarService.registrarFalta(formData.value).then(() => {
-		dialogMensagem.value = "Falta registrada com sucesso!";
-		dialogVisivel.value = true;
-		useUtils.sleep(1000).then(() => {
-			dialogVisivel.value = false;
-			dialogRegistrarFaltaIsVisible.value = false;
-			emit('atualizarDialogRegistrarFaltaBool', dialogRegistrarFaltaIsVisible.value);
-			limparCampos();
-		});
-	});
+	const response = await useListarService.registrarFalta(formData.value);
+	handleResponse(response);
+}
+
+const handleResponse = async (response) =>  {
+	switch (response.status) {
+		case 201:
+			dialogMensagem.value = "Falta justificada com sucesso!";
+			dialogVisivel.value = true;
+			useUtils.sleep(2000).then(() => {
+				dialogVisivel.value = false;
+				fecharRegistrarFaltaDialog();
+			});
+			break;
+		default:
+			dialogMensagem.value = response.data.message;
+			dialogVisivel.value = true;
+			useUtils.sleep(2000).then(() => {
+				dialogVisivel.value = false;
+			});
+			break;
+	}
 }
 
 const fecharRegistrarFaltaDialog = () => {
