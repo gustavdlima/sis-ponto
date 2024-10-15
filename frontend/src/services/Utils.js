@@ -17,7 +17,8 @@ class Utils {
 		const dia = dataFormatada.getDate().toString().padStart(2, '0');
 		const mes = (dataFormatada.getMonth() + 1).toString().padStart(2, '0');
 		const ano = dataFormatada.getFullYear();
-		const dataFinal = `${mes}-${dia}-${ano}`;
+		var dataFinal = `${mes}-${dia}-${ano}`;
+		dataFinal = new Date(dataFinal);
 		return dataFinal;
 	}
 

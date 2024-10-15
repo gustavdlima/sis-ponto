@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Repositories\FaltaRepository;
+use App\Services\FuncionarioService;
 use Exception;
 
 class FaltaService
 {
 	protected $faltaRepository;
+	protected $funcionarioService;
 
-	public function __construct(FaltaRepository $faltaRepository)
+	public function __construct(FaltaRepository $faltaRepository, FuncionarioService $funcionarioService)
 	{
 		$this->faltaRepository = $faltaRepository;
+		$this->funcionarioService = $funcionarioService;
 	}
 
 	public function listarFaltas()
@@ -21,8 +24,11 @@ class FaltaService
 
 	public function criarFalta(array $data)
 	{
-		$falta = $this->faltaRepository->firstOrNew(['data' => $data['data']]);
-		if ($falta['id'] == null) {
+		// verificar se já existe falta para o funcionario
+		$funcionario = $this->funcionarioService->procurarFuncionarioPeloId($data['id_funcionario']);
+		$falta = $this->faltaRepository->retornaAFaltaDoDiaDoFuncionario($funcionario, $data['data']);
+
+		if ($falta == null) {
 			$falta = $this->faltaRepository->create($data);
 			return response()->json([
 				'message' => 'Falta cadastrada com sucesso!',
