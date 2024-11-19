@@ -21,7 +21,7 @@ class HorarioService
 
 	public function criarHorario(array $data)
 	{
-		$horario = $this->horarioRepository->firstOrNew(['id_funcionario' => $data['id_funcionario']]);
+		$horario = $this->horarioRepository->firstOrNew($data);
 		if ($horario['id'] == null) {
 			$horario = $this->horarioRepository->create($data);
 			return response()->json([

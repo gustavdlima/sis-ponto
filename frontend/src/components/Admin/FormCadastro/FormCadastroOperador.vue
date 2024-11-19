@@ -83,21 +83,21 @@ const verificarSenhaENivel = async () => {
 	if (formData.value.password !== formData.value.password2) {
 		dialogMensagem.value = 'As senhas não coincidem.';
 		dialogVisivel.value = true;
-		await useUtils.sleep(1000);
+		await useUtils.sleep(2000);
 		dialogVisivel.value = false;
 		return null;
 	}
 	if (formData.value.password.length < 8) {
 		dialogMensagem.value = 'A senha deve ter no mínimo 8 caracteres.';
 		dialogVisivel.value = true;
-		await useUtils.sleep(1000);
+		await useUtils.sleep(2000);
 		dialogVisivel.value = false;
 		return null;
 	}
 	if (formData.value.level === '') {
 		dialogMensagem.value = 'Selecione um nível.';
 		dialogVisivel.value = true;
-		await useUtils.sleep(1000);
+		await useUtils.sleep(2000);
 		dialogVisivel.value = false;
 		return null;
 	}
@@ -110,6 +110,7 @@ const enviarFormularioDeCadastroDeOperador = async () => {
 	}
 	tratarFormData();
 	const response = await useCadastroService.cadastrarOperador(formData.value);
+	console.log(response);
 	handleResponse(response);
 };
 
@@ -117,12 +118,12 @@ const handleResponse = async (response) => {
 	if (response.status === 201) {
 		dialogMensagem.value = 'Operador cadastrado com sucesso.';
 		dialogVisivel.value = true;
-		await useUtils.sleep(1000);
+		await useUtils.sleep(2000);
 		dialogVisivel.value = false;
 	} else {
-		dialogMensagem.value = 'Erro ao cadastrar operador.';
+		dialogMensagem.value = response.data.message;
 		dialogVisivel.value = true;
-		await useUtils.sleep(1000);
+		await useUtils.sleep(2000);
 		dialogVisivel.value = false;
 	}
 };

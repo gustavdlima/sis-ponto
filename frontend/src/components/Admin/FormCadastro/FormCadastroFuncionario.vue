@@ -382,11 +382,16 @@ const criarTabelaDiaDaSemana = async () => {
 }
 
 const enviarFormularioDeCadastroDeFuncionario = async () => {
+	if (formData.value.matricula == "") {
+		dialogMensagem.value = 'Preencha a Matricula!';
+		dialogVisivel.value = true;
+		await useUtils.sleep(2000);
+		dialogVisivel.value = false;
+		return;
+	}
 	formData.value.id_dia_da_semana = await criarTabelaDiaDaSemana();
 	tratarFormData();
-	console.log(formData.value);
 	const response = await useCadastroService.cadastrarFuncionario(formData.value);
-	console.log(response);
 	handleResponse(response);
 }
 
@@ -398,32 +403,35 @@ const handleResponse = async (response) => {
 			await useUtils.sleep(1000);
 			dialogVisivel.value = false;
 			break;
-		case 200:
+		case 500:
 			dialogMensagem.value = 'Funcionário já cadastrado!';
 			dialogVisivel.value = true;
-			await useUtils.sleep(1000);
+			await useUtils.sleep(2000);
 			dialogVisivel.value = false;
 			break;
 		default:
 			dialogMensagem.value = 'Erro ao cadastrar o funcionário! Entre em contato com o administrador';
 			dialogVisivel.value = true;
-			await useUtils.sleep(1000);
+			await useUtils.sleep(2000);
 			dialogVisivel.value = false;
 	}
 }
 
 const handleDiasDaSemanaResponse = async (response) => {
 	switch (response.status) {
+		case 200:
+			return response.data.diasDaSemana.id;
+			break;
 		case 201:
 			return response.data.diasDaSemana.id;
 			break;
-		case 200:
+		case 500:
 			return response.data.diasDaSemana.id;
 			break;
 		default:
 			dialogMensagem.value = 'Erro ao cadastrar o horário semanal do funcionário! Entre em contato com o administrador';
 			dialogVisivel.value = true;
-			await useUtils.sleep(1000);
+			await useUtils.sleep(2000);
 			dialogVisivel.value = false;
 	}
 }
@@ -499,6 +507,8 @@ function fillFormData() {
 	formData.value.id_cargo = "1"
 	formData.value.id_horario = "2"
 	formData.value.carga_horaria = "20h"
+	formData.value.sexo = "M"
+	formData.value.deficiente = "False"
 }
 
 onMounted(() => {

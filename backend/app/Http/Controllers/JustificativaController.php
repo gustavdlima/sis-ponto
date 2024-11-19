@@ -20,45 +20,32 @@ class JustificativaController extends Controller
 
     public function index()
     {
-        $justificativas = Justificativa::all();
-
-        return response()->json($justificativas);
+        return $this->justificativaService->listarJustificativas();
     }
 
     public function store(JustificativaRequest $request)
     {
-        $justificativa = Justificativa::create($request->all());
-
-        return response()->json($justificativa, 201);
+        return $this->justificativaService->criarJustificativa($request->all());
     }
 
     public function show($id)
     {
-        $justificativa = Justificativa::find($id);
-
-        return response()->json($justificativa);
+        return $this->justificativaService->procurarJustificativaPeloId($id);
     }
 
     public function update(JustificativaRequest $request, $id)
     {
-        $justificativa = Justificativa::find($id);
-        $justificativa->update($request->all());
-
-        return response()->json($justificativa, 200);
+        return $this->justificativaService->atualizarJustificativa($request->all(), $id);
     }
 
     public function destroy($id)
     {
-        Justificativa::destroy($id);
-
-        return response()->json(null, 204);
+        return $this->justificativaService->excluirJustificativa($id);
     }
 
     public function justificativaFuncionario($id)
     {
-        $justificativas = Justificativa::where('id_funcionario', $id)->get();
-
-        return response()->json($justificativas);
+        return Justificativa::where('funcionario_id', $id)->get();
     }
 
     public function retornaAJustificativaDoDiaDoFuncionario($funcionario, $data)

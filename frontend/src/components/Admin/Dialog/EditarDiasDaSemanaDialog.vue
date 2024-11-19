@@ -164,7 +164,6 @@ const editarDiasDaSemana = async () => {
   const response = await useCadastroService.cadastrarDiasDaSemana(
     diasDaSemanaEditado.value
   );
-
   handleResponse(response, response.data.diasDaSemana.id);
 };
 

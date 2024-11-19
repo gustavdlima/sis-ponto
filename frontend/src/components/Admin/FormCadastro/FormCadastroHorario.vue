@@ -67,6 +67,7 @@ const formData = ref({
 const enviarFormularioDeCadastroDeHorario = async () => {
 	tratarFormData();
 	const response = await useCadastroService.cadastrarHorario(formData.value);
+	console.log(response);
 	handleResponse(response);
 };
 
@@ -75,15 +76,22 @@ const handleResponse = async (response) => {
 		case 201:
 			dialogMensagem.value = "Horário cadastrado com sucesso!";
 			dialogVisivel.value = true;
-			useUtils.sleep(1000).then(() => {
+			useUtils.sleep(2000).then(() => {
 				dialogVisivel.value = false;
 			});
 			limparForm();
 			break;
-		default:
-			dialogMensagem.value = "Erro desconhecido!";
+		case 500:
+			dialogMensagem.value = "Horário já cadastrado";
 			dialogVisivel.value = true;
-			useUtils.sleep(1000).then(() => {
+			useUtils.sleep(2000).then(() => {
+				dialogVisivel.value = false;
+			});
+			break;
+		default:
+			dialogMensagem.value = response.data.message;
+			dialogVisivel.value = true;
+			useUtils.sleep(2000).then(() => {
 				dialogVisivel.value = false;
 			});
 			break;
@@ -93,8 +101,11 @@ const handleResponse = async (response) => {
 const tratarFormData = () => {
 	formData.value.primeiro_horario = useUtils.formatarHorario(formData.value.primeiro_horario);
 	formData.value.segundo_horario = useUtils.formatarHorario(formData.value.segundo_horario);
-	formData.value.terceiro_horario = useUtils.formatarHorario(formData.value.terceiro_horario);
-	formData.value.quarto_horario = useUtils.formatarHorario(formData.value.quarto_horario);
+	if (formData.value.terceiro_horario === "")
+		formData.value.terceiro_horario = useUtils.formatarHorario(formData.value.terceiro_horario);
+
+	if (formData.value.quarto_horario === "")
+		formData.value.quarto_horario = useUtils.formatarHorario(formData.value.quarto_horario);
 };
 
 const limparForm = () => {

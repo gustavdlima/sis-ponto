@@ -31,9 +31,13 @@ class DiasDaSemanaService
 			$diasDaSemana = $this->diasDaSemanaRepository->create($data);
 			return response()->json([
 				'message' => 'Dia da semana cadastrado com sucesso!',
+				'diasDaSemana' => $diasDaSemana,
 			], 201);
 		} else {
-			throw new Exception('Dia da semana já cadastrado!');
+			return response()->json([
+				'message' => 'Dia da semana já cadastrado!',
+				'diasDaSemana' => $diasDaSemana,
+			], 200);
 		}
 	}
 

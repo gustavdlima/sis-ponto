@@ -40,7 +40,7 @@ const enviarFormularioDeCadastroDeJustificativa = async () => {
 	if (formData.justificativa === "") {
 		dialogMensagem.value = "Campo vazio!";
 		dialogVisivel.value = true;
-		useUtils.sleep(1000).then(() => {
+		useUtils.sleep(2000).then(() => {
 			dialogVisivel.value = false;
 		});
 	} else {
@@ -56,15 +56,22 @@ const handleResponse = async (response) => {
 		case 201:
 			dialogMensagem.value = "Justificativa cadastrado com sucesso!";
 			dialogVisivel.value = true;
-			useUtils.sleep(1000).then(() => {
+			useUtils.sleep(2000).then(() => {
 				dialogVisivel.value = false;
 			});
 			limparForm();
 			break;
-		default:
-			dialogMensagem.value = "Erro desconhecido!";
+		case 500:
+			dialogMensagem.value = "Justificativa já cadastrada!";
 			dialogVisivel.value = true;
-			useUtils.sleep(1000).then(() => {
+			useUtils.sleep(2000).then(() => {
+				dialogVisivel.value = false;
+			});
+			break;
+		default:
+			dialogMensagem.value = response.data.message;
+			dialogVisivel.value = true;
+			useUtils.sleep(2000).then(() => {
 				dialogVisivel.value = false;
 			});
 			limparForm();
