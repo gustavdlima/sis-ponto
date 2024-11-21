@@ -58,9 +58,6 @@ class PontoService
             // Registra a hora no ponto
             $registro = $this->registrarHoraNoPonto($registro, $funcionario, $diaAtual, $horaAtual);
 
-            if ($registro->data == null)
-                $registro = $this->adicionarDataAoRegistro($registro);
-
             return response()->json([
                 'message' => 'Registro criado com sucesso',
                 'status' => 201,
@@ -78,45 +75,44 @@ class PontoService
     {
 		$registro = $this->registroService->retornaUltimoRegistroDoFuncionario($funcionario->id);
 
-        $dataRegistro = date('Y-m-d', strtotime($registro->created_at));
-		$dataAtual = date('Y-m-d');
+        if (!$registro || !$this->checaSeORegistroFoiCriadoNoDiaAtual($registro->created_at)) {
+            return $this->registroService->criarEstruturaDeRegistro($funcionario);
+        }
 
-        if ($dataRegistro === $dataAtual)
-            return $registro;
-        else
-            $registro = $this->registroService->criarEstruturaDeRegistro($funcionario);
-            return $registro;
+        return $registro;
+    }
+
+    private function checaSeORegistroFoiCriadoNoDiaAtual($dataRegistro)
+    {
+        $dataRegistroFormatada = date('Y-m-d', strtotime($dataRegistro));
+        $dataAtual = date('Y-m-d');
+        return $dataRegistroFormatada === $dataAtual;
     }
 
 	private function checaSeJaBateuTodosOsPontosDoDia($funcionario, $registro, $diaAtual)
     {
         $horario = $this->retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual);
 
-        if ($horario == null)
+        if ($horario === null) {
             throw new Exception('Você não tem horário cadastrado para o dia atual, contate o RH.', 404);
+        }
 
         $quantidadeDeHorarios = count($horario);
-        if ($quantidadeDeHorarios == 1) {
-            if ($registro->primeiro_ponto != null)
-                return true;
-            return false;
+
+        $pontos = [
+            $registro->primeiro_ponto,
+            $registro->segundo_ponto,
+            $registro->terceiro_ponto,
+            $registro->quarto_ponto,
+        ];
+
+        for ($i = 0; $i < $quantidadeDeHorarios; $i++) {
+            if ($pontos[$i] === null) {
+                return false;
+            }
         }
-        if ($quantidadeDeHorarios == 2) {
-            if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null)
-                return true;
-            return false;
-        }
-        if ($quantidadeDeHorarios == 3) {
-            if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null && $registro->terceiro_ponto != null)
-                return true;
-            return false;
-        }
-        if ($quantidadeDeHorarios == 4) {
-            if ($registro->primeiro_ponto != null && $registro->segundo_ponto != null && $registro->terceiro_ponto != null && $registro->quarto_ponto != null)
-                return true;
-            return false;
-        }
-        return false;
+
+        return true;
     }
 
 	private function retornaOHorarioDoFuncionarioNoDiaAtual($funcionario, $diaAtual)

@@ -84,7 +84,10 @@ class RegistroService
 		if ($funcionario == null)
 		throw new Exception('Funcionário não informado!');
 
+		$dataAtual = date('d/m/Y');
+
 		$registroArray = array(
+			'data' => $dataAtual,
 			'id_funcionario' => $funcionario->id,
 			'id_horario' => $funcionario->id_horario,
 			'primeiro_ponto' => null,

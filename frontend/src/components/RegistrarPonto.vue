@@ -153,6 +153,7 @@ const pegarRegistroDoDia = async () => {
 			];
 			tabelaRegistroVisivel.value = true;
 			useUtils.sleep(2000).then(() => {
+				console.log(registroPonto.value);
 				tabelaRegistroVisivel.value = false;
 			});
 		} else {

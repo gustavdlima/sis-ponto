@@ -376,7 +376,6 @@ const diasDaSemana = ref({
 })
 
 const criarTabelaDiaDaSemana = async () => {
-	tratarDiasDaSemana();
 	const response = await useCadastroService.cadastrarDiasDaSemana(diasDaSemana.value);
 	return handleDiasDaSemanaResponse(response);
 }
@@ -438,24 +437,6 @@ const handleDiasDaSemanaResponse = async (response) => {
 
 const tratarFormData = () => {
 	formData.value.data_nascimento = useUtils.formatarData(formData.value.data_nascimento);
-}
-
-const tratarDiasDaSemana = () => {
-	if (diasDaSemana.value.segunda != "") {
-		diasDaSemana.value.segunda = diasDaSemana.value.segunda.code;
-	}
-	if (diasDaSemana.value.terca != "") {
-		diasDaSemana.value.terca = diasDaSemana.value.terca.code;
-	}
-	if (diasDaSemana.value.quarta != "") {
-		diasDaSemana.value.quarta = diasDaSemana.value.quarta.code;
-	}
-	if (diasDaSemana.value.quinta != "") {
-		diasDaSemana.value.quinta = diasDaSemana.value.quinta.code;
-	}
-	if (diasDaSemana.value.sexta != "") {
-		diasDaSemana.value.sexta = diasDaSemana.value.sexta.code;
-	}
 }
 
 const getCargos = async () => {

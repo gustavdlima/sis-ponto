@@ -10,6 +10,7 @@ class Registro extends Model
     use HasFactory;
 
     protected $fillable = [
+        'data',
         'id_funcionario',
         'id_horario',
         'primeiro_ponto',
