@@ -19,8 +19,7 @@ class RelatorioController extends Controller
 
     public function gerarRelatorioDeRegistroDoPonto(Request $request)
     {
-
-        $relatorio = $this->relatorioRepository->gerarRelatorio($request->mes, $request->id_funcionario);
+        $relatorio = $this->relatorioRepository->gerarRelatorio($request->mes, $request->ano, $request->id_funcionario);
 
         return compact('relatorio');
     }

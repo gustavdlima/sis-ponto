@@ -125,18 +125,17 @@ const abrirDialogRelatorioMensal = async () => {
 }
 
 const gerarRelatorio = async (value) => {
-	console.log(value);
 	const response = [
 		await useListarService.relatorioMensal({
 			id_funcionario: funcionario.value.id,
-			mes: value.code
+			mes: value.mes,
+			ano: value.ano
 		})
 	]
 	handleData(response);
 }
 
 const handleData = async (response) => {
-
 	relatorioRef.value = response[0].data.relatorio;
 	tabelaImpressaoisVisible.value = true;
 	console.log(relatorioRef.value);

@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\DB;
 
 class RelatorioRepository
 {
-    public function gerarRelatorio($mes, $idFuncionario)
+    public function gerarRelatorio($mes, $ano, $idFuncionario)
     {
         $mesFormatado = str_pad($mes, 2, '0', STR_PAD_LEFT);
-        $dataInicial = "01/$mesFormatado/2024";
+        $dataInicial = "01/$mesFormatado/$ano";
 
         return DB::select(<<<SQL
             WITH dias_do_mes AS (
