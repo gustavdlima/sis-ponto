@@ -59,7 +59,8 @@ Para rodar este sistema de ponto eletrônico, é necessário ter os seguintes co
    - Necessário para servir a aplicação Laravel.
 5. **Node.js**: Versão 12 ou superior.
 6. **npm**
-7. **Postman** ou **Insomnia**
+7. **Vite**
+8. **Postman** ou **Insomnia**
 
 ### Instalação
 
@@ -92,9 +93,12 @@ Para rodar este sistema de ponto eletrônico, é necessário ter os seguintes co
 - Instale as dependências do Vue.js:
 	```bash
 	npm install
+- Atulize as dependências?:
+  	```bash
+   	npm update
 - Inicie o servidor local do Vue.js:
 	```bash
-	npm run serve
+	npm run dev
 
 ### URLs de Acesso
 
