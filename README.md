@@ -94,7 +94,7 @@ Para rodar este sistema de ponto eletrônico, é necessário ter os seguintes co
 	npm install
 - Inicie o servidor local do Vue.js:
 	```bash
-	npm run dev
+	npm run serve
 
 ### URLs de Acesso
 
