@@ -52,7 +52,7 @@ O frontend é desenvolvido em Vue.js e apresenta as seguintes páginas principai
 
 Para rodar este sistema de ponto eletrônico, é necessário ter os seguintes componentes instalados no seu ambiente:
 
-1. **PHP**: Versão 8.2 ou superior.
+1. **PHP**(xml, pgsql): Versão 8.2 ou superior.
 2. **Composer**
 3. **PostgreSQL**
 4. **Servidor Web**: Apache ou Nginx.
@@ -73,12 +73,12 @@ Para rodar este sistema de ponto eletrônico, é necessário ter os seguintes co
 	cd backend
 - Instale as dependências do Laravel:
 	```bash
-	composer install
+	composer update
 - Configure o arquivo .env com as credenciais do banco de dados.
 - Gere uma chave no seu .env
 	```bash
 	 php artisan key:generate
-- Execute as migrations para criar as tabelas:
+- Execute as migrations para criar as tabelas após criar o schema 'ponto':
 	```bash
 	php artisan migrate
 - Inicie o servidor localmente:
@@ -94,7 +94,7 @@ Para rodar este sistema de ponto eletrônico, é necessário ter os seguintes co
 	npm install
 - Inicie o servidor local do Vue.js:
 	```bash
-	npm run serve
+	npm run dev
 
 ### URLs de Acesso
 
