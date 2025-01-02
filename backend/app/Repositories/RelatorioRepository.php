@@ -33,19 +33,19 @@ class RelatorioRepository
                 END AS "diaSemana",
                 r.nome,
                 CASE
-                    WHEN r.primeiro_ponto IS NULL AND fa.id_funcionario IS NOT NULL THEN 'Justificado'
+                    WHEN r.primeiro_ponto IS NULL AND fa.id_funcionario IS NOT NULL AND fa.primeiro_turno THEN 'Justificado'
                     ELSE COALESCE(r.primeiro_ponto, '-')
                 END AS primeiro_ponto,
                 CASE
-                    WHEN r.segundo_ponto IS NULL AND fa.id_funcionario IS NOT NULL THEN 'Justificado'
+                    WHEN r.segundo_ponto IS NULL AND fa.id_funcionario IS NOT NULL AND fa.segundo_turno THEN 'Justificado'
                     ELSE COALESCE(r.segundo_ponto, '-')
                 END AS segundo_ponto,
                 CASE
-                    WHEN r.terceiro_ponto IS NULL AND fa.id_funcionario IS NOT NULL THEN 'Justificado'
+                    WHEN r.terceiro_ponto IS NULL AND fa.id_funcionario IS NOT NULL AND fa.terceiro_turno THEN 'Justificado'
                     ELSE COALESCE(r.terceiro_ponto, '-')
                 END AS terceiro_ponto,
                 CASE
-                    WHEN r.quarto_ponto IS NULL AND fa.id_funcionario IS NOT NULL THEN 'Justificado'
+                    WHEN r.quarto_ponto IS NULL AND fa.id_funcionario IS NOT NULL AND fa.quarto_turno THEN 'Justificado'
                     ELSE COALESCE(r.quarto_ponto, '-')
                 END AS quarto_ponto,
                 COALESCE(r.atrasou_primeiro_ponto, false) AS atrasou_primeiro_ponto,
@@ -75,6 +75,10 @@ class RelatorioRepository
                     fa.id_funcionario,
                     fa.data,
                     fa.data2,
+                    fa.primeiro_turno,
+                    fa.segundo_turno,
+                    fa.terceiro_turno,
+                    fa.quarto_turno,
                     j.justificativa
                 FROM faltas fa
                 LEFT JOIN justificativas j ON j.id = fa.id_justificativa
